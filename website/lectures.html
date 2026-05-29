@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>MIE1626: Lecture calendar (Summer 2026)</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="./style/newstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <a href="index.html">
+      <img src="./style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+    </a>
+    <a class="navbar-brand" href="index.html">MIE1626</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+        <li class="nav-item"><a class="nav-link" href="lectures.html">Lectures</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#mini-projects">Mini-projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#project">Project</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#info">Course info</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#logistics">Logistics</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#resources">Resources</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <br>
+    <h2>Lecture calendar</h2>
+
+    <p class="text-muted">
+      Lectures and tutorials run Wednesdays and Fridays, 2:00pm&ndash;5:00pm.
+      Each row in the table below is one week. Within a week, the &ldquo;Topics&rdquo; column
+      groups the material by subject (not by lecture). Each topic links to a rendered
+      <code>.html</code> page and the <code>.Rmd</code> source.
+    </p>
+
+    <table id="calendar" class="table table-bordered no-more-tables">
+      <thead class="active" style="background-color:#f9f9f9">
+        <tr>
+          <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+          <th width="500">Topics</th>
+          <th>Reading and materials</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <!-- =================== WEEK 1 =================== -->
+      <tr>
+        <td><b>Week 1</b><br><span class="text-muted">May 6 &amp; May 8</span></td>
+        <td>
+          <p><b>Course logistics</b></p>
+          <p><a href="topics/course_intro.html">Course introduction</a>
+            (<a href="topics/course_intro.Rmd">Rmd</a>):
+            goals, structure, mini-projects, the course project, the
+            culture-of-honor paper as a paradigmatic example.</p>
+
+          <p><b>Programming in R</b></p>
+          <p><a href="topics/r_basics.html">R basics and functional programming</a>
+            (<a href="topics/r_basics.Rmd">Rmd</a>):
+            why functional programming, literals, printing, variables,
+            conditionals, functions, print-vs-return.</p>
+          <p><a href="topics/vectors.html">Vectors</a>
+            (<a href="topics/vectors.Rmd">Rmd</a>):
+            <code>c()</code>, indexing, boolean masks, combining with <code>&amp;</code> /
+            <code>|</code> / <code>!</code>, the pie-or-ice-cream gotcha, the
+            doctor-salaries example.</p>
+          <p><a href="topics/data_frames.html">Data frames</a>
+            (<a href="topics/data_frames.Rmd">Rmd</a>):
+            building data frames, the <code>babynames</code> dataset, accessing
+            rows / columns / cells, <code>$</code> vs <code>[ ]</code>, subsetting
+            with masks.</p>
+          <p><a href="topics/tidyverse.html">Wrangling data with the pipe and <code>tidyverse</code></a>
+            (<a href="topics/tidyverse.Rmd">Rmd</a>):
+            function composition and <code>%&gt;%</code>;
+            <code>filter</code> / <code>select</code> / <code>arrange</code> /
+            <code>rename</code> / <code>mutate</code> / <code>summarize</code> /
+            <code>group_by</code> / <code>distinct</code> / <code>n_distinct</code> /
+            <code>which.max</code>; gapminder worked examples; <code>sapply</code>.</p>
+
+          <p><b>Statistical inference</b></p>
+          <p><a href="topics/probability_review.html">Probability review</a>
+            (<a href="topics/probability_review.Rmd">Rmd</a>):
+            random variables and events, conditional probability, independence,
+            Bayes' rule, law of total probability, the boy-and-girl paradox.</p>
+          <p><a href="topics/maximum_likelihood.html">Maximum likelihood</a>
+            (<a href="topics/maximum_likelihood.Rmd">Rmd</a>):
+            on paper for Bernoulli, in code via grid search, linear regression as MLE
+            under Gaussian noise.</p>
+          <p><a href="topics/bayesian_inference.html">Bayesian inference</a>
+            (<a href="topics/bayesian_inference.Rmd">Rmd</a>):
+            prior, likelihood, posterior; the coin example in code; Bayesian
+            inference for the difference of two means (continued in Week 2 with
+            the finches).</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            <a href="https://r4ds.hadley.nz/data-transform">R4DS Ch.&nbsp;4</a> (Data transformation);
+            <a href="http://statsthinking21.org/probability.html">Poldrack Ch.&nbsp;6</a> (Probability).
+          </p>
+          <p><b>Just for fun</b>:
+            <a href="https://www.merritthawkins.com/news-and-insights/blog/job-search-advice/Physician-Starting-Salaries-by-Specialty-2018-vs-2017/">Physician salary data</a>;
+            <a href="https://en.wikipedia.org/wiki/Tyche">Tyche</a>, the Greek goddess of chance.
+          </p>
+          <p><b>Pre-course slides</b>:
+            <a href="MIE1626.pdf">MIE1626 introduction slide deck</a>.</p>
+          <p><b>Lecture recordings</b>:
+            May 6 &mdash;
+            <a href="https://www.youtube.com/watch?v=pm_b_j8gdhg">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=6hbGDFjmHyc">Part 2</a>,
+            <a href="https://www.youtube.com/watch?v=6vW9M6OZLW4">Part 3</a>;
+            May 8 &mdash;
+            <a href="https://www.youtube.com/watch?v=aH03zX8-kPc">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=gq1FbkIssQA">Part 2</a>.
+          </p>
+        </td>
+      </tr>
+
+      <!-- =================== WEEK 2 =================== -->
+      <tr style="background-color:#d9dbff">
+        <td><b>Week 2</b><br><span class="text-muted">May 13 only<br>(no class May 15 &mdash; Victoria Day)</span></td>
+        <td>
+          <p><b>Hypothesis testing</b></p>
+          <p><a href="topics/hypothesis_testing.html">Hypothesis testing: p-values from first principles</a>
+            (<a href="topics/hypothesis_testing.Rmd">Rmd</a>):
+            Darwin's finches; the null hypothesis; the test statistic; computing
+            p-values by simulation with <code>replicate</code>; one-sided vs
+            two-sided tests.</p>
+          <p><a href="topics/pvalue_pitfalls.html">Interpreting p-values, errors, and the replication crisis</a>
+            (<a href="topics/pvalue_pitfalls.Rmd">Rmd</a>):
+            the 5% threshold; the ASA statement; Type I / II / S / M errors;
+            publication bias, p-hacking, the garden of forking paths; the
+            dead-salmon fMRI study.</p>
+
+          <p><b>Inference continued</b></p>
+          <p>The Bayesian inference topic from Week 1 also covers the
+            <a href="topics/bayesian_inference.html#bayesian-inference-for-the-difference-of-means-finches">posterior over the difference of finch means</a>
+            (worked through during the May 13 lecture).</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            <a href="https://statmodeling.stat.columbia.edu/2004/12/29/type_1_type_2_t/">Andrew Gelman, "Type 1, type 2, type S, and type M errors"</a>;
+            <a href="http://prefrontal.org/files/posters/Bennett-Salmon-2009.pdf">Bennett et al, &ldquo;Neural correlates of interspecies perspective taking in the post-mortem Atlantic salmon&rdquo;</a>;
+            <a href="https://www.openintro.org/book/os/">OpenIntro Statistics</a>, chapters on inference (free PDF).
+          </p>
+          <p><b>Sources for finches data</b>:
+            <code>Sleuth3::case0201</code>.</p>
+          <p><b>Lecture recordings</b>:
+            May 13 &mdash;
+            <a href="https://www.youtube.com/watch?v=CpeTI_2N998">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=DATtg3f7TYc">Part 2</a>.
+          </p>
+        </td>
+      </tr>
+
+      <!-- =================== WEEK 3 =================== -->
+      <tr>
+        <td><b>Week 3</b><br><span class="text-muted">May 20 &amp; May 22</span></td>
+        <td>
+          <p><b>Predictive modeling</b></p>
+          <p><a href="topics/predictive_modeling.html">Predictive modeling: linear regression and categorical predictors</a>
+            (<a href="topics/predictive_modeling.Rmd">Rmd</a>):
+            Portland housing example; cost functions vs probabilistic interpretation;
+            simple vs multiple regression; log-transforms on gapminder; indicator
+            variables for categorical predictors; <code>lm</code>,
+            <code>predict</code>, and manual SSE.</p>
+          <p><a href="topics/logistic_regression.html">Logistic regression</a>
+            (<a href="topics/logistic_regression.Rmd">Rmd</a>):
+            Titanic case study; the sigmoid; <code>glm(..., family = binomial)</code>;
+            classification accuracy and the base rate; FPR / FNR / PPV / NPV.</p>
+
+          <p><b>Workflow and a project preview</b></p>
+          <p><a href="topics/agentic_scraping.html">Scraping data with a coding agent</a>
+            (<a href="topics/agentic_scraping.Rmd">Rmd</a>):
+            Arctic Shift for Reddit; using an agent inside VS Code; auditing
+            silent stop-word removal; a worked example.</p>
+          <p><a href="topics/icu_project.html">Mini-project 2 walkthrough &mdash; ICU adverse outcomes</a>
+            (<a href="topics/icu_project.Rmd">Rmd</a>):
+            predicting mortality from ICU data; ROC curves; the
+            &ldquo;doctor with 25 charts&rdquo; cost model and threshold selection.</p>
+
+          <p><b>Inference with linear regression</b></p>
+          <p><a href="topics/confidence_intervals.html">Confidence intervals</a>
+            (<a href="topics/confidence_intervals.Rmd">Rmd</a>):
+            what a CI actually means (and what it does not); reading CIs off
+            <code>summary(glm(...))</code>; the CI &harr; p-value duality.</p>
+          <p><a href="topics/regression_diagnostics.html">Regression diagnostics</a>
+            (<a href="topics/regression_diagnostics.Rmd">Rmd</a>):
+            assumptions (linearity, normality, independence of residuals);
+            Q&ndash;Q, residuals-vs-fitted, scale-location, residuals-vs-leverage;
+            outliers; multiple comparisons and the F-test.</p>
+          <p><a href="topics/correlation_causation.html">Correlation, R&sup2;, and causation</a>
+            (<a href="topics/correlation_causation.Rmd">Rmd</a>):
+            reverse causation, common cause, indirect causation, coincidence;
+            R&sup2; as comparison to the constant-prediction baseline;
+            Anscombe's quartet.</p>
+          <p><a href="topics/cross_validation.html">Training, validation, and test sets</a>
+            (<a href="topics/cross_validation.Rmd">Rmd</a>):
+            why training accuracy lies; three-way split; why categorical
+            encoding cannot hurt training fit; using <code>replicate</code> to
+            estimate validation-accuracy variability.</p>
+          <p><a href="topics/truth_about_regression.html">&ldquo;The truth about linear regression&rdquo;</a>
+            (<a href="topics/truth_about_regression.Rmd">Rmd</a>):
+            Shalizi's &ldquo;lies&rdquo;; collinearity; omitted-variable bias
+            (Fisher and smoking; ice cream and drownings); the gender wage gap
+            as a controls question; the Harvard admissions lawsuit; errors in
+            variables; interactions (avocado / bacon).</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            <a href="https://www.stat.cmu.edu/~cshalizi/TALR/">Cosma Shalizi, &ldquo;The Truth About Linear Regression&rdquo;</a>;
+            <a href="https://www.openintro.org/book/os/">OpenIntro Statistics</a>, regression chapters.
+          </p>
+          <p><b>Datasets</b>:
+            <code>gapminder</code>, <code>titanic</code>, the ICU data from
+            mini-project 2.
+          </p>
+          <p><b>Lecture recordings</b>:
+            May 20 &mdash;
+            <a href="https://www.youtube.com/watch?v=dWzSudjwTsU">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=qkWIvUSsbtY">Part 2</a>;
+            May 22 &mdash;
+            <a href="https://www.youtube.com/watch?v=iMRJ4irJoXc">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=VGFufA5GzLo">Part 2</a>.
+          </p>
+        </td>
+      </tr>
+
+      <!-- =================== WEEK 4 =================== -->
+      <tr style="background-color:#d9dbff">
+        <td><b>Week 4</b><br><span class="text-muted">May 27 &amp; May 29</span></td>
+        <td>
+          <p><b>Test statistics and their null distributions</b></p>
+          <p>Revisiting <a href="topics/hypothesis_testing.html">hypothesis testing</a>
+            (<a href="topics/hypothesis_testing.Rmd">Rmd</a>) under a unifying frame:
+            two ways to get a null distribution &mdash;
+            <i>enumerate</i> it
+            (<a href="topics/hypothesis_testing.html#method-1-enumerate-the-lady-tasting-tea">Lady
+            Tasting Tea</a>, Fisher's exact test) and
+            <i>simulate</i> it (the finches walkthrough from Week 2).</p>
+
+          <p><b>Workshop: analyzing scraped text with an LLM</b></p>
+          <p><a href="topics/llm_text_analysis.html">Classifying and clustering text with an LLM</a>
+            (<a href="topics/llm_text_analysis.Rmd">Rmd</a>):
+            the r/UofT &ldquo;why are students (un)happy&rdquo; example; why a
+            single sentiment percentage is uninteresting; keyword vs. fine-tuning
+            vs. just-ask-the-model; zero-shot vs. few-shot (in-context learning);
+            calling an API reproducibly instead of the chat window; ground-truth
+            labelling; embeddings and clustering for a thematic breakdown.</p>
+
+          <p><b>Hierarchical models</b></p>
+          <p><a href="topics/hierarchical_models.html">Hierarchical (multilevel) models</a>
+            (<a href="topics/hierarchical_models.Rmd">Rmd</a>):
+            grouped data and the pooling trichotomy (complete pooling, no
+            pooling, partial pooling); the Minnesota radon case study with
+            <code>lmer</code>; Lac Qui Parle and shrinkage with <i>n</i>=2;
+            adding predictors and random slopes; prediction in known vs. new
+            counties; the varying-slopes voting case study
+            (<i>Red State, Blue State, Rich State, Poor State</i>);
+            the Bayesian connection.</p>
+
+          <p><b>Causal inference</b></p>
+          <p><a href="topics/causal_inference.html">Causal inference</a>
+            (<a href="topics/causal_inference.Rmd">Rmd</a>):
+            DAGs as a language for causal structure; the three d-separation
+            patterns (common cause, chain, collider/&ldquo;explaining
+            away&rdquo;) verified by simulation on the smoking/asbestos/cancer
+            DAG; the trap of regressing on the wrong variable;
+            <i>P</i>(<i>Y</i>&nbsp;|&nbsp;<i>X</i>) vs.
+            <i>P</i>(<i>Y</i>&nbsp;|&nbsp;<code>do</code>(<i>X</i>));
+            identification strategies &mdash; backdoor adjustment,
+            instrumental variables, matching.</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            Gelman &amp; Hill (2007), <i>Data Analysis Using Regression and
+            Multilevel/Hierarchical Models</i>, Ch.&nbsp;12;
+            Cosma Shalizi, <a href="https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/"><i>Advanced
+            Data Analysis from an Elementary Point of View</i></a>,
+            Ch.&nbsp;21&ndash;24.
+          </p>
+          <p><b>Datasets</b>:
+            Minnesota radon &mdash;
+            <code><a href="topics/data/srrs2.dat">topics/data/srrs2.dat</a></code>
+            (cached locally for reproducibility).
+          </p>
+          <p><b>Further reading</b>:
+            Andrew Gelman, <i>Red State, Blue State, Rich State, Poor State:
+            Why Americans Vote the Way They Do</i> (PU Press, 2009);
+            Pearl, Glymour &amp; Jewell, <i>Causal Inference in Statistics: A Primer</i>.
+          </p>
+          <p><b>Lecture recordings</b>:
+            May 27 &mdash;
+            <a href="https://www.youtube.com/watch?v=sVu4lukmzS8">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=kY7Z5igDNrk">Part 2</a>.
+          </p>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <p class="text-muted" style="margin-top: 2rem;">
+      Topic Rmds live in <code><a href="topics/">topics/</a></code>.
+      Course-distributed PDFs (syllabus, test reference sheet) are under
+      <code><a href="materials/1626s26/">materials/1626s26/</a></code>.
+      To re-knit all topics, run <code>Rscript render_topics.R</code>.
+    </p>
+    <br>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>MIE1626: Midterm Test coverage (Summer 2026)</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="./style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    .coverage-topic { margin-top: 1.5rem; }
+    .coverage-topic h4 { margin-bottom: 0.5rem; }
+    .yes-list  > li::marker { content: "\2713  "; }
+    .no-list   > li::marker { content: "\2717  "; }
+    .yes-list, .no-list { padding-left: 1.2em; }
+    .yes-list  > li { color: #1a5e1a; }
+    .no-list   > li { color: #7a1a1a; }
+    .col-label { font-weight: bold; font-variant: small-caps; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <a href="index.html">
+      <img src="./style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+    </a>
+    <a class="navbar-brand" href="index.html">MIE1626</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+        <li class="nav-item"><a class="nav-link" href="lectures.html">Lectures</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#staff">Instructor</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#overview">Overview</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#mini-projects">Mini-projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="project.html">Project</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#logistics">Logistics</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#grading">Grading</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#references">References</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#resources">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://piazza.com/utoronto.ca/summer2026/mie1626">Piazza</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <br>
+    <h2>Midterm Test coverage</h2>
+
+    <p class="text-muted">
+      For each lecture topic, this page lists what is examinable on the term test
+      and what is not. The test is <em>open handout</em>: the
+      <a href="materials/1626s26/test_reference.pdf">test reference sheet</a> is
+      distributed in advance and gives R syntax for the verbs used in the course,
+      so you are not expected to memorize syntax. You are still expected to know
+      <em>what</em> each function does and <em>when</em> to use it. Test 1 covers
+      everything through Week 3. The list will be extended for Test 2 in August.
+    </p>
+
+    <div class="alert alert-secondary" style="background-color:#f3f3f3;">
+      <b>Legend:</b>
+      <span style="color:#1a5e1a; font-weight: bold;">&#10003;</span> on the test &nbsp;|&nbsp;
+      <span style="color:#7a1a1a; font-weight: bold;">&#10007;</span> not on the test (or syntax given on the handout, so not testable from memory).
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>R basics, functions, vectors, data frames</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Defining a function and calling it; the print-vs-return distinction.</li>
+            <li>Conditionals: <code>if (cond) { ... } else { ... }</code>.</li>
+            <li>Building a vector with <code>c()</code>; indexing and boolean masks.</li>
+            <li>Combining masks with <code>&amp;</code>, <code>|</code>, <code>!</code>.</li>
+            <li>Subsetting a data frame by mask: <code>df[df$x &gt; 0, ]</code>.</li>
+            <li>Applying a function to every element of a vector with <code>sapply</code>.</li>
+            <li>Reading short pieces of code and saying what they compute.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Memorizing function-definition or indexing syntax (it is on the reference sheet).</li>
+            <li>Writing an algorithm in the sense of, e.g., sorting a vector by hand &mdash; you will only be asked to write "algebra in order."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Tidyverse / dplyr</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Knowing what each dplyr verb does and when to use it: <code>filter</code>, <code>select</code>, <code>arrange</code>, <code>rename</code>, <code>mutate</code>, <code>group_by</code>, <code>summarize</code>, <code>distinct</code>, <code>n_distinct</code>.</li>
+            <li>Reading a pipeline written with <code>%&gt;%</code> and saying what data comes out.</li>
+            <li>Expect at least one question that uses these verbs.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Memorizing the exact argument order of each verb &mdash; signatures are on the reference sheet.</li>
+            <li>ggplot syntax. You will not be asked to write ggplot code.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Probability review</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Conditional probability and independence.</li>
+            <li>Bayes' rule and the law of total probability.</li>
+            <li>Boy-and-girl-style conditional-probability puzzles.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Anything beyond what was covered in the probability-review notes.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Maximum likelihood</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Deriving the MLE for Bernoulli on paper.</li>
+            <li>Finding the MLE numerically by grid search (writing the loop / <code>sapply</code> over a grid of parameters; <code>which.max</code>).</li>
+            <li>Recognizing that linear regression is MLE under Gaussian noise (conceptually).</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <p><em>Nothing specifically excluded.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Bayesian inference</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Prior, likelihood, posterior; computing a posterior on a grid (prior &times; likelihood, then normalize).</li>
+            <li>The coin example in code.</li>
+            <li>The Bayesian comparison of two means (the finches setup).</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <p><em>Nothing specifically excluded.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Hypothesis testing</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Stating a null hypothesis and a test statistic.</li>
+            <li>Computing a p-value by simulation: build a null distribution with <code>replicate(...)</code>; compute <code>mean(sim_stat &gt;= observed)</code> for one-sided, the absolute-value version for two-sided.</li>
+            <li>One-sided vs two-sided tests; what the 5% threshold means.</li>
+            <li>The ASA statement on p-values, at the level we discussed.</li>
+            <li>Type I / II / S / M errors &mdash; what they are, when to worry about each.</li>
+            <li>Publication bias, p-hacking, the garden of forking paths, the dead-salmon study as worked examples.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <p><em>Nothing specifically excluded.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Linear regression</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Writing an <code>lm</code> formula and saying what it fits.</li>
+            <li>Interpreting coefficients, including the sign and magnitude.</li>
+            <li>Indicator variables for categorical predictors and what it means to leave one category out as the baseline.</li>
+            <li>When a continuous variable should be encoded as categorical (the gnarly question from the 2019 test).</li>
+            <li>Reading <code>summary(lm(...))</code>: coefficients, standard errors, p-values, R-squared.</li>
+            <li>Computing SSE for the model and for the baseline.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Memorizing <code>lm</code> or <code>predict</code> syntax (on the reference sheet).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Logistic regression</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Writing a <code>glm(y ~ x, family = binomial, data = df)</code> formula and interpreting its output (as in the sample test from the 2019 SML201 term test).</li>
+            <li>Going from the linear predictor to a probability with <code>plogis</code>.</li>
+            <li>Classification accuracy, the base-rate problem, FPR / FNR / PPV / NPV.</li>
+            <li>Reading an ROC curve and picking a sensible operating point given a cost story (as in MP2's "doctor with 25 charts").</li>
+            <li>Identifying assumptions in a model (e.g.&nbsp;the made-up failure-probability formula in MP2) and explaining in English why an assumption may not hold.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Memorizing <code>glm</code> syntax &mdash; it is on the reference sheet.</li>
+            <li>Plotting an ROC from scratch in ggplot.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Confidence intervals</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>What a 95% CI actually means (and what it does <em>not</em>).</li>
+            <li>Reading a CI off a <code>summary(glm(...))</code> table using <code>Estimate +/- 1.96 * Std. Error</code>.</li>
+            <li>The CI &harr; p-value duality.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Looking up critical values for other confidence levels (use the 1.96 approximation).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Regression diagnostics</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>The assumptions (linearity, normality of residuals, independence).</li>
+            <li>Reading the four <code>plot(model)</code> diagnostic plots and saying what each tells you.</li>
+            <li>Identifying outliers and high-leverage points.</li>
+            <li>Multiple comparisons and what the F-test is for.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Producing the plots from scratch &mdash; you only need to read them.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Correlation, R-squared, and causation</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>R-squared as a comparison to the constant-prediction baseline; what "close to 0" and "close to 1" mean.</li>
+            <li>Reading R-squared off the <code>Multiple R-squared</code> line of <code>summary(model)</code>.</li>
+            <li>Correlation as the signed square root of R-squared (single-predictor case).</li>
+            <li>The four alternatives to causation: reverse causation, common cause, indirect causation, coincidence.</li>
+            <li>Anscombe's quartet: why visualization matters and how a single high-leverage point can dominate R-squared.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Deriving the R-squared formula from first principles.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Training, validation, and test sets</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Identifying which set is which and what each is for.</li>
+            <li>Why training accuracy is misleading.</li>
+            <li>Why one-hot / categorical encoding cannot hurt training fit.</li>
+            <li>The index-sampling pattern for splitting a data frame &mdash; this is the one piece of code worth memorizing, because everything else falls out from the concept.</li>
+            <li>Using <code>replicate(...)</code> to estimate validation-accuracy variability (and the variability of estimates more generally).</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>k-fold cross-validation library functions (we did not cover them).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>&ldquo;The truth about linear regression&rdquo;</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Collinearity and what it does to coefficient estimates and their standard errors.</li>
+            <li>Omitted-variable bias (Fisher and smoking; ice cream and drownings).</li>
+            <li>Interpreting "the gender wage gap controlling for X" &mdash; what the control changes about the claim.</li>
+            <li>The Harvard admissions lawsuit as a controls example.</li>
+            <li>Errors in variables: what bias they create.</li>
+            <li>Interactions (avocado / bacon) &mdash; what the interaction term is doing.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Algebraic derivations of bias terms.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Mini-project 2 (ICU adverse outcomes)</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>The <code>glm</code> formula used in MP2; what each predictor means.</li>
+            <li>Interpreting the fitted coefficients.</li>
+            <li>Identifying training, validation, and test sets.</li>
+            <li>Reading the ROC and reasoning about a threshold for the "doctor with 25 charts" cost model.</li>
+            <li>Explaining in English why one of the model assumptions might not hold.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>The file-loading boilerplate from MP2 part 1 &mdash; not testable.</li>
+            <li>Producing the cost-vs-threshold curve in ggplot.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="coverage-topic">
+      <h4>Workflow topics (agentic scraping etc.)</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="col-label">On the test</span>
+          <ul class="yes-list">
+            <li>Nothing testable on the term tests &mdash; these support the course project.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <span class="col-label">Not on the test</span>
+          <ul class="no-list">
+            <li>Arctic Shift API details, VS Code agent UI, scraping-library specifics.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-muted" style="margin-top: 2rem;">
+      If you think something is on the wrong side of a line, ask on
+      <a href="https://piazza.com/utoronto.ca/summer2026/mie1626">Piazza</a> and
+      this page will be updated.
+    </p>
+    <br>
+
+  </div>
+
+</body>
+</html>

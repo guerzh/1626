@@ -1,0 +1,184 @@
+%%  Course information sheet for MIE 1626, Summer 2026,
+%%  University of Toronto
+%%
+%%  Based on the infosheet.tex template (originally for ESC 180).
+
+\documentclass[11pt]{article}
+\usepackage{array,calc,fancyhdr,lastpage,rotating,url}
+\usepackage[hmargin=.5in,vmargin=.75in,
+            footskip=.25in,headsep=.5in-\headheight]{geometry}
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\flushbottom
+
+% Formatting macro for each information category.
+\newenvironment{category}[1]%
+   {\ifvmode\else\unskip\par\fi\vfill\noindent
+    \smash{{\parbox[t]{.75in}{\raisebox{-10ex}{\begin{turn}{60}
+        {\parbox[t]{1in}{\centering\bfseries#1}}\end{turn}}}}}
+    \hfill\begin{minipage}[t]{6.625in}\par\ignorespaces}%
+   {\ifvmode\else\unskip\par\fi\end{minipage}\par\vfill\ignorespaces}
+
+% `itemize' with less vertical space.
+\renewenvironment{itemize}%
+   {\ifvmode\else\unskip\par\fi\begin{list}{$\bullet$}%
+       {\setlength{\topsep}{.25ex plus .125ex minus .1825ex}
+        \setlength{\itemsep}{\topsep}\setlength{\parsep}{0ex}
+        \setlength{\leftmargin}{1.75em}\setlength{\labelsep}{.5em}
+        \setlength{\labelwidth}{1.75em}}\ignorespaces}%
+   {\ifvmode\else\unskip\fi\end{list}\par\ignorespaces}
+
+\newcommand*{\medstretch}{\vspace{1ex plus .75ex minus .75ex}}
+
+\let\altemph\textsl
+\let\strong\textbf
+\let\code\texttt
+\let\latinabb\emph
+\newcommand*{\etc}{\latinabb{etc}}
+\newcommand*{\eg}{\latinabb{e.g.}}
+\newcommand*{\ie}{\latinabb{i.e.}}
+
+\newcommand*{\changed}[1]{\underline{\bfseries#1}}
+
+% Headings.
+\pagestyle{fancy}
+\let\headrule\empty
+\let\footrule\empty
+\lhead{{MIE 1626}}
+\chead{{\scshape Course Syllabus}}
+\rhead{{Summer 2026}}
+\lfoot{{Department of Mechanical and Industrial Engineering, University of Toronto}}
+\cfoot{{}}
+\rfoot{{Page \thepage\ of \pageref{LastPage}}}
+
+
+\begin{document}
+
+
+\begin{category}{Preliminary}
+    \altemph{This document will be finalized by the weekend of the first week of classes.
+    The information here is tentative and not final.}
+\end{category}
+
+
+\begin{category}{Overview}
+    Welcome to \strong{MIE 1626 -- Data Science Methods}! The course introduces core
+    techniques in data science, in lectures, tutorials, and mini-projects. The lectures,
+    tutorials, and mini-projects will support students' work on their course project and on
+    future research and professional work involving data. Students will select a dataset of
+    interest to them and produce an analysis and a project report. Students will use domain
+    knowledge and technical expertise to produce their analyses.
+\end{category}
+
+
+\begin{category}{Website \& Forum}
+    {\large\begin{tabular}{rl}
+        Website: &
+            \code{http://www.cs.toronto.edu/$\sim$guerzhoy/1626s26}\\
+        Forum:   &
+            \code{https://piazza.com/utoronto.ca/summer2026/mie1626}
+    \end{tabular}}
+    \par\medstretch
+    All course handouts will be posted on the course website.
+    \altemph{Students are responsible for reading all announcements on the course forum on Piazza.}
+\end{category}
+
+
+\begin{category}{References}
+    There is no required textbook. Lecture slides will be posted on the course website.
+    The following are recommended as references.
+    \begin{itemize}
+        \item Andrew Gelman and Jennifer Hill. \altemph{Data Analysis using Regression and
+              Multilevel/Hierarchical Models.} Cambridge University Press, 2006.
+        \item Cosma Rohilla Shalizi. \altemph{Advanced Data Analysis from an Elementary
+              Point of View.} Cambridge University Press (forthcoming). Preprint available at
+              \url{https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/}
+        \item Fred Ramsey and Daniel Schafer. \altemph{The Statistical Sleuth: A Course in
+              Methods of Data Analysis}, 3rd ed. Brooks/Cole, 2013.
+        \item Kieran Healy. \altemph{Data Visualization: A Practical Introduction.}
+              Princeton University Press, 2026.
+    \end{itemize}
+\end{category}
+
+
+\begin{category}{Instructor}
+    \begin{tabular}[t]{llllll@{}}
+        \strong{Instructor} & \strong{Email} &
+        \strong{Office}     & & \strong{Office Hours}\\
+        Michael Guerzhoy    & \code{guerzhoy@cs.toronto.edu}
+                            & BA 2028 & & TBA
+    \end{tabular}
+    \par\smallskip
+\end{category}
+
+
+\begin{category}{Contact}
+    Lectures and tutorials take place on Wednesdays and Fridays, 2:00pm--5:00pm. Students
+    are expected to attend both lecture and tutorial blocks.
+\end{category}
+
+
+\begin{category}{Grading}
+    The grading scheme and tentative schedule for the course is as follows.
+    \par\medstretch
+
+    \begin{tabular}{|l|l|l|}
+        \hline
+                                                       & Worth & Due \\ \hline
+        Mini-Project 1                                 & 5\%   & May 16 \\ \hline
+        Preliminary Project Proposal                   & 2\%   & May 19 \\ \hline
+        Mini-Project 2                                 & 5\%   & \changed{May 28} \\ \hline
+        Test 1                                         & 10\%  & \changed{May 29} \\ \hline
+        Mini-Project 3                                 & 5\%   & May 30 \\ \hline
+        Mini-Project 4                                 & 5\%   & Jun 6  \\ \hline
+        \specialcell{Preliminary Project Presentation \\ {} + Document}
+                                                       & 8\%   & Jun 15 \\ \hline
+        Test 2                                         & 30\%  & \changed{Wed Aug 12, 2:00pm} \\ \hline
+        Course Project                                 & 30\%  & \changed{Aug 10} \\ \hline
+    \end{tabular}
+\end{category}
+
+
+\begin{category}{Late work}
+    Each student starts the term with 7 ``grace days.'' You can use grace days to submit
+    late work with no penalty. For example, a student who submits their work 25 hours after
+    the deadline will use up two grace days. You cannot use more than 3 grace days at a
+    time. Grace days do not apply to the preliminary project presentation, tests, or the
+    final project.
+\end{category}
+
+
+\begin{category}{Course project}
+    Each student (or pair of students) in the course will work on a large-scale data
+    science project. Students are encouraged to pick a dataset of interest to them.
+    Students should aim to achieve one or several of the following.
+    \begin{itemize}
+        \item Obtain interesting insights about the dataset
+        \item Apply interesting data analysis techniques to the dataset
+        \item Demonstrate a new data analysis technique and apply it to the dataset
+        \item Collect a novel dataset
+    \end{itemize}
+
+    Course projects will contain
+    \begin{itemize}
+        \item A description of the dataset being analyzed, and a summary of the relevant
+              domain knowledge. For example, if working with audio data, a summary of how
+              sound is generated, perceived, and processed would be appropriate. If working
+              with hospital data involving length-of-stay times, it would be appropriate
+              to summarize the relevant literature on hospital lengths of stay.
+        \item A summary of previous work that is related to the data analysis project.
+        \item An exploratory analysis of the dataset being analyzed.
+        \item A description of the method being applied, and a summary of related work.
+        \item A description of the outcomes of the analysis, or an analysis of a predictive
+              system that was built.
+    \end{itemize}
+
+    Students will submit a preliminary project proposal by May 19 and a preliminary project
+    document, which should contain a full description of the project and initial
+    exploratory data analysis results, by Jun 15. Each student will give a preliminary
+    project presentation to the class on Jun 15.
+\end{category}
+
+
+\end{document}

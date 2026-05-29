@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Training, Validation, and Test Sets</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Training, Validation, and Test Sets</h1>
+</header>
+<h2 id="the-setting-model-comparison">The setting: model comparison</h2>
+<p>Everyone has probably heard of overfitting at this point. Here is the setting we care about: model comparison. Say I want to predict survival on the Titanic. I don’t know whether I should use <code>Age</code>, or <code>log(Age)</code>, or whether I should include some variables at all. How do I decide?</p>
+<h2 id="why-training-accuracy-lies">Why training accuracy lies</h2>
+<p>One obvious thing: throw in everything. The prediction error on the training set is always going to be smaller the more features you include.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(titanic)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>train &lt;-<span class="st"> </span>titanic_train <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">drop_na</span>(Age)</span></code></pre></div>
+<p>Imagine you include <code>Name</code> as a predictor. Names are essentially unique. If your model has one indicator variable per name, it would get 100% training accuracy — every passenger has their own row in the training data and the model just memorizes which name died and which didn’t.</p>
+<p>But this is <strong>useless on new data</strong>, because a new passenger has a new name, and the model has no idea what to do with it. In fact <code>predict()</code> would refuse, because there is no indicator for that name.</p>
+<p>More generally: if you add any feature, your training error cannot get worse — at worst you set its coefficient to 0 and recover the old model. So a model with more features always wins on training error.</p>
+<p><strong>Conclusion:</strong> training accuracy is not a useful way to compare models. You need to test on held-out data.</p>
+<h2 id="a-three-way-split">A three-way split</h2>
+<p>Split the data into three parts: <strong>training</strong>, <strong>validation</strong>, and <strong>test</strong>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="kw">nrow</span>(train)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n)  <span class="co"># random permutation</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>train_idx &lt;-<span class="st"> </span>idx[<span class="dv">1</span><span class="op">:</span><span class="dv">300</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>valid_idx &lt;-<span class="st"> </span>idx[<span class="dv">301</span><span class="op">:</span><span class="dv">500</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>test_idx  &lt;-<span class="st"> </span>idx[<span class="dv">501</span><span class="op">:</span>n]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">length</span>(train_idx); <span class="kw">length</span>(valid_idx); <span class="kw">length</span>(test_idx)</span></code></pre></div>
+<pre><code>## [1] 300</code></pre>
+<pre><code>## [1] 200</code></pre>
+<pre><code>## [1] 214</code></pre>
+<p><code>sample(1:n)</code> jumbles up the indices into a random permutation. Then we slice off the first 300 as training, the next 200 as validation, the rest as test.</p>
+<p>A helper that fits a model on training and reports accuracy on a given subset:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>accuracy &lt;-<span class="st"> </span><span class="cf">function</span>(model, df){</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  preds &lt;-<span class="st"> </span><span class="kw">predict</span>(model, <span class="dt">newdata =</span> df, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="kw">mean</span>((preds <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span>) <span class="op">==</span><span class="st"> </span>df<span class="op">$</span>Survived, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="compare-models-on-validation-evaluate-the-winner-on-test">Compare models on validation, evaluate the winner on test</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>df_train &lt;-<span class="st"> </span>train[train_idx, ]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>df_valid &lt;-<span class="st"> </span>train[valid_idx, ]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>df_test  &lt;-<span class="st"> </span>train[test_idx, ]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co"># Baseline: just predict the majority class</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="kw">mean</span>(df_valid<span class="op">$</span>Survived <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 0.615</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># Model A: sex + age + Pclass</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>fitA &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Pclass, <span class="dt">data =</span> df_train, <span class="dt">family =</span> binomial)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">accuracy</span>(fitA, df_valid)</span></code></pre></div>
+<pre><code>## [1] 0.77</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co"># Model B: sex + age + Pclass + SibSp + Parch</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>fitB &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Pclass <span class="op">+</span><span class="st"> </span>SibSp <span class="op">+</span><span class="st"> </span>Parch,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>            <span class="dt">data =</span> df_train, <span class="dt">family =</span> binomial)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="kw">accuracy</span>(fitB, df_valid)</span></code></pre></div>
+<pre><code>## [1] 0.755</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co"># Model C: Pclass as categorical</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>fitC &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span><span class="kw">as.factor</span>(Pclass),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>            <span class="dt">data =</span> df_train, <span class="dt">family =</span> binomial)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a><span class="kw">accuracy</span>(fitC, df_valid)</span></code></pre></div>
+<pre><code>## [1] 0.765</code></pre>
+<p>Pick whichever does best on validation, then evaluate on test:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>best_fit &lt;-<span class="st"> </span>fitB  <span class="co"># for example</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">accuracy</span>(best_fit, df_test)</span></code></pre></div>
+<pre><code>## [1] 0.7616822</code></pre>
+<h2 id="why-categorical-encoding-cannot-hurt-training-accuracy">Why categorical encoding cannot hurt training accuracy</h2>
+<p>Adding more variables always (weakly) improves training fit. Same is true for treating a numeric column as categorical with <code>as.factor</code>.</p>
+<p><strong>Why?</strong> Compare predicting on <code>Pclass</code> numeric vs <code>as.factor(Pclass)</code>:</p>
+<ul>
+<li>Numeric: <span class="math inline">\(\hat y = a_0 + a_1 \cdot \text{Pclass}\)</span>.</li>
+<li>Categorical: <span class="math inline">\(\hat y = b_0 + b_{1,1} I_{\text{class}=1} + b_{1,2} I_{\text{class}=2} + b_{1,3} I_{\text{class}=3}\)</span> (with one dropped as baseline).</li>
+</ul>
+<p>(Note: the three-indicator form here is for the sketch of the argument; in <code>lm</code> / <code>glm</code>, one category gets folded into the intercept, so you actually see two indicator coefficients, not three.)</p>
+<p>The categorical version is strictly more flexible. If we set <span class="math inline">\(b_{1,1} = a_1\)</span>, <span class="math inline">\(b_{1,2} = 2 a_1\)</span>, <span class="math inline">\(b_{1,3} = 3 a_1\)</span>, we recover the numeric version. So on training the categorical version cannot do worse — and if it has any room to do better by choosing different coefficients, it will.</p>
+<p>On <em>validation</em> it might do worse, because that extra flexibility was used to fit noise — overfitting.</p>
+<h2 id="validation-set-size-and-replicate">Validation set size and <code>replicate</code></h2>
+<p>Picking the winner on the validation set can itself mislead — because if your validation set is small, the measured accuracy is noisy. Let’s quantify.</p>
+<p>We fix the training set and resample the validation set many times. Each time we evaluate the <strong>same</strong> trained model on a different validation slice.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>fit &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Pclass, <span class="dt">data =</span> df_train, <span class="dt">family =</span> binomial)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>other_idx &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="dv">1</span><span class="op">:</span>n, train_idx)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>resampled_accuracy &lt;-<span class="st"> </span><span class="cf">function</span>(){</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>  v_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(other_idx, <span class="dv">50</span>)  <span class="co"># tiny validation set</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>  <span class="kw">accuracy</span>(fit, train[v_idx, ])</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>}</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>accs &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>, <span class="kw">resampled_accuracy</span>())</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a><span class="kw">hist</span>(accs, <span class="dt">breaks =</span> <span class="dv">30</span>, <span class="dt">col =</span> <span class="st">&quot;lightgray&quot;</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a>     <span class="dt">xlab =</span> <span class="st">&quot;validation accuracy&quot;</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a>     <span class="dt">main =</span> <span class="st">&quot;Same model, different validation samples&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-cross_validation/unnamed-chunk-6-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-6</figcaption>
+</figure>
+<p>The histogram shows the variability of accuracy estimates from the same trained model. On average you get the kind of performance you actually measure (around 78%), but depending on which validation set you happen to sample, it can be as high as ~85% or as low as ~70% — just due to random sampling.</p>
+<p>This should remind you of confidence intervals. There is a “true” performance for a very large validation set; these are estimates around that.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>If your validation set is small, picking the model using it can mean you are picking the model that overfits the validation set rather than the model that is actually best. The larger the validation set, the less the variation.</p>
+<p>If you could take <em>all</em> the passengers as your validation set, you’d know exactly how the model performs. Of course you can’t, because (a) you used some for training and (b) you also wanted some for a final test.</p>
+<h2 id="the-trade-off">The trade-off</h2>
+<p>How to split? A bigger validation set means a more reliable model choice, but you pay for it:</p>
+<ul>
+<li>A smaller training set → the model itself is probably a little worse.</li>
+<li>A smaller test set → your estimate of “how I’ll do on truly new data” is also imprecise (it could be up or down).</li>
+</ul>
+<p>So you spend data on the validation set, the training set is smaller, the test set is smaller. There is no universally right split — it depends on how much data you have.</p>
+<p>A small validation set is the worst situation, because not only do you not know exactly how well any model performs, you are <em>picking</em> the best one on that noisy measurement, and the model you pick is biased toward the one that happened to look good by accident.</p>
+<h2 id="what-you-should-know-for-the-test">What you should know for the test</h2>
+<p>The topic for the test is the <strong>process</strong>:</p>
+<ul>
+<li>Splitting indices via <code>sample(1:nrow(df))</code>.</li>
+<li>A helper function that takes a fit and a dataset and returns accuracy.</li>
+<li>Training one model on the training set, evaluating different candidates on validation, picking the best, then reporting on test.</li>
+<li>Using <code>replicate(1000, ...)</code> to estimate the variability of validation-set accuracy when you re-draw the validation set.</li>
+</ul>
+<p>The <code>glm</code> syntax will be on the handout — you do not need to memorize it.</p>
+</div>
+</body>
+</html>

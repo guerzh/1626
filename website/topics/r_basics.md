@@ -1,0 +1,392 @@
+---
+title: "R Basics and Functional Programming"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+## Functional programming: the basic idea
+
+Suppose you have a list `L = [5, 6, 7]` and you want to make a list with the squares of the numbers in it.
+
+First, define the operation "square": `square(x) = x*x`.
+
+One way to do it — the way all of you have done it — is to start with an empty list and write a `for` loop that adds `square(5)` to the list, then `square(6)`, then `square(7)`.
+
+Another way is to say: what I actually want to do is apply the function `square` to every element of this list. The general concept for doing this is called **map**:
+
+```
+map(square, L)
+```
+
+`map` is itself a function. It takes the function `square` and the list `L` and applies `square` to each of the elements. This is of course equivalent to writing a `for` loop, but that is the functional style:
+
+- In imperative style, think about modifying variables as you go.
+- In functional style, write everything as if it were math. The computer will figure out how to actually run the code for you.
+
+### Why functional programming in R?
+
+- It runs faster in R.
+- It is kind of the "correct" way to write in R.
+- It is how most people use Pandas in Python.
+- It works with the statistical inference material later in the course.
+- It is a way to do something interesting now while making sure everyone is caught up.
+
+## Evaluating R expressions
+
+In R, like in Python, you can enter literals. The simplest expressions are numerics and strings:
+
+
+``` r
+42
+```
+
+```
+## [1] 42
+```
+
+``` r
+"Hello"
+```
+
+```
+## [1] "Hello"
+```
+
+R simply repeats these values back at us.
+
+You can use R as a calculator:
+
+
+``` r
+42 + 43
+```
+
+```
+## [1] 85
+```
+
+``` r
+(45 - 43) ** 3
+```
+
+```
+## [1] 8
+```
+
+You can evaluate logical values:
+
+
+``` r
+5 == (4 + 1)
+```
+
+```
+## [1] TRUE
+```
+
+``` r
+7 > (5 - 1)
+```
+
+```
+## [1] TRUE
+```
+
+Note that to compare two values we use two equal signs `==`. The resultant value is `TRUE` or `FALSE` (in R, you can also use `T` and `F`). It is a value, just like numeric values and character values are values; it is called a **logical** value.
+
+## Printing to the console
+
+The usual way to print is through `cat`. You can also use `print`; they are kind of the same.
+
+
+``` r
+cat(42 + 1)
+```
+
+```
+## 43
+```
+
+``` r
+cat("Hello")
+```
+
+```
+## Hello
+```
+
+Note that `Hello` was printed without quotes — that's because we are not printing the value of `"Hello"` back, we are just printing Hello.
+
+You can print several values:
+
+
+``` r
+cat("Hello", 123, "hi", 5 + 1)
+```
+
+```
+## Hello 123 hi 6
+```
+
+## Variables
+
+The standard way of variable assignment in R is the arrow:
+
+
+``` r
+exam <- 80
+cat(exam)
+```
+
+```
+## 80
+```
+
+You can also use `=`; it is almost the same. We will use the arrow. One nice thing about the arrow is that you can also use it the other way: `5 -> a` works. Do not do that unless you know what you are doing — it is confusing, but you can do it.
+
+Note how R variables are different from variables in math: in math you cannot say `x = x + y` (or rather, you can, but this will just mean that `y = 0`). In R, the expression `exam <- exam + harvard.adj` means: compute `exam + harvard.adj`, then store the resultant value back in the variable `exam`.
+
+
+``` r
+exam <- 80
+harvard.adj <- 10
+exam <- exam + harvard.adj
+cat("Your exam grade is", exam)
+```
+
+```
+## Your exam grade is 90
+```
+
+## Conditionals
+
+`if` statements work like this. **The parentheses around the condition are mandatory** (unlike in Python). Braces are *not* mandatory if the body is a single expression — but you almost always use them anyway because they make multi-line bodies and `else` chains read better.
+
+
+``` r
+grade <- 98
+if(grade >= 95){
+  cat("I'm reasonably happy")
+}
+```
+
+```
+## I'm reasonably happy
+```
+
+``` r
+# Single-expression form, no braces:
+if(grade >= 95) cat("I'm reasonably happy")
+```
+
+```
+## I'm reasonably happy
+```
+
+`else if` and `else` work like this:
+
+
+``` r
+grade <- 88
+if(grade >= 98){
+  cat("Hooray")
+} else if(grade >= 95){
+  cat("OK")
+} else {
+  cat("Alas")
+}
+```
+
+```
+## Alas
+```
+
+One thing to watch out for when omitting braces: if you put `else` on its own line, the parser thinks the `if` is finished and gives a syntax error. So `} else {` always has to be on the same line, or you have to use braces around both arms.
+
+## Functions
+
+A function works the usual way. For example, the absolute value:
+
+
+``` r
+my.abs <- function(x){
+  if(x >= 0){
+    x
+  } else{
+    -x
+  }
+}
+
+my.abs(-5)
+```
+
+```
+## [1] 5
+```
+
+This is the R style of writing a function. Notice that there is **no `return`** here.
+
+Braces are not mandatory in function definitions either — if the body is a single expression, you can write the function on one line. These are all equivalent ways to define `square`:
+
+
+``` r
+square_a <- function(x){
+  x ** 2
+}
+square_b <- function(x) x ** 2          # no braces, body is one expression
+square_c <- function(x) {return(x ** 2)} # explicit `return`
+
+square_a(5); square_b(5); square_c(5)
+```
+
+```
+## [1] 25
+```
+
+```
+## [1] 25
+```
+
+```
+## [1] 25
+```
+
+The single-line form is idiomatic for short functions. What is going on is we are saying: the value of this expression is either `x` or `-x` depending on whether `x >= 0` or not. The value of the expression — if you plug in `x` — is just whatever the appropriate branch evaluates to.
+
+So you don't think about it as "when I hit `return`, that's what I return". You think about it as substituting into a formula. In math, you are kind of familiar with this kind of thing:
+
+$$f(x) = \begin{cases} x & \text{if } x \geq 0 \\ -x & \text{otherwise} \end{cases}$$
+
+When you plug `x` in, this is what you get — it is not a `return`, it is substituting.
+
+One way to think about this is that you are defining the function in the same way you would in any other programming language; the syntax is just the function name, then the arrow, then the word `function`, then the usual thing. Another way of thinking about it is that the right-hand side `function(x){...}` is itself an object — the function — and `my.abs` is just the variable that stores it.
+
+This implies that you can define the function and just call it directly without ever assigning it to a name:
+
+
+``` r
+(function(x){
+  if(x >= 0){
+    x
+  } else{
+    -x
+  }
+})(-5)
+```
+
+```
+## [1] 5
+```
+
+This works the same way in Python: `abs` is really a variable; you can say `abs = 10` and now `abs` is `10`.
+
+In R you can write `return` if you want to, but really the last thing that has a value — that's the value of the function. One way to think about this is that local variables are just shorthand:
+
+
+``` r
+h <- function(x){
+  y <- 2 * x
+  y ** 2 - x
+}
+h(2)
+```
+
+```
+## [1] 14
+```
+
+Here we defined a local variable `y` to help with the computation. The process we use is: substitute `x <- 2`; evaluate and substitute `y <- 2 * 2` (i.e. `4`); the value the function computes is $4^2 - 2 = 14$. The value of `h(2)` was evaluated to 14. Note that we cannot access `y` outside of the function `h`.
+
+## Printing vs returning values
+
+It is important to distinguish between printing and returning values. Consider these two functions:
+
+
+``` r
+emo.state <- function(score){
+  if(score >= 98){
+    "Hooray"
+  } else if(score >= 95){
+    "OK"
+  } else {
+    "Alas"
+  }
+}
+
+emo.state.2 <- function(score){
+  if(score >= 98){
+    cat("Hooray")
+  } else if(score >= 95){
+    cat("OK")
+  } else {
+    cat("Alas")
+  }
+}
+```
+
+The function `emo.state` *computes* a value; it does not print anything. For example, `emo.state(99)` evaluates to `"Hooray"`:
+
+
+``` r
+a <- emo.state(99)
+cat(a)
+```
+
+```
+## Hooray
+```
+
+On the other hand:
+
+
+``` r
+res <- emo.state.2(98)
+```
+
+```
+## Hooray
+```
+
+This already had the effect of printing an output to the screen. That's because when R sees `cat("Hooray")`, it outputs `Hooray`. But the value that the function computes is `NULL`:
+
+
+``` r
+print(res)
+```
+
+```
+## NULL
+```
+
+## Comments
+
+Comments work with `#`:
+
+
+``` r
+# This is a comment.
+x <- 5 # inline comment
+```
+
+## Workflow
+
+The workflow that we use and suggest is to always open a folder in VS Code (File → Open Folder). To work in a new programming language, install the appropriate extension. For R, look up `R` and `R Markdown` in the extensions panel.
+
+Files come in two flavours:
+
+- **`.R` files** — plain R scripts.
+- **`.Rmd` (R Markdown) files** — literate-programming format where code goes in code chunks and the rest of the file is text. Similar to Python notebooks. Inside an Rmd file, code chunks look like:
+
+````
+
+``` r
+print("Hello")
+```
+
+```
+## [1] "Hello"
+```
+````

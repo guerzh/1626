@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Scraping Data with a Coding Agent</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Scraping Data with a Coding Agent</h1>
+</header>
+<p>For the course project, one option is to scrape a unique data set. Reddit is a particularly nice source because it has multiple sub-forums about basically any topic, so you can come up with a question and there will be data for it. This topic walks through the workflow.</p>
+<h2 id="tools">Tools</h2>
+<ul>
+<li><strong>Reddit archive APIs.</strong> <a href="https://pushshift.io">Pushshift</a> used to be the go-to one; it has been down for a while. The active alternative as of writing is <a href="https://arctic-shift.photon-reddit.com">Arctic Shift</a> and similar mirrors.</li>
+<li><strong>A coding agent.</strong> VS Code has a built-in coding agent; <code>claude code</code> is also good (pretty limited on the free tier). Codex has a student-credit program — Google “Codex student version”, upload a picture of your T-card, and you get approved within a few days. With approval you can use it for free.</li>
+</ul>
+<h2 id="workflow">Workflow</h2>
+<p>In VS Code, do <strong>File → Open Folder</strong> and select an empty folder for the project. By default the coding agent is only allowed to mess around with the folder that’s open; it cannot go elsewhere on your computer. That is the right safety level — it is OK to tell the agent it can run inside that folder, and it cannot do damage outside.</p>
+<p>Then ask the agent to fetch data. A typical first prompt would be something like:</p>
+<blockquote>
+<p>Download the most recent posts from r/datascience using Arctic Shift. Save the result to a JSON file.</p>
+</blockquote>
+<p>It will figure out the URL, fetch the data, save the file. Open the file in the editor (press <strong>Alt+Z</strong> to wrap long lines so you can see what is in there).</p>
+<h2 id="doing-an-analysis">Doing an analysis</h2>
+<p>Once you have data, ask for an analysis. For example:</p>
+<blockquote>
+<p>Write a Python script that finds the 10 most frequent words used in the posts you downloaded.</p>
+</blockquote>
+<p>The agent will create a script, run it, and report. You should audit:</p>
+<ul>
+<li>It might silently remove stop words. The default behaviour of common NLP libraries is to drop “the”, “a”, “and”, etc. — and the agent may do that without telling you. If you don’t notice and then report the top 10 words in your paper as if they were the raw top 10, that is a problem.</li>
+<li>The agent will probably do the right thing, but you should know what it actually did. Read the script. If it imports <code>stopwords</code>, it removed them.</li>
+</ul>
+<p>If you want to compare:</p>
+<blockquote>
+<p>Re-run the analysis without removing stop words.</p>
+</blockquote>
+<p>That can give you the <em>actual</em> top 10 (which will be “the”, “a”, “to”, etc.). At the end of the day <strong>you</strong> have to know what is going on — when you write the report, you should know whether stop words were removed.</p>
+<h2 id="a-worked-example-drowning-in-rboating">A worked example: drowning in r/boating</h2>
+<p>Suppose we want to study people’s worries about drowning. Boating is a subreddit. Workflow:</p>
+<pre><code>1. Use Arctic Shift to download ~1000 posts from r/boating.
+2. Come up with a list of drowning-related keywords (let the agent suggest some).
+3. Count how many posts have at least one of those keywords.</code></pre>
+<p>When we actually did this in class, it came out to roughly 7 in 10,000 — pretty rare. Obviously a silly analysis (we made it up on the spot), but it illustrates the shape of an end-to-end project: scrape a unique data set; ask a question that turns into a count or a ratio or a model; report.</p>
+<h2 id="other-data-sources">Other data sources</h2>
+<ul>
+<li><strong>Wikipedia</strong> is free and (relatively) well-explored.</li>
+<li><strong>Statistics Canada</strong> has lots of free numerical data. Just downloading one table isn’t enough — that data set already exists — but if you download several tables and combine them in some new way, that can be an interesting project.</li>
+<li><strong>Reddit</strong> via Arctic Shift, if you take a couple of days to scrape carefully (the API will rate-limit you if you go too fast).</li>
+<li><strong>Twitter</strong> is no longer practical for academic scraping — you have to pay Elon a couple thousand bucks and it is not clear what you get for it. Skip.</li>
+</ul>
+<h2 id="a-note-on-running-the-agent">A note on running the agent</h2>
+<p>These coding agents are usually OK at this kind of scraping task, but:</p>
+<ul>
+<li><strong>Audit the output.</strong> Modern agents are not going to <em>make things up</em> ordinarily, but they sometimes do things you did not ask for (like stop-word removal). You have to read the code and verify.</li>
+<li><strong>You can be rude to the agent.</strong> That is fine; it might be rude back. Mostly tell it “no, I want this; redo it.”</li>
+<li><strong>Treat it as a fast intern.</strong> It writes the boilerplate; you read and check.</li>
+</ul>
+</div>
+</body>
+</html>

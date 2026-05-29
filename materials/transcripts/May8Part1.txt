@@ -1,0 +1,243 @@
+All right. Uh, hey. So, uh, yeah, circus is done, but we're we're still working kind of. Uh, so, uh, so the plan for today is to do kind of probability, statistical inference, stuff like that. Uh so part of it if you just look at the official course description is uh
+
+uh there is there is kind of a lot of just data science but there is also stuff like uh multiple uh like uh whatever like linear and linear regression model for predicting inference uh stuff like that. So this is basically this uh plus some background on statistical inference in general that's going to be useful later on as well. Uh so as we go on so kind of a lot of this stuff is going to be kind of project based and then you know in lectures we're going to cover you know advanced data science machine learning as well. So okay so where we were last time was kind of just the last slide of this. Uh so you know I think a lot of people just look at it and take it as just this is the formula. I think this is actually a quite reasonable approach. So if you read a lot of textbooks, uh what they'll say is hey like actually the definition of of conditional probability is just the formula. There's like nothing more to it. Uh there is an interpretation of what it means but like the official definition is the formula. Uh with that said uh the law of total probabilities may be a little bit different even though that is still kind of just the formula. So what are we saying here? So we're saying okay let's say that I want the probability of observing a lowercase B being the value of the random variable B and what you're saying here is well you can say maybe I observe lowerase B what's this uh so so
+
+you're saying maybe I observe lowerase b when a is equal to a1. Maybe I observe it when a is equal to a2. Maybe I observe it when a is equal to a3 and so on. What the law of probability allows you to do is to say I can actually compute the probability of b equal b as this weighted sum of conditional probabilities. Right? So basically I'm saying well b could be b when a is a one. It could be B when A is A2. It could be B when A is A3. And so on. And as it turns out, I can just say, okay, I'll do a weighted sum of those conditional probabilities for all the poss for all the possible values of A. And that's going to be the total probability of B equals B. So one reason this is on the same slide is that those are two formulas. Another reason is that you can take this guy and substitute in this. Right? So what that gives you is basically everything with so here this is like a given b this is all conditional probabilities of b given various things. Make sense? So that's kind of the intuition and we'll see a use of it in a second, right? Does that make sense? Uh I mean at the very least it should make sense as just that's the formula. So all right so we are now going to maximum likelihood and basic inference.
+
+Uh so okay so first of all uh how many people would say are comfortable with maximum like I'm going to do it one way or the other but like how many people are comfortable with maximum likelihood as an idea not the majority okay that's good so this is going to be useful uh so okay so here's the setting in which this is usually presented this is again coin tosses so we're saying let's say that a coin is tossed and times independently. So this is just a fancy way of writing the same thing, right? So saying
+
+y is distributed like Berni pa is saying we have a random variable y. So it could be zero, it could be one. That's the result of one coin toss and then the probability of one is theta. The probability of zero is one one minus. So I can write it like this.
+
+So this is just saying this and this is just a coin toss, right? So okay. So let's say that we toss a coin n times. So we obtain the values yn through y1 through yn. We say there are iid independently identically distributed. that means that the uh so independent means physically I'm tossing the coin separately once and the other times the outcomes between the two the two trials do not depend on each other. So in our notation we say that this is the data that we'll observe. So the uppercase variables are like the variables they could be anything and then y1 is whatever it is but that's like a bound variable. This is like 0 or one. Y1 the capital could be 01 but that's a random variable. The lower case is the specific value. So uh okay let's say that we want to know what theta is right. So we got y1 y 2 and so on up to ym. Let me write it here. That's going to be brighter anyway.
+
+So I'll write it like this.
+
+So I'm going to say uh did I write it as y0 or y1 over here? I wrote it as y1. Okay. So I'm going to say like y1 is zero. So that was tails whatever. And then y 2 is one. And then zone yn is let's say zero. And then like we said y1 is actually y1 which in this case is zero and y2 is lowerase y2 and so on and yn is lowerase yn. So this is just notation. If you know the answers you could write it directly but this is the usual notation right. uh we are given py = 1 let's say like y i = 1 is equal to theta and the task of statistical inference in this particular is case is to say okay so like what is theta
+
+so first of all the answer is I don't know what is data right that's a property of the coin I just have some data that does not tell me what theta is exactly. So maximum likelihood is one way of assigning like what they think the theta probably is. It's kind of theta is a physical quantity. We might it's it's a property of the coin. We might not know what it is, right? So uh but first of all kind of what's the intuitive way of doing it? So like you presume you have seen something like this. So like what's the formula for a good estimate for theta? Anyone?
+
+So theta is the probability of heads. Toss the coin n times. I got like a heads. Yeah. Just take the time. Yeah. Yeah. Yeah. Take take the amount of times that it was one, which I can also write as just y1 plus y2 and so on plus yn. So the zeros don't count. The ones are going to account for the times. That's one and divided by n.
+
+So that would be like an estimate,
+
+right? So again, this is just an estimate. Of course, you don't know what theta is. You toss the same coin again, you get a different estimate for theta. Of course, that's that's how coins work. Uh but how do we define it? Like how do we say okay like that's actually like an estimate that makes sense mathematically? Well, so one way that you can say it is like this. You can say all right if I know what the theta is. So this is like condition on theta. Then I wrote down that the probability that yi is equal to 1 is equal to you know theta. The probability that it's zero is equal to 1 minus theta. Uh so I can write it in a kind of clever way like this. So this is not saying any more than the first two lines right because one of those guys is just going to be one. So anything to the zero is just one. So either the theta to the i or the y i or 1 - theta to the 1 minus yi just disappears. So this is just like a short hand of writing this kind of deal. And then I can say okay so what's the probability of observing the data that I actually observe? So I observe lowerase y1 lowerase y2 and so on lowerase y m in this case given theta and the answer is it's the product of all those probabilities
+
+right uh so uh here theta would be like a number so that's genuinely confusing notation because this is not quite conditional probability at this point uh uh we'll we'll see where it becomes conditional probability later on this slide and in almost any textbook that you see uh people will write it like this what they mean is just like well if theta is equal to this this is not quite conditional probability we'll see why so what we're saying is assuming that I know theta the probability of observing this data set so the probability of observing way 1 2 and so on up to is this product. Why? That's just how independent trials work, right? And then here, like we wrote down what this means. So you can plug this in and that's going to be a number. So this is called the likelihood function. So this is the probability of observing the data that you observe if the parameter in this case data is fixed. So
+
+maximum likelihood is saying make it so that the probability of the data set that I actually observe is as high as possible by picking a theta that makes it so right. So, so the maximum so the maximum likelihood estimate for theta again remember theta here probability of heads we don't know what it is we're trying to estimate right so what we're saying is the way we're estimating it it's a choice that we make this is not the law of nature that that's the estimate the choice that we make is we're saying we want for it to be the case that the data set that we actually observe the data set in this case is just heads and tails is as likely as possible under the data that we pick. All right. So, uh here there is some magic. So, I already wrote this formula down on uh in VS Code. Uh if you do the calculus there, it'll work out. Uh I'm not going to do it. there's like not not really a point to doing it but uh if you okay let's let's do it the ones. So uh actually okay how many people have seen this derivation and remember it so not not everyone okay well like yeah okay like let's assume that you don't don't just believe me uh so let's say that we want to say okay like we have this this is this we want to do the derivation so Okay. No.
+
+So here's what we're saying. So the data
+
+you can write it as like heads and tails.
+
+You can also equivalently write it as okay like let's say h is one. So it's like y1 is one and y2 is zero and y3 is zero and so on. That's just a different way of writing the data. And then we're saying the probability
+
+of the data that we actually observe.
+
+If the parameter data is the product
+
+like okay we can now substitute this in. So each of those terms is going to be either theta or 1 minus theta. So I'll write it kind of the weird way. So I'll say theta y the 1 1 - theta 1 - y to the 1
+
+theta y the nus ka minus one y to the n. So that's the probability maximum likelihood is now saying
+
+This is saying pick a dot such that the probability of
+
+all of that. is five,000.
+
+So what you want to do is we want to maximize this.
+
+You call this L. So the usual way that people do it is they say okay so like the maximum of L is
+
+equal to the maximum of log L
+
+and that's because the log is a monotonic function you know like if you take the theta such that L theta is the largest then that's the same as fitting the section the log is the largest. So then you say okay so
+
+log theta is going to be log of this mess.
+
+So the log of to make sure that log a is equal to log a plus b right. So that means that this whole product gets decomposed into some. Furthermore
+
+log x to the y is equal to y log x. So that means that when I take the log of this that's y1 log.
+
+So this is going to be the sum over I of
+
+y I of theta.
+
+So okay. Uh now we do the usual thing which is the direct thing.
+
+Add six to zero.
+
+All right. So it says follow me on
+
+So that so here what so here what we want to do is we want to say okay so multiply by theta multiply by multiply by 1us theta
+
+so this is going to Hey
+
+zero. So this was just multiplying by theta * 1us theta
+
+and now we got to collect the terms. So this is n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n so so so so this is like one one y eyes. So this is like the sum of all the y eyes
+
+some of the white eyes.
+
+This is just ma
+
+and this is here we have minus beta yi and here we have plus beta yi.
+
+So luckily this gap got cancelled out and we got theta is equal to
+
+the sum of the y i minus n as we expect.
+
+Right? So, I'm not going to do like a lot of this, but I guess like the ones that make sense to do. Um, you can take a picture. This is however on every page on the internet ever. So, [laughter] uh, so okay.
+
+Yeah.
+
+Yeah.
+
+Sorry, what's missing?
+
+On the line we have sigma yih terms out. Yeah. Yeah. And we also have a plus theta. Yeah. Yeah. So this was like n theta equals to sum of yi and then I divided by native
+
+or a negative sign. Well there's like a negative sign over here a positive sign over here. So what so this this gets this get this gets cancelled out. Yes. one. Yeah. Uh this you're saying should be a minus.
+
+Yeah. That one. You said before was minus one. Yeah, that you're right. This should be a minus.
+
+Uh, so did I miss one of the minuses? Oh, yeah. Okay. This one. Yeah. Yeah. So, this was fine. Just Yeah. Yeah. And then, sorry. Thank you. Uh and then because of that this is also
+
+so now the conclusion is still correct. Yeah. Thank you. You can take the picture again.
+
+Thank you.
+
+All right.
+
+So that was we center project. Yeah. Uh so now we're so now we're back here. So one way to think about this just algebraically that's what maximum likelihood means. So um I want to do it again but this time with code rather than calculus. This thing you can of course do with calculus. Uh you don't need code. Uh the reason I'm doing the code is twofolds. One is sometimes you want to do maximum likelihood but the model is so complex that calculus just doesn't work. Uh the other is it's going to be useful when we're doing basian inference where calculus works quite rarely. So okay so uh here's what we're going to do. Um so uh yeah so if you are in uh uh yeah so this is like print on my uh on my other laptop but I made it work on mine. So if you install uh our notebook this guy uh then you'll get this kind of notebook thing in R. the other uh possibilities if you didn't get it to work yet. So like talk talk to me during the break will make it work on your computer. You can also just do it and pause it on the web. That definitely works. Uh or you can just do it in an AR in an R file. So to get this kind of thing, it has to be an RMD file. So this thing that's uh ARMD.
+
+So, okay.
+
+So, here, so, uh, here, so, uh, here's here's what here's what I want to do. I want to say, all right, so I have some data. I'll generate some data in a second. I'll then basically want to find the maximum likelihood solution without doing uh without without doing calculus. The way I'm going to do it is I'm just going to say I know this formula. I can compute this formula for any given theta. Just try different thetas. See which one maximizes the latia.
+
+So okay.
+
+So I'll generate
+
+uh and burn variables.
+
+So we called it Y. I'll call it Y over here as well.
+
+Uh so the way you generate uh random numbers in R uh is like this. So uh so binomial is kind of the more general case of Bernoli. So I'm going to say I have whatever like 20 y's let's say
+
+uh size one means it's Bernoli and prob. So this would be like the secret theta is going to be like let's say 0.3.
+
+So if I run that and display it,
+
+I get this kind of deal. So of course I know that one way to estimate the theta here is to just take the average of those. I want to do it the complicated way. So here's what I'm going to do. I'm going to define the Bernoli likelihood.
+
+So that's going to be a function of y and theta. So I'm giving it the actual outcomes and I'm giving it the theta. And what I want to get is the likelihood, right?
+
+So do that
+
+uh Bernoli. Yeah, that's fine. So So that's going to be like this. So multiple way of doing this. Uh, one way to do it is to just use the formula that we developed over here. So that's going to be theta to the^ y * 1 - theta to the power of 1 - y.
+
+So that would be kind of for for one y. So if you see what happens if you run it like this
+
+I did not get the theta. So let's say I say like theta is whatever 0.2 two,
+
+it's going to say, okay, so for the ones, the likelihood is uh sorry, for the zeros, the likelihood is 0.8 and for the ones, the likelihood is 0.2. If what you want is one single likelihood for the data set, you would get the product of all of those. So in R you can say prod that's going to produce the product. You can do it like that. However, what you'll see is that the likelihood is going to be tiny.
+
+Uh sorry the run button is over here. Uh so this is probably okay. If you get a larger data set it's going to be so tiny that you get rounding rounding issues. So the usual way that people do it is log and then sum.
+
+So this is going to be x of the sum of the logs
+
+of those guys.
+
+So that's exactly the same thing. It's just that numerically that works better if the underlying result is very small. So basically I'm taking I'm taking the logs so that I can take the sum of the logs rather than take the product of the original things. And then once I've taken the sum I take the x back. So I'm back to actually having the product Does that make sense? So, okay. So, that's kind of the more usual thing that people do. In this case, the number is of course the same it's supposed to be. All right. So, okay. So, let's now say that what I want to do is maximum likelihood. So the really dumb way of doing it, but that's what they want to do here is to say, okay. Oh no.
+
+Okay.
+
+Is to say, okay, I just want to try every possible theta and see which theta produces the largest likelihood. So I'll do it kind of like this.
+
+I'll say the possible thetas range from uh whatever like uh 0.01. So in R you can do like 0.01 and steps of whatever 0.05 05 to
+
+the twist sequence.
+
+Uh so so the sequence basically says like go from here up to here in those steps.
+
+So I'll make theta be this
+
+right that copy.
+
+All right. So now for every theta I want to compute the likelihood. Uh you can do it with a for loop. I'm still on my functional programming thing. So I'll do it with that. So I'll say the likelihoods are apply the Bernoli likelihood.
+
+So here to do data y instead.
+
+So the x is going to be theta
+
+and the fun is going to be bernoli likelihood. do it like the annoying way and just take the y's out so that they're a global variable.
+
+So that gives me the likelihood for every data.
+
+I did not actually output it.
+
+Right.
+
+So now what I can do is okay I have the thetas I have the likelihoods I'm doing maximum likelihood that means that I got to pick the likelihood that corresponds to the largest theta. So just to be nice about it I'll plot
+
+the thetas versus the likelihoods. uh delight those versus the Tas.
+
+All right, it doesn't want to do the plot. I'll do the fancy plot instead.
+
+All right, just one sec.
+
+This
+
+Oh,
+
+I'm sorry. I'm just trying to make the plot just
+
+Okay.
+
+All right.
+
+So this is likelihoods. So this is still just likelihoods versus probability. Uh just hands here status.
+
+Okay, I'll fix this over the break. Sorry, I
+
+slow down. Uh I think there's an error.
+
+So I I mean uh like what what's concerning me here is like this kind Oh. Oh, okay. Sorry. This is an easy problem. This is props not found. Uh no, I said props.
+
+No, still props not found. And this definitely worked. Um,
+
+okay. Uh, I'll fix the graph during the break. uh what we really wanted is the maximum theta or the theta that corresponds to the maximum likelihood
+
+which I definitely can do which is theta's at the location of the maximum here right so which max gives you the location of the largest one and then we get theta back.
+
+So I run it like this and I get the maximum likelihood as whatever 0.35. It's not going to be the same every time. So what I'm going to do is I'm going to move this over here so that I can generate the y's multiple times.
+
+So now it's 015
+
+and now it's 025
+
+and now 03. And the reason is I just toss the coin whatever 20 times. So I do get a different estimate every time. If I were to toss the coin, let's say 2026 times.
+
+That is definitely not what I wanted.
+
+You see,
+
+so the likelihoods are this.
+
+Okay, the likelihoods are all zero. Uh that is because I did the axe before, so they're too small. This is why I got the 0.01. So if I remove the x, what I get is the log likelihoods. They're going to be, you know, negative numbers, but not so small. Not so small that the x is just zero.
+
+Infinite light here. That seems unfortunate.
+
+Uh sorry the minus end is not this uh oh so this is because uh the likelihood for like the literal 1.0 is not defined because if the probability is 1.0 then there is zero probability that uh that the coin is going to come up tails. So, I'll just go up to 0.999 or whatever.
+
+So, those are the logs of the likelihoods. So now that I have it, I can do
+
+the location of the maximum likelihood and I can get the theta that corresponds to it
+
+and that is 0.3 and I can do it again
+
+and that's going to be 0.31. So it's not going to be like 0.3 every time, but it's going to be very small, very close to 0.3 every time. U so that is kind of behind what you would usually see which is the confidence intervals, right? So the confidence interval is saying if I run this kind of procedure multiple times, what's going to be the spread of the estimates?
+
+Uh and ordinarily what you are taught in like introduction to statistics is like exactly that like what's the spread around the maximum estimate.
+
+All right. Uh let's take a 10-minut break and then we'll do actual graphs and we'll do basian press. All right. 10 minutes.

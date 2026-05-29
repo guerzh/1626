@@ -1,0 +1,197 @@
+All
+
+right. All right. Uh hey everyone. Uh hope you had a good weekend. Uh so um you know I spoke to the graduate office. Uh so uh we are extending so we are kind of still doing the lectures on schedules but given that the vast majority of people said they would rather the final test and the due date for the uh project be in August. That is what's going to happen. So obviously you can still submit it at the end of June if that's what you want but uh you could go until August that is fine. So that obviously doesn't change the workload. It's just an option, right? Uh so if you absolutely cannot write the final test in August for a good reason. Uh I think there was one person who said that they might not be able to. Uh I think they were hoping to get the a conference paper accepted or something. Uh well, good luck whoever said that that's their situation. If that's the situation, we'll figure something out. uh if if there is a good reason. Uh so uh uh mini project one uh was posted. I think it's uh so it's kind of short. You can use an LLM. I think it's due maybe today, right? Uh so um like obviously like it's a grad course like you can do what you want with the project. I will check that what you submitted is reasonable and give you feedback. But the real checking is the test which will be kind of like mini project one and mini project two to be posted. Uh so uh that's the situation. Uh so what so uh what I want to do today is do an overview of predictive modeling and talk about uh linear and logistic regression and talk about inference. So in the context that we had talked about before there is like a little bit of a leftover with confidence intervals uh which I will also do uh but later today I want to uh start with predictive modeling. So this is going to be um kind of an overview. I think most of you will have seen most of this. Uh but at the same time like there's not very many people in class. So just like stop me. We can chat. I do apologize that I'm reusing slides from before. I I think they're good slides. Uh but I I I I will get the website uh up with the mic 1626 branding as well. With that said, the material is the material. It's not really changing. Uh so okay. So we're talking about uh predictor modeling. So uh this is like the example that they think everyone and their dog is using for linear regression. So might as well. Uh so this is the housing prices uh from uh Portland, Oregon. Um this is like you know 15 years ago at this point. So if you're looking to buy in Portland, Oregon, it's probably more expensive now. Uh so um as it is everywhere. So the idea is kind of like that. You have a data set. Uh the data set is you know the size of the house uh in square feet and you have the price in in this case whatever thousands of dollars. Uh so uh what you want to do is you want to take this data set and then take in a new house have some measurements about the house for example what's the square footage there and predict the price. So okay so the notation here is m in this case would be the number of training samples. So whatever like the last index here then the x's are the inputs. uh sometimes also called the features and the wides are the output sometimes called the targets. So the idea like we saw in the previous week is you have something like this right? So you have the data. The data is the little axis here. And then you draw some kind of curve through the data. For example, you draw a straight a straight line. And then if you have a new house which you want to make a prediction about the price. So let's say that you have a house that's 2700 ft. The idea is you say, well, I'm going to predict it by looking up what the y that corresponds to that to this x, the square footage is on this straight line, right? Uh the algebraic way of looking at it is you have this formula. So you don't know the coefficients a z and a1. That's what you figure out from the data. And then you just plug in the size and that gives you the predicted price. Uh so again, if you are hoping for a 2800 foot house in Portland, Oregon for under half a million dollars, good luck with that. But uh yeah, that's that's that's what that's what the model predicts. So okay
+
+so here is kind of the machine learning way of looking at it which is at the end of the day the same thing that we saw last week but uh kind of from the other side of it right so we're saying okay like there is a correct price for house I that's y I and We have the prediction that we make that's whatever like a z plus a1 xi for whatever a z and a1 that we figured out and then we're saying okay so here's the difference between the prediction that we make and the actual correct answer and what we want to do is we want to in some sense for most of the inputs x to have the errors be small Right. So the usual thing that we do and that's what we had seen the other week is uh let's just say okay like what we want is for the sum of the squared errors to be so that's the usual thing but it should be clear that this is just like a mathematical convenience right so you could say oh I want to minimize
+
+That's kind
+
+and so without the square and that is legitimate. That would be what's called a different cost function. So you try and say on my data on my training set I'm going to try to minimize this you can do it a different answer in general will pop out which one is correct well one way to think about it is what are you trying to do here right if what I'm saying is I need to on average be correct and for me to be wrong means How far am I from the correct answer? Then arguably this is the right thing to do. If I'm saying well for some reason what I want to do is I want to minimize how far away I am from the correct answer in the sense of I'm measuring the square distance. I could say that. Right. So conceptually
+
+those those uh those are separate. So you can look at it in two ways. One way to look at it is to say I am a realtor. I want to predict the price of the house. Uh if I'm off in terms of predicting the price of the house, let's say that my profit is like a percentage of the margin. Well, this is probably what they care about, right? It's not it's not the square because I take the percentage of the margin. So, whatever. Like, I know the correct price. I sell it for for a small one. I sell a lot of houses. Sometimes it gets right. Sometimes it's I guess gets wrong. My profit is the just the average of like whatever it's the percentage between the average distance of the prediction and the actual thing. Like that's kind of what I care about. Does that make sense? So I could also look at it the other way. So the other way is the statistical way, right? So I can say okay I don't actually know like how my profit is exactly related to you know how far off I am. Maybe it's not linear. Like maybe if I'm extremely off there is a problem because I have like trouble with the bank if I'm off by more than what I have in my checking account, right? So I need to pay more interest whatever like maybe it's very complicated. Maybe what I want to do is I want to just say okay I have this notion of
+
+so this would be the square footage
+
+and this would be the price. And I have this notion of the way real estate works. is in general there is like a linear relationship between the square footage and the price except like there is weird things going on some kind of noise right and what I want to do is I want to figure out okay like what are the a z and a and the a1 if the correct thing that's going on is that the way the price happens in the world is there is this theoretical line and then there is a theoretical prediction and then there is Gaussian noise up or down right and if that is the true thing about the world then what I want to do is I want to figure out okay like what's the true thing about the world assuming that the true thing is
+
+that this is the normal distribution that goes like this like it doesn't seem notic right and then I'll figure out my a z and a1 and then based on that once I know how the world works so assuming that the world really works like this I have whatever I think about you know like what whatever I think about how my profit model works which is like a separate thing and I'll just use this formula in order to then figure out my strategy.
+
+Uh does that kind of distinction make sense? So one is I have just a direct thinking about what my how my profit works and what I actually want from my predictive model in which case I just plug in whatever the cost is here. And it could be anything. It could be like whatever to the power of 2.7 I know, right? if that's what they think what they care about is or I could say for some reason they think that this is the true way the world works. I'll first figure out the coefficients once I figure that out I'll you know work out separately what I do with my profits. So okay so the cost function is the machine learning way of thinking about it which is
+
+either you directly actually think about the business case or like we saw last week here like we saw last week actually as it turns out if you set up your cost in that way then it turns out to be equivalent to thinking that the true way the world works is this and you're just vectoring out the coefficients, right? So sometime sometimes those things align. In practice, it's really neither of those things that you're doing. In practice, it's just that this is like convenient to optimize numerically.
+
+So okay.
+
+So this is kind of like basically terminology that people don't care about but it is in the course description. So okay. Uh so you have what's called simple linear regression. So simple linear regression refers to having one predictor variable. So this is this picture. uh uh if you're saying linear regression, you mean the square cost function. Uh the other way of thinking about it is if you mean simple linear regression, you mean this model. And I'm doing the max the maximum likelihood estimate for a z and a1. What we saw last week
+
+you can have multiple linear regression. Multiple linear regression means that you have several predictors. Uh so whatever like n predictors again you have the squared cost function or equivalently you're saying that your y is distributed like this except you also have you know a2 x2 and so on.
+
+And again you're minimizing this. So the uh way that people visualize it is like this. Uh so you can say okay like if you have and this is uh the x2 and this is the x1. I'm not sure if you can see it but this is two. And then what you're saying is okay for a point over here so for a particular value of x1 over here a particular value of x2 over here uh you have this plane and you're saying I'll predict for this point I'll predict the point on this plane and then my error is going to be the square of the distance between the prediction which is on this plane and the actual point which is the usual way that people think about it is well it's kind of like this except with multiple predictors. Does that make sense? Okay.
+
+So
+
+one way in which this breaks is uh if this is not a true model, this is not usually not a true model. Uh here's the most usual way in which this is not a true model. Let me load my gap minder thing.
+
+Sorry. What is this?
+
+I'm coming.
+
+This one stops. Hold up.
+
+Sorry.
+
+Okay.
+
+Right.
+
+So, we're doing the gap minder thing here.
+
+Uh so to remind you looks like this.
+
+So we have kind of the countries, we have the years and we have whatever the GDP per capita. So,
+
+here is what happens if you plot the life expectancy versus GDP per capita. I don't know if I mentioned it yet. It should be it's always y versus y versus x. So, it's life expectancy versus GDP per capita if you want to use the versus terminology. Uh it looks kind of like this. Uh so if you try to draw the linear regression line through this, it's going to look like this and it's not going to do a great job of prediction. And the reason is that what you see here, it's not actually a straight line. So um in the case of uh G uh of GDP per capita uh it so happens that if you transform the x-axis so that it's on the log scale. So the log scale here just means that you know this is 10 ^ 3 this is 10 ^ 4 this is 10 to the^ five and they're separated with the same with the same gap. what you get is actually a really nice cloud for which you can actually draw a really nice straight line. So there actually is a linear relationship there. It just happens to be between the logarithm of the GD GDB and the life. Okay. So uh the lesson is that
+
+uh the lesson is that if you're doing prediction like that it's sometimes it's helpful to actually transform the inputs so that the relationship is actually linear. So of course again if you're talking about the cost function
+
+then you know like it's conceivable that what you actually care about is just the countries over here just because like maybe what you care about is just the low-income countries for whatever your application is that's a separate thing. uh if what you care about is figuring out okay how does the world actually work well like this is just not the answer it's clear that the world does not work like this if you're looking at it that way in the sense that if you are looking at the rich countries with the large GDP per capita right so over here it plainly not true that you predict over here and well it could be up, it could be down a little bit. No, it's always down.
+
+So, okay.
+
+Um All right. Uh so that was uh kind of part of it. Uh do people have questions so far? Is this interesting? All right. Okay. How many people know about categorical variables over here? Oh, uh Okay. Uh so, uh quantitative variables uh is just like what we have seen so far. It's just numerical inputs, numbers, right? So, it's like the number of something, the count of something, the weight of something, something like that. Uh so in particular usual usually if you can have an x that's equal to whatever 19 and an x that equal to 21 you could also have an x that's equal to 20. Uh so this things that are technically discrete like for example counts are often still treated as quantitative. Right? So the distinction here is that you know if you have something like life expectancy or GDP per capita those are pretty much actually genuinely continuous states right so you can have someone who lived whatever like 73.5678
+
+years right that's fine that's that's just how time works You can have something like counts. So for example, you can have like the class size. So the class size, it could be 20 students, it could be 21 students. You could not have 20.5 students in the class. That's just not the thing that happens. Nevertheless, if you're trying whatever to measure like I like average grade versus the size of the class, it's kind of reasonable to treat the count as quantitative even though it's not continuous, right? And that's just because okay, like yes, if you focus in, you could not have 20 20.5 students in the class, but it's like almost continues. uh you could have things that just do not work that way. So in the gap minder data set for example uh you have whatever five continents right you have whatever like Asia, Europe, Africa whatever else there is in the world uh uh Antarctica. So um so those are not numbers right? So there's not a situation well technically with continents you could kind of say okay you know like there is Australia and there's Asia and then in between them there is also stuff like whatever like Indonesia or something right uh but you know in English those are just words you cannot like average Asia and Australia and get something that makes sense uh so uh this is what's called the categorical variable of the input is a category. Um, you can have stuff that's in between. So, you can have like colors. Uh, technically colors exist on a spectrum as you might know. Uh, so technically you might say, well, like you can actually average red and yellow, whatever. Uh, uh, light perception doesn't actually work that way, right? selecting the eye, you actually have like different receptors for different, uh, locations in the spectrum. And, you know, uh, like orange and red, you could kind of say they kind of exist close together. Averaging or average like averaging like red and green just makes no sense. You'll get something in between, but it's not going to be related to either red or green at all if you think about it, right? Uh, so leards ko response pronounced lickards. So this would be usually kind of like you know strongly disagree disagree neutral agree strongly agree something like that. This is usually converted to 1 2 3 4 5 something like that. So those are like sometimes average sometimes people say well like you can't really average like strongly agree and strongly and strongly disagree and get neutral as an average. That's not really a thing. So that's kind kind of um a kind of a borderline case. Uh so okay so let's say that you have uh categorical variables as inputs. Uh what do you what do you do with this uh just mathematically uh so um you're trying to predict let's say y using let's say the continent let's say it has k possible categories. So this will be whatever like continent one, continent two up to continent five. So one thing you can do is force it into the same kind of formula that we had before. So you're saying okay like we're predicting the y something like life expectancy or something like that. And then we have what's called uh indicator variables. Uh, so the notation here is kind of finicky. It kind of has to be because like that's that's how the math works. So what we're saying is okay, we're going to have this variable and it's going to be zero except when the input correspond to continent one. And then this variable is going to be zero except when the input corresponds to continent two and so on. Right? So uh the the the index here kind of works like this. So the i is the case number, right? So we have this kind of table. So we have uh whatever is the number of cases here like a couple hundred right. So the I refers to the case number. Oh no.
+
+And then the second index refers to the category number. All right. So let's work it out.
+
+So we're predicting like life expectancy
+
+uh from the continent and we're saying y I
+
+sorry let me just make it consistent. So this is Y I. So this is the I and this is going to be
+
+A10 plus
+
+A11 I Y1 plus A12 I12 and so on plus A15 I15
+
+And what we're saying, sorry, it's a little bit weird.
+
+And what we're saying is it's row number I
+
+and then we're saying it's I11 is one if the continent or row I is continent one. And then similarly this is
+
+to if the continent row I is continent two and so on. Right? So let's make it concrete.
+
+So let's say that continent one is Africa and continent two is Asia and continent three is Europe and so on. running out of continents that I remember the the names for. Got most of them. Uh so now we're doing predictions. So imagine that
+
+for row I the continent is Asia.
+
+So that means that sorry I'll make it a little bit smaller. So that means that I12 is one and I I11 uh sorry not I1. So I one two is one.
+
+Sorry.
+
+And then I11 is I
+
+I3 is I I4 is I I5 is just zero. So that means that the prediction is A10 plus A12.
+
+Is that making sense? So basically what this is doing is this is setting this up so that the picture is still this. We still have yi as this kind of sum of this guy that's analogous to the a z plus a sum of coefficient time variable coefficient time variable coefficient time variable.
+
+But then
+
+so that we can use again the same computational machinery to figure out the coefficients but then the prediction is just this guy plus either this guy or this guy or this guy.
+
+So usually what you can do uh this is kind of getting into the weeds that I don't want to get into today but usually what you can do is if you have k categories in total then what you have is actually k minus one of those terms and that is so that if it's the k category the k continent whatever if there's six And it's just that all of the capital I's are zero and you're just predicting this time. And that works out so that you can predict a different answer for every possible different continent, which is kind of what you want. All right. So, uh let me just show you briefly uh what this works out to. uh and in addition just show how you do this in R. So uh if you say so again gap minder looks like this. So you can say I want to predict the let's say life expectancy from the continent. So you do it like this. Uh so LM stands for linear model. This is just how you do this. And you can say whatever life expectancy you're predicting it using continent
+
+you need to specify the data. This is just how you do it. again like these days you can just ask Chad GBT if you don't remember the the syntax uh but whatever and what you get is the A Z A1 A2 A3 and the way it works is this is like a silly kind of example because this is like averaged across years right but the way it works is for the Americas, the answer is going to be a Z plus this guy. And then for Asia, it's going to be this guy plus this guy. And then for Europe, it's going to be this guy plus this guy. And then for Oceanania, it's going to be this guy plus this guy. Uh, which continent is left out? Uh, I think Oceanania actually includes Australia. It's not Antarctica. Sorry, I'm forgetting which continent I'm missing. Uh, so I'll just look it up. So, I'll do unique yap mind or continent.
+
+Oh, it's Africa. Okay. Uh, but I'm I'm doing it anyway. Uh, yeah,
+
+they misspell it.
+
+I did
+
+find
+
+it's continent lowerase C. uh and what you get is you know Asia, Europe, Africa, America, Oceanania sides
+
+and then this is this is the prediction. Okay. So the math here is again one of the categories is left out. So this would be Africa. Yeah.
+
+Say it. Z that's a that's a zero. Yeah.
+
+So, you can technically force it to leave out anything. It's uh usually just alphabetical, but like it's kind of arbitrary. You can't really predict which one it will leave out. It kind of doesn't matter because the math works out the same way. Uh just like to be like not silly about it, like this means absolutely nothing because this is measured across years and we're predicting per row. So, that's like nothing. Uh, so what I would usually do is I would
+
+so I'm just gonna enable filtering.
+
+So I'm going to say like year. So let's say for 1980. So that now actually is a thing that makes sense. So I'm saying predict the uh uh predict the life expectancy for each continent for the year 1980. So this is just making it so that the data set is just 1980.
+
+Uh 1980 is not something that's in the data. Uh I guess I meant whatever 2007. So the issue here is that there were just no rows with 1980 because they measure at like intervals of whatever five years and this is this. So as it happens you can prove that what this is. So it is doing linear regression which means that it's minimizing this cost function with a square and you can prove that the maximum likelihood prediction or equivalently the prediction that minimizes this kind of cost function for a categorical variable is actually just taking the average. So this is like the average life expectancy for all the African countries for uh 2007 and then the uh the average for the Americas is this much plus this much and then for Asia it's this much plus this much and so on. All right. Uh so interestingly um I am definitely not doing it right now but if you make the cost function this does anyone know so if you make this be the cost function so this is not the length uh what would be the estimates
+
+it's it's it's the median uh so uh if you do the prediction with a categorical variable with this cost function you can do it and then you can prove that what's going to fall off is the median. If you do a plot function with a square, that's going to be the average as it happens. Uh so, okay. So, that's like this. Uh questions.
+
+All right.
+
+So, we've done this. Uh let's do a case study. Uh so uh this is how many people have seen the movie? Oh okay. Finally. Uh okay. I I think I've seen it. I'm not actually sure. I I think I've seen definitely some No, I have seen it. Okay. Uh so uh the Titanic, a movie, but also an actual ship that hit an actual iceberg and sunk unfortunately. Uh so um it's there were this many people uh aboard uh only this many survived. Uh there is a data set of all the people who bought tickets uh or more or less all the people uh and there is some data about them. So there is data about uh what kind of class ticket it was. So like first class, second class, third class. Like the first class tickets are just nicer and more expensive. Uh and then you have uh the ages and the genders and actually the names as well for the different people. Uh and one thing that people kind of like to do is say okay like this is a data set. Can we predict based on the features of the different people uh you know what ma what predicted that you would survive what predicted that you would not survive.
+
+Uh so what we're doing here is we are predicting a categorical variable right so like did you die or did you survive there is no like 0.5 kind of surv well there is like you you were on the boat and then you got pushed off but um a apart from that right so how do we do that so what we do is we convert just kind of arbitrarily we decide died would be zero survived would be one you can flip those around it doesn't matter those are categories if you are trying to do this kind of deal let me actually load the data set
+
+Sorry.
+
+No.
+
+Okay. I'll load that later. Uh, sorry. Let me
+
+So, so this so this is what the data looks like, right? So, you have survived or died. So, that's zero or one. And then you have the class. So uh the the the variable here is P class. So uh this is just like so you could argue it's quantitative because second class is kind of between first class and second class or you could argue that it's categorical whatever just because there's just three. Uh you have uh the actual name uh you have the sex you have the age uh you have the number of siblings and spouses aboard. Um, so it's a a little bit of a weird version here. I I don't expect that people had more than one spot board. You never know. Uh, so uh you have number of uh parents and children and you have the actual fair. So how much they paid for uh how much they paid for the tickets.
+
+Um this is before expedia.com so it was like more but okay uh so uh all right so we have the features so this could be like zero if male one if female this could be zero if first class one if second class zero uh zero if class one or two, one of class three, whatever. Uh, one of those could be fair. And then we can try to do the same deal where we are just predicting this. The problem is that this could be any real number, right? So what we're trying to predict though is just like did they die or did they survive? So is it zero or one? So what you can do this is called logistic regression but this is more general than that is say okay I'm going to compute this guy and this is going to be some real number and then I'm going to transform it with this function so that it looks like a probability.
+
+So the usual thing that people do is they use a sigma y equals to this. What this function does is it takes any y. So the y here could be anything squashes it so that sigma y is between zero and one. It's never exactly zero. It's never exactly one, but it could be very close. Right? So if y is like really really large then x minus y is nothing. So sigma y is approximately one. So that's over here. If y is really really negative again uh this is basically uh this is basically zero because this is huge. And then if y is exactly zero then it's 0.1.
+
+All right. The idea is that what we're doing is we're trying to predict whether they died or survived. And what we do is we compute this real number. Then we squash it. And then I say okay so this is kind of the probability right. So the advantage here is we're predicting 01 and we are now getting a prediction by using this formula that's you know it's not exactly 01 but at least it's like you know kind of like a drop. All right.
+
+So this is usually kind of the interpretation. So we are doing kind of the same deal. It's not exactly this cost function but we are saying okay like we'll figure out the coefficients a z a1 and so on. Plug in the we'll plug in the predictors. So the predictors kind of look like this. And we'll interpret the output as uh this is kind of the probability that the output is one or the output is zero.
+
+So um let me Okay. So kind of messed up. Uh and I need to read the data of the internet. Uh so uh this is where the data is. Let me read a 10.
+
+So it's like my name. Yeah.
+
+Yes. Oh, thank you. Cool. Thank you very much.
+
+All right. So, we are we're back to like not my my copy. So this is like library Titanic
+
+and I'll get the data as
+
+Titanic train.
+
+So if I run this,
+
+so that's that's the same data. And now we can try to predict whether they died or survived.
+
+So the way you do it and this is again just syntax and this is kind of gnarly syntax which uh I will give you on the H sheet. I will also give you the all the on the H sheet. Uh so we are saying let me just
+
+okay so the table looks like this. So we want to predict survived. So the survived here is already 01. So in the same way as before we're saying we're predicting survived. And then I can just say what is it that I want to predict it of. So I can say for example that I'm predicting this based on uh the sex and the age
+
+and the class.
+
+So this is the usual thing that you do. uh uh this is going to be called logistic regression. This is saying that this is logistic regression. This is specifying a specific cost function essentially which see later on on the slides
+
+it's not oh I did not say data
+
+and this is going to be like this. So the interpretation here is let me copy this.
+
+So we are saying basically the probability is sigma of 5 whatever 06
+
+plus
+
+something like this. So here basically what what it's saying is subtract minus u subtract 2.5 if the category is male don't do anything if the category is female. So that's the same as saying I male
+
+one if row is male zero if female
+
+and what we're saying here is you know if I male happens to be one subtract 2.5 if not then
+
+And then we're saying -0 whatever 04 time age. I'm rounding here and then minus 1.3 times the glass.
+
+Okay. So the prediction here is this is the formula for getting the probability. Right. So the prediction is compute this number then pass it through this formula sigma if you remember sigma y is 1 / 1 + x - one and that gets you the estimate for the model for what's the probability of survival. Uh so a thing that people say about the Titanic is that you know a as as in movie uh uh on the Titanic has happened if if you were a male uh your your probability of survival was lower. Uh so um uh there is like a study uh like it it seems right. So like the hypothesis in general was that you know like Leonardo DiCaprio like the males like let let the women uh you know uh uh survive. Uh that apparently seemingly was the case on the Titanic. If you look at the larger data set of shipwrecks at the time it apparently was not the case. It's you know like it was kind of 50/50. So uh uh but on the Titanic it it it does appear that uh uh the female passengers had uh more more a higher probability of survival and like you can kind of see that in the formula right so like you subtract min you subtract 2.5 from the the thing that you pass on to get the probability. So like your probability survival was lower if you were male. Uh similarly uh if you were in third class you are kind of screwed. Uh so if you are in third class you subtract like 1.3 * 3 uh from this thing. Uh age seems to not have made much of a difference. All right.
+
+Uh so this is like this. Uh so what is the actual cost function? Uh so for linear regression the cost function was the sum of square differences between the prediction and the actual target output. Uh so if you do specifically the thing that's called logistic regression which is what we did uh this is minimizing this cost function. uh I will not really go into details about why it makes sense. Similarly to the discussion here actually what makes sense you can look at it from two different points of view. One point of view is what's going on in the world. So there is a uh there is an interpretation for logistic regression which is kind of like that which is if truly the probability the tactical thing is it's called correspond it's a linear function of the log odds then this is the right cost function or you could just say well it's just like a thing that makes sense uh you you can go through it and it will look like it makes sense I will not do it Uh, all right. Uh, let's take a 10-minute break. Uh, no, sorry. Uh, let's let's take questions first. That's kind of loading the dice because probably everyone wants a break. Okay, I'll take questions in 10 minutes, right?
+
+Uh, so 320

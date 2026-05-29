@@ -1,0 +1,40 @@
+---
+title: "Darwin's Finches"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=TRUE, echo=TRUE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(Sleuth3)
+require(ggplot2)
+require(tigerstats)
+require(rstan)
+
+finches <- case0201
+```
+
+## Exploratory analysis
+
+The data consists of measurements of the beak depths of 178 finches, some measured before the draught, and some measured after the draught.
+
+This is a bit of an overkill, but let's see from what years the data is:
+
+```{r}
+qplot(finches$Year, bins=3)
+```
+
+Now, let's see how the beak depths differ across the years
+```{r message=FALSE}
+ggplot(finches, aes(x=Depth)) + 
+  geom_histogram(data=subset(finches, Year == 1976), fill = "red", alpha = 0.2) + 
+  geom_histogram(data=subset(finches, Year == 1978), fill = "blue", alpha = 0.2)
+```
+
+Box plots and density plots can also be instructive
+```{r boxdensityplots}
+bwplot(Year ~ Depth, data = finches)
+densityplot(~Depth, groups = Year, auto.key = TRUE, data = finches)
+```
+

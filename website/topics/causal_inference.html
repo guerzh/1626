@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Causal Inference</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Causal Inference</h1>
+</header>
+<h2 id="correlation-does-not-imply-causation">“Correlation does not imply causation”</h2>
+<p>You hear this from age 12. It’s true, but it doesn’t tell you what to do. The point of this lecture: there is a real, formal sense in which we can sometimes recover causal effects from observational data — and a real, formal sense in which we usually can’t, no matter how big the dataset.</p>
+<blockquote>
+<p>“I used to think correlation implied causation. Then I took a statistics class. Now I don’t.” — Sounds like the class helped. — “Well, maybe.” <em>[xkcd 552]</em></p>
+</blockquote>
+<h2 id="what-a-causes-b-actually-means">What “A causes B” actually means</h2>
+<p>The cleanest working definition (the <strong>counterfactual</strong> one):</p>
+<blockquote>
+<p><span class="math inline">\(A\)</span> caused <span class="math inline">\(B\)</span> if <span class="math inline">\(B\)</span> would not have happened had <span class="math inline">\(A\)</span> not happened.</p>
+</blockquote>
+<p>This is intuitive, but it’s hard to apply: we never observe both worlds. For any given person who smoked and got cancer, we don’t see the version where they didn’t smoke. <strong>Causal inference</strong> is the project of extracting counterfactual statements from data we <em>can</em> see.</p>
+<p>This lecture follows the framework that’s now standard in the field: causal models live on a directed acyclic graph (DAG), and the formal object we want is <span class="math inline">\(P(Y \mid \mathrm{do}(X = x))\)</span>, distinct from <span class="math inline">\(P(Y \mid X = x)\)</span>.</p>
+<h2 id="dags-as-a-language-for-causal-structure">DAGs as a language for causal structure</h2>
+<p>A <strong>directed acyclic graph (DAG)</strong> is a picture of how the variables in a system generate each other. Each node is a variable. Each arrow <span class="math inline">\(A \to B\)</span> means “<span class="math inline">\(A\)</span> is one of the things that determines <span class="math inline">\(B\)</span>” — i.e., <span class="math inline">\(A\)</span> enters into the mechanism that generates <span class="math inline">\(B\)</span>.</p>
+<p>The canonical Shalizi example:</p>
+<pre><code>Smoking ──► Yellow teeth
+   │
+   └──► Tar in lungs ──┐
+                       ├──► Cancer
+       Asbestos ───────┘</code></pre>
+<p>Reading this graph as a generative recipe:</p>
+<ol type="1">
+<li>Generate <code>Smoking</code> (0 or 1) from some marginal distribution.</li>
+<li>Generate <code>Asbestos</code> from its own marginal distribution, independently of <code>Smoking</code>.</li>
+<li>Generate <code>Yellow teeth</code> and <code>Tar in lungs</code> from <code>Smoking</code>.</li>
+<li>Generate <code>Cancer</code> from <code>Tar in lungs</code> and <code>Asbestos</code>.</li>
+</ol>
+<p>The graph encodes our <strong>assumptions</strong> about the data-generating process. Different DAGs make different predictions about which variables are (conditionally) independent.</p>
+<p><strong>Caveat.</strong> An arrow <span class="math inline">\(A \to B\)</span> does not mean <span class="math inline">\(A\)</span> always causes <span class="math inline">\(B\)</span> on every instance — it means the mechanism that generates <span class="math inline">\(B\)</span> takes <span class="math inline">\(A\)</span> as an input. A drawn arrow says “<span class="math inline">\(A\)</span> <em>might</em> affect <span class="math inline">\(B\)</span>”; the absence of an arrow says “<span class="math inline">\(A\)</span> definitely doesn’t (directly) affect <span class="math inline">\(B\)</span>.” Absences carry more force than presences.</p>
+<h2 id="independence-relations-from-the-graph">Independence relations from the graph</h2>
+<p>Three patterns are worth memorising:</p>
+<p><strong>1. Common cause.</strong> <code>Yellow teeth ← Smoking → Tar in lungs</code>. Yellow teeth and Tar are <em>not</em> independent (smokers tend to have both), but they are independent <strong>conditional on Smoking</strong>. If you already know whether someone smoked, knowing their teeth tells you nothing extra about their lungs. Conditioning on a confounder <em>blocks</em> the path.</p>
+<p><strong>2. Chain.</strong> <code>Smoking → Tar → Cancer</code>. Smoking and Cancer are not independent, but they are independent given Tar (if the only way smoking causes cancer is via tar — strong assumption, but the point is structural).</p>
+<p><strong>3. Collider — “explaining away”.</strong> <code>Tar → Cancer ← Asbestos</code>. Marginally, Tar and Asbestos are <em>independent</em> (one is caused by smoking; the other isn’t). But <strong>conditional on Cancer</strong>, they become <em>dependent</em>: if someone has cancer and we learn they were exposed to asbestos, that “explains” the cancer, lowering the probability they also had tar buildup. Conditioning on a collider <em>opens</em> a path that was closed.</p>
+<p>These rules together are called <strong>d-separation</strong>, and they’re the link between a DAG’s structure and the conditional-independence statements you can read off it.</p>
+<h3 id="lets-see-it-in-code">Let’s see it in code</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">50000</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>smoking  &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.3</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>asbestos &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.1</span>)   <span class="co"># independent of smoking</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>tar      &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="kw">ifelse</span>(smoking <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="fl">0.85</span>, <span class="fl">0.05</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>yellow   &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="kw">ifelse</span>(smoking <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="fl">0.60</span>, <span class="fl">0.05</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>p_cancer &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="fl">0.02</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.30</span> <span class="op">*</span><span class="st"> </span>tar <span class="op">+</span><span class="st"> </span><span class="fl">0.50</span> <span class="op">*</span><span class="st"> </span>asbestos, <span class="fl">0.95</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>cancer   &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, p_cancer)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(smoking, asbestos, tar, yellow, cancer)</span></code></pre></div>
+<p>Check the three patterns:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># 1. Common cause: yellow and tar are marginally dependent (both caused by smoking).</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">cor</span>(df<span class="op">$</span>yellow, df<span class="op">$</span>tar)</span></code></pre></div>
+<pre><code>## [1] 0.4993546</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># But independent given smoking:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">cor</span>(df<span class="op">$</span>yellow[df<span class="op">$</span>smoking <span class="op">==</span><span class="st"> </span><span class="dv">1</span>], df<span class="op">$</span>tar[df<span class="op">$</span>smoking <span class="op">==</span><span class="st"> </span><span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] -0.002611089</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">cor</span>(df<span class="op">$</span>yellow[df<span class="op">$</span>smoking <span class="op">==</span><span class="st"> </span><span class="dv">0</span>], df<span class="op">$</span>tar[df<span class="op">$</span>smoking <span class="op">==</span><span class="st"> </span><span class="dv">0</span>])</span></code></pre></div>
+<pre><code>## [1] -0.002311224</code></pre>
+<p>Marginally correlated (<span class="math inline">\(\approx 0.45\)</span>); within strata of <code>smoking</code>, the correlation vanishes.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># 3. Collider: tar and asbestos are marginally independent.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">cor</span>(df<span class="op">$</span>tar, df<span class="op">$</span>asbestos)</span></code></pre></div>
+<pre><code>## [1] -0.002658525</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co"># But dependent conditional on cancer:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">cor</span>(df<span class="op">$</span>tar[df<span class="op">$</span>cancer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>], df<span class="op">$</span>asbestos[df<span class="op">$</span>cancer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] -0.5038938</code></pre>
+<p>Marginally near zero, conditionally <strong>negative</strong>. This is “explaining away” in action: among cancer patients, learning that someone was exposed to asbestos <em>reduces</em> the probability they had tar buildup, because the asbestos already accounts for their cancer.</p>
+<p>The conditional dependence is a graphical fact, not a quirk of the simulation parameters. It would hold for any data generated by this DAG.</p>
+<h2 id="the-trap-regressing-on-the-wrong-variables">The trap: regressing on the wrong variables</h2>
+<p>What is the causal effect of <strong>asbestos</strong> on <strong>yellow teeth</strong>?</p>
+<p>By construction: zero. There is no path in the DAG from <code>Asbestos</code> to <code>Yellow teeth</code>. They’re causally unrelated.</p>
+<p>A naïve analyst might run</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">summary</span>(<span class="kw">lm</span>(yellow <span class="op">~</span><span class="st"> </span>asbestos <span class="op">+</span><span class="st"> </span>cancer, <span class="dt">data =</span> df))<span class="op">$</span>coefficients</span></code></pre></div>
+<pre><code>##               Estimate  Std. Error   t value     Pr(&gt;|t|)
+## (Intercept)  0.1876197 0.001984288  94.55264 0.000000e+00
+## asbestos    -0.1376235 0.006571463 -20.94260 5.727435e-97
+## cancer       0.2634974 0.005386273  48.92017 0.000000e+00</code></pre>
+<p>and find a “significant” coefficient on <code>asbestos</code> — because conditioning on <code>cancer</code> opens up the collider path. The coefficient is real (the conditional association is real), but it has no causal interpretation. “Adjusting for cancer” was exactly the wrong move.</p>
+<p>The correct regression for the causal question “does asbestos affect yellow teeth?” is</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">summary</span>(<span class="kw">lm</span>(yellow <span class="op">~</span><span class="st"> </span>asbestos, <span class="dt">data =</span> df))<span class="op">$</span>coefficients</span></code></pre></div>
+<pre><code>##                 Estimate  Std. Error     t value  Pr(&gt;|t|)
+## (Intercept)  0.216416252 0.001939769 111.5680539 0.0000000
+## asbestos    -0.005154271 0.006129187  -0.8409388 0.4003862</code></pre>
+<p>The coefficient on <code>asbestos</code> is essentially zero. Good — that matches the truth in the DAG.</p>
+<p><strong>This is the entire reason DAGs matter in practice.</strong> “Just throw everything into the regression” is not a safe default. Whether you should condition on a variable depends on its role in the causal graph: confounders should usually be in the regression; colliders and descendants of the treatment should usually be left out.</p>
+<h2 id="py-mid-x-x-vs.-py-mid-mathrmdox-x"><span class="math inline">\(P(Y \mid X = x)\)</span> vs. <span class="math inline">\(P(Y \mid \mathrm{do}(X = x))\)</span></h2>
+<p>This is the heart of the matter. There are two very different questions you might ask:</p>
+<ul>
+<li><strong>Observational</strong>: <span class="math inline">\(P(Y \mid X = x)\)</span> — “Among people whose <span class="math inline">\(X\)</span> happens to be <span class="math inline">\(x\)</span>, what’s the distribution of <span class="math inline">\(Y\)</span>?”</li>
+<li><strong>Interventional</strong>: <span class="math inline">\(P(Y \mid \mathrm{do}(X = x))\)</span> — “If we <em>forced</em> <span class="math inline">\(X\)</span> to be <span class="math inline">\(x\)</span> (severing whatever normally determines <span class="math inline">\(X\)</span>), what’s the distribution of <span class="math inline">\(Y\)</span>?”</li>
+</ul>
+<p>The first is just conditioning on observed data. The second is asking about a hypothetical experiment.</p>
+<p>These two are not equal in general. They’re only equal when <span class="math inline">\(X\)</span> doesn’t share a cause with <span class="math inline">\(Y\)</span> — i.e., when conditioning on <span class="math inline">\(X\)</span> behaves the same as physically setting <span class="math inline">\(X\)</span>.</p>
+<h3 id="simulating-the-do-operator">Simulating the do-operator</h3>
+<p>The cleanest way to internalize <span class="math inline">\(\mathrm{do}\)</span> is to simulate from the modified graph. Setting <span class="math inline">\(\mathrm{do}(\text{Asbestos} = 1)\)</span> means: re-run the data-generating process, but always force <code>Asbestos</code> to 1, ignoring its usual marginal distribution.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>intervene_asbestos &lt;-<span class="st"> </span><span class="cf">function</span>(n, asbestos_value){</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>  smoking  &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.3</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>  asbestos &lt;-<span class="st"> </span><span class="kw">rep</span>(asbestos_value, n)               <span class="co"># forced</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>  tar      &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="kw">ifelse</span>(smoking <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="fl">0.85</span>, <span class="fl">0.05</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>  yellow   &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, <span class="kw">ifelse</span>(smoking <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="fl">0.60</span>, <span class="fl">0.05</span>))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>  p_cancer &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="fl">0.02</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.30</span> <span class="op">*</span><span class="st"> </span>tar <span class="op">+</span><span class="st"> </span><span class="fl">0.50</span> <span class="op">*</span><span class="st"> </span>asbestos, <span class="fl">0.95</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>  cancer   &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dv">1</span>, p_cancer)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>  <span class="kw">data.frame</span>(smoking, asbestos, tar, yellow, cancer)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>}</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>df_do1 &lt;-<span class="st"> </span><span class="kw">intervene_asbestos</span>(<span class="dv">50000</span>, <span class="dv">1</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a>df_do0 &lt;-<span class="st"> </span><span class="kw">intervene_asbestos</span>(<span class="dv">50000</span>, <span class="dv">0</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a><span class="kw">mean</span>(df_do1<span class="op">$</span>yellow)</span></code></pre></div>
+<pre><code>## [1] 0.21428</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">mean</span>(df_do0<span class="op">$</span>yellow)</span></code></pre></div>
+<pre><code>## [1] 0.21334</code></pre>
+<p>These two means are essentially identical: <span class="math inline">\(\mathrm{do}(\text{Asbestos} = 1)\)</span> and <span class="math inline">\(\mathrm{do}(\text{Asbestos} = 0)\)</span> produce the same distribution of yellow teeth, because asbestos has no causal path to yellow teeth in the DAG.</p>
+<p>That’s the “no causal effect” claim formalised.</p>
+<p>Meanwhile, the conditional probability among people who happened to have asbestos exposure <em>and</em> cancer was different from the marginal — that’s the observational <code>lm(yellow ~ asbestos + cancer)</code> finding from earlier. The two statements are not in conflict: one is about the joint distribution of observables; the other is about an intervention. They’re answering different questions.</p>
+<h2 id="identifying-causal-effects-from-observational-data">Identifying causal effects from observational data</h2>
+<p>The next question: when we don’t have the luxury of a randomised experiment (the actual gold standard for computing <span class="math inline">\(P(Y \mid \mathrm{do}(X))\)</span>), can we recover causal effects from observational data alone?</p>
+<p>The answer is <strong>sometimes</strong>, and three classical strategies cover most of practice.</p>
+<h3 id="strategy-1-regression-with-the-right-controls-backdoor-adjustment">Strategy 1: regression with the right controls (backdoor adjustment)</h3>
+<p>If we have the DAG and observe enough variables, there’s a formal recipe (the <strong>backdoor criterion</strong>) for which set of variables we should condition on to make a regression coefficient have a causal interpretation. The rough rule:</p>
+<ul>
+<li><strong>Do</strong> control for variables on paths between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> that go <em>backwards</em> into <span class="math inline">\(X\)</span> (confounders).</li>
+<li><strong>Don’t</strong> control for descendants of <span class="math inline">\(X\)</span>, or for colliders that aren’t on any backdoor path.</li>
+</ul>
+<p>This is the move that turns “<span class="math inline">\(X\)</span> is associated with <span class="math inline">\(Y\)</span> controlling for <span class="math inline">\(Z\)</span>” into “<span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span>.” But it requires the DAG: there’s no algorithm that picks the right controls from the data alone.</p>
+<h3 id="strategy-2-instrumental-variables">Strategy 2: instrumental variables</h3>
+<p>Suppose you want the effect of <code>Smoking</code> on <code>Health</code>, and you suspect there are unmeasured confounders (people who smoke might also live unhealthier lives in ways you can’t observe). An <strong>instrument</strong> <span class="math inline">\(I\)</span> is a variable that:</p>
+<ol type="1">
+<li>affects <code>Smoking</code>,</li>
+<li>has no direct effect on <code>Health</code> except through <code>Smoking</code>, and</li>
+<li>is not confounded with <code>Health</code>.</li>
+</ol>
+<p><code>Cigarette tax</code> is a candidate: it changes with state and over time, drives smoking rates, and arguably doesn’t affect health except through smoking.</p>
+<pre><code>Tax  ───►  Smoking  ───►  Health</code></pre>
+<p>If those three conditions hold, you can read off the causal effect of <code>Smoking → Health</code> from the relationship between <code>Tax</code> and <code>Health</code>, even with unmeasured confounders on the smoking↔︎health link. This is a strong assumption — instrument-validity arguments are usually the hardest part of an IV paper.</p>
+<h3 id="strategy-3-matching">Strategy 3: matching</h3>
+<p>For each treated unit (e.g., a person who smoked), find an untreated unit that looks the same on every measured covariate. Compare them. Repeat. The estimated effect is the average of the within-pair differences.</p>
+<p>The hope: if you’ve matched on every confounder, the matched pairs differ only on the treatment, so you’ve recovered the counterfactual. The catch: you have to actually have measured the confounders, and you have to pair on all of them. <strong>Propensity score matching</strong> is the most common automated version.</p>
+<h2 id="a-bigger-dag-brushing-and-heart-disease">A bigger DAG: brushing and heart disease</h2>
+<p>A motivating worry: people who brush their teeth a lot also tend to exercise more, eat better, and so on, because they share a latent trait (“conscientiousness” / health-consciousness). A naïve regression of <code>Heart Disease ~ Brushing</code> will say brushing prevents heart disease — but the effect could be entirely driven by the confounder.</p>
+<p>The DAG (Shalizi, Ch. 22):</p>
+<pre><code>        Health-consciousness ──────────────┐
+            │                              │
+            ▼                              ▼
+  Brushing ──► Gum disease ──► Inflammation ──► Heart disease
+            │                                          ▲
+            │  Exercise ──► (fat in diet) ─────────────┘
+            ▼
+       (paths via the dental side)</code></pre>
+<p>To estimate the causal effect of brushing on heart disease, you’d need to either (a) observe and condition on health-consciousness (impossible — it’s latent), (b) find an instrument that shifts brushing without affecting heart disease through any other channel (also hard), or (c) run an experiment where brushing is randomized (ethically and logistically dubious).</p>
+<p>This is the honest reason most observational claims about lifestyle and chronic disease are heavily caveated. The DAG forces you to be explicit about the assumptions that would make a causal claim defensible — and often, <em>no</em> assumption available to you is defensible.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li><span class="math inline">\(P(Y \mid X = x)\)</span> and <span class="math inline">\(P(Y \mid \mathrm{do}(X = x))\)</span> are different objects. Standard statistics gives you the first; causal inference is the project of getting to the second.</li>
+<li>A causal effect is identifiable from observational data only under structural assumptions, usually encoded as a DAG.</li>
+<li>The three practical strategies for observational causal inference are: regression with the right controls (backdoor adjustment), instrumental variables, and matching. All require assumptions the data alone cannot verify.</li>
+<li>When in doubt, the safe statement is “<span class="math inline">\(X\)</span> is <em>associated</em> with <span class="math inline">\(Y\)</span>.” That’s a claim about <span class="math inline">\(P(Y \mid X)\)</span>, and you don’t need a causal model to back it up.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Shalizi, <em>Advanced Data Analysis from an Elementary Point of View</em>, Ch. 21–24 — the source of the smoking/asbestos DAG and the framework above.</li>
+<li>Pearl, <em>Causality</em> (2009) — the canonical formal treatment of <span class="math inline">\(\mathrm{do}\)</span> and identification.</li>
+<li>Pearl, Glymour &amp; Jewell, <em>Causal Inference in Statistics: A Primer</em> — a more accessible introduction.</li>
+<li>Hernán &amp; Robins, <em>Causal Inference: What If</em> — the standard reference for epidemiology and the potential-outcomes framework.</li>
+</ul>
+</div>
+</body>
+</html>

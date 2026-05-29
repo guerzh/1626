@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>The Truth About Linear Regression: Collinearity, Omitted Variables, Interactions</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">The Truth About Linear Regression: Collinearity, Omitted Variables, Interactions</h1>
+</header>
+<p>This topic is built around a deck called “The Truth About Linear Regression” — material based on Cosma Shalizi’s textbook (which is free online if you are interested).</p>
+<p>There’s an XKCD comic that captures the spirit: “I used to think correlation implied causation. Then I took a statistics class. Now I don’t.” “Sounds like the class helped.” “Well, maybe.”</p>
+<p>So here is Shalizi’s framing. These are <strong>lies about linear regression</strong> — things people commonly believe that aren’t true.</p>
+<h2 id="lie-1.-a-variable-has-a-significant-regression-coefficient-so-it-must-influence-the-response.">Lie 1. “A variable has a significant regression coefficient, so it must influence the response.”</h2>
+<p>Not necessarily. That is correlation/causation. Discussed in detail in the correlation-vs-causation topic.</p>
+<h2 id="lie-2.-a-variable-has-an-insignificant-regression-coefficient-so-it-doesnt-influence-the-response.">Lie 2. “A variable has an insignificant regression coefficient, so it doesn’t influence the response.”</h2>
+<p>Also not necessarily. We will see this with collinearity below, and with errors in variables.</p>
+<h2 id="lie-3.-if-the-input-variable-changes-by-1-we-can-predict-the-change-in-the-response-by-plugging-it-into-the-regression.">Lie 3. “If the input variable changes by 1, we can predict the change in the response by plugging it into the regression.”</h2>
+<p>Also not always true. Again, collinearity is one mechanism.</p>
+<h2 id="collinearity">Collinearity</h2>
+<p>Suppose you have two predictor variables: someone’s weight and someone’s height. We are predicting GPA:</p>
+<p><span class="math display">\[\widehat{\text{GPA}} = a_0 + a_1 \cdot \text{height} + a_2 \cdot \text{weight}.\]</span></p>
+<p>Weight and height are correlated — taller people tend to weigh more, and vice versa. Now we estimate <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>.</p>
+<p>The problem: if height and weight are highly correlated, <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span> are basically not going to tell you much. You can push <span class="math inline">\(a_1\)</span> up and <span class="math inline">\(a_2\)</span> down (or the other way), and the prediction is going to be kind of the same, because weight and height are essentially the same variable on different scales.</p>
+<p>So the value of <span class="math inline">\(a_1\)</span> doesn’t really tell you about how GPA is related to height. There is no unique answer — there is a trade-off between <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>.</p>
+<p>As a result, you cannot say:</p>
+<blockquote>
+<p>“Increase the height by 1 cm and GPA rises by <span class="math inline">\(a_1\)</span>.”</p>
+</blockquote>
+<p>Even if <span class="math inline">\(a_1\)</span> happens to be, say, 0.1. The reason: <span class="math inline">\(a_1\)</span> could be lower, <span class="math inline">\(a_2\)</span> could be higher, and the data would still be fit.</p>
+<h3 id="solutions">Solutions</h3>
+<ul>
+<li><strong>Remove redundant variables.</strong> Weight and height both measure “the size of a person”; just use one. Sometimes solves the issue, but can be dangerous: they might not be perfectly correlated, so dropping one throws information away.</li>
+<li><strong>PCA and related dimensionality-reduction techniques.</strong> Combine correlated variables into one or two principal components. Also has its own problems (the components are not interpretable as “height” or “weight” anymore).</li>
+</ul>
+<h2 id="omitted-variable-bias">Omitted-variable bias</h2>
+<p>You are trying to predict GPA from height and weight. You see that <span class="math inline">\(a_1 &gt; 0\)</span> and <span class="math inline">\(a_2 &gt; 0\)</span>. You might be tempted to say height and weight are positively associated with GPA in some interesting way.</p>
+<p>But there might be a <strong>lurking variable</strong> that is the actual cause. For example, <strong>early-childhood nutrition.</strong> Good nutrition → you grow taller and have appropriate weight; also good nutrition → better cognitive development → higher GPA. There is no direct effect of height or weight on GPA — both height-and-weight and GPA are downstream of nutrition.</p>
+<h3 id="the-canonical-example-ice-cream-and-drownings">The canonical example: ice cream and drownings</h3>
+<p>People often say that the amount of ice cream consumed in a day is correlated with the number of drownings in that day. This is <strong>true</strong>.</p>
+<p>The lurking variable: <strong>the weather</strong>. Nice weather → people go to the beach → more ice cream eaten AND more swimming → more drownings.</p>
+<p>If you actually want a model, you can include the weather as a predictor. Then conditional on the weather, the spurious correlation between ice cream and drownings disappears.</p>
+<h3 id="fisher-and-smoking">Fisher and smoking</h3>
+<p>Ronald Fisher — same Fisher as in “fishers exact test” and frequentist statistics in general — was famously unconvinced to his final days that smoking causes lung cancer. He said that yes, smoking and lung cancer are correlated, but: maybe <strong>genetics</strong> causes some people to both smoke and have lung cancer. Or maybe people who are getting ill (independently) feel sad and want to smoke. Common-cause arguments.</p>
+<p>He was probably wrong. (There are also claims he was paid by tobacco companies; I don’t know.) But the structure of the argument is logically valid — for any correlation, there is always the possibility of a common cause.</p>
+<h2 id="what-to-control-for-the-gender-wage-gap">What to control for: the gender wage gap</h2>
+<p>It is widely reported that there is a wage gap between men and women. If you just regress:</p>
+<p><span class="math display">\[\text{wage} = a_0 + a_1 \cdot I_{\text{male}}\]</span></p>
+<p><span class="math inline">\(a_1\)</span> comes out significantly positive — men, on average, have higher wages, in Canada and the US and many countries.</p>
+<p>Now you ask: are there lurking variables? And do you want to include them?</p>
+<h3 id="add-gave_birth">Add <code>gave_birth</code></h3>
+<p><span class="math display">\[\text{wage} = a_0 + a_1 \cdot I_{\text{male}} + a_2 \cdot I_{\text{gave\_birth}}.\]</span></p>
+<p>What happens: <span class="math inline">\(a_2\)</span> becomes negative and <span class="math inline">\(a_1\)</span> becomes much smaller. Women who don’t give birth have wages very close to male wages. The story: giving birth → child-care responsibilities → maternity leave → career suffers → lower wages.</p>
+<p>The question becomes: which model is “right”? Is the original gender wage gap explained “by” having given birth?</p>
+<ul>
+<li>One reading: the causal mechanism is real (no one disputes that child-care responsibilities affect wages), so we should control for it.</li>
+<li>Another reading: society is structured in a way that makes that happen. There is insufficient compensation for parental leave (and especially maternal leave). The “real” cause is structural.</li>
+</ul>
+<h3 id="add-field_of_employment">Add <code>field_of_employment</code></h3>
+<p>If you add field of employment, a lot of the remaining gap gets attributed to field choice. Female-dominated fields historically have lower wages.</p>
+<ul>
+<li>One reading: people just choose to go into different fields; no gap once you control for it.</li>
+<li>Another reading: society is structured such that female-dominated fields get paid less on average.</li>
+</ul>
+<p>This is more a matter of <strong>interpretation</strong> than of math. Math tells you what the coefficients are; it doesn’t tell you what the causal structure is, and even less how to interpret it. You could control for the <em>name</em> of every individual and have zero gap — which would obviously be meaningless.</p>
+<h3 id="harvard-admissions-lawsuit">Harvard admissions lawsuit</h3>
+<p>Another example, more recent: there was a US Supreme Court lawsuit against Harvard alleging that Asian applicants had better grades but lower interview scores, and consequently needed higher grades for the same admission probability. The counter: the interview score is measuring a real thing.</p>
+<p>If you read the statistician briefs for both sides, you have highly qualified people arguing for completely different interpretations — and that kind of indicates that statistics alone is not enough to decide, because you can use statistics to “prove” basically whatever, depending on what you control for.</p>
+<h2 id="errors-in-variables">Errors in variables</h2>
+<p>Input variables are measured imperfectly. For example, family income — you never know the family income; you know what the family says on a survey, which is probably inaccurate.</p>
+<p>Imprecise measurement of an input tends to make its coefficient <strong>smaller in magnitude</strong> (toward zero). Intuition: imagine the input is pure noise (measured infinitely imprecisely). Then the only thing the model can do is multiply it by zero and ignore it.</p>
+<h2 id="large-sample-size-makes-everything-significant">Large sample size makes everything “significant”</h2>
+<p>If your sample size is large enough, all the coefficients are going to be significant — you can reject zero for everything — just because your standard errors get tiny.</p>
+<p>Even a coefficient of 0.000001 can be statistically significant if you have a billion rows. But the effect size is meaningless.</p>
+<h2 id="interactions">Interactions</h2>
+<p>There is one more important pattern: the effect of one variable depends on the value of another. We add an <strong>interaction term</strong>.</p>
+<h3 id="the-avocado-bacon-example">The avocado / bacon example</h3>
+<p>(The lecturer is vegetarian, but the example is illustrative.)</p>
+<p>The data:</p>
+<pre><code>| avocado | bacon | deliciousness |
+|---------|-------|---------------|
+|   no    |  no   |     1         |
+|   no    | yes   |     3         |
+|  yes    |  no   |     3         |
+|  yes    | yes   |     9         |</code></pre>
+<p>The claim: adding avocado has a different effect depending on whether the sandwich has bacon.</p>
+<ul>
+<li>No bacon: avocado adds <span class="math inline">\(3 - 1 = 2\)</span>.</li>
+<li>With bacon: avocado adds <span class="math inline">\(9 - 3 = 6\)</span>.</li>
+</ul>
+<h3 id="why-a-plain-additive-model-cant-fit">Why a plain additive model can’t fit</h3>
+<p>Our initial model:</p>
+<p><span class="math display">\[\text{deliciousness} = a_0 + a_1 \cdot I_{\text{avocado}} + a_2 \cdot I_{\text{bacon}}.\]</span></p>
+<p>From this, <strong>every time you add avocado, you add <span class="math inline">\(a_1\)</span> to deliciousness, no matter what.</strong> That’s the whole point of an additive model. So this formula can never reproduce the data (2 vs 6 for adding avocado).</p>
+<h3 id="adding-the-interaction-term">Adding the interaction term</h3>
+<p>Add a third term:</p>
+<p><span class="math display">\[\text{deliciousness} = a_0 + a_1 \cdot I_{\text{avocado}} + a_2 \cdot I_{\text{bacon}} + a_{12} \cdot I_{\text{avocado}} \cdot I_{\text{bacon}}.\]</span></p>
+<p>The product term is 1 only when both <code>avocado</code> and <code>bacon</code> are 1.</p>
+<p>Solve for the coefficients from the four data points:</p>
+<ul>
+<li>No avocado, no bacon: <span class="math inline">\(a_0 = 1\)</span>.</li>
+<li>No avocado, bacon: <span class="math inline">\(a_0 + a_2 = 3 \Rightarrow a_2 = 2\)</span>.</li>
+<li>Avocado, no bacon: <span class="math inline">\(a_0 + a_1 = 3 \Rightarrow a_1 = 2\)</span>.</li>
+<li>Avocado, bacon: <span class="math inline">\(a_0 + a_1 + a_2 + a_{12} = 9 \Rightarrow 1 + 2 + 2 + a_{12} = 9 \Rightarrow a_{12} = 4\)</span>.</li>
+</ul>
+<p>So the interaction coefficient is <span class="math inline">\(a_{12} = 4\)</span>, and the model fits the data exactly.</p>
+<h3 id="general-principle">General principle</h3>
+<p>If the effect of <span class="math inline">\(x_1\)</span> on <span class="math inline">\(y\)</span> is different depending on the value of <span class="math inline">\(x_2\)</span>, you can add the term <span class="math inline">\(x_1 x_2\)</span> to the regression. That is called an interaction:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">lm</span>(deliciousness <span class="op">~</span><span class="st"> </span>avocado <span class="op">*</span><span class="st"> </span>bacon, <span class="dt">data =</span> df)</span></code></pre></div>
+<p>In R, the <code>*</code> in the formula means “include both main effects and the interaction.” <code>avocado:bacon</code> would be just the interaction.</p>
+<h3 id="when-to-add-an-interaction">When to add an interaction</h3>
+<p>Add it when you have a <strong>theoretical reason</strong> to expect that the effect of one variable depends on another. Then test whether <span class="math inline">\(a_{12} = 0\)</span> — if you reject, that’s evidence the interaction is real.</p>
+<p>Don’t just throw interactions in everywhere; you’ll end up with multiple-comparisons issues again, and lots of trivially-significant interaction terms that don’t mean anything.</p>
+<h2 id="what-you-do-in-general">What you do in general</h2>
+<p>To summarize this whole “truth about linear regression” topic:</p>
+<ol type="1">
+<li>Identify which variables could conceivably influence the response.</li>
+<li>Ask about lurking variables — are there inputs that aren’t measured but matter?</li>
+<li>If you have theoretical justification, add interactions.</li>
+<li>Check the model with diagnostics.</li>
+<li>Run the regression and test your specific hypothesis.</li>
+</ol>
+<p>Step 5 — testing your hypothesis — is just one step. Most of the work is in 1–4.</p>
+</div>
+</body>
+</html>

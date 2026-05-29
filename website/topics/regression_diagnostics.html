@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Regression Diagnostics</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Regression Diagnostics</h1>
+</header>
+<p>This is about: when can you trust the p-values that <code>summary(lm(...))</code> gives you? When the assumptions hold. When do they hold? Let’s see.</p>
+<h2 id="refresher-linear-regression">Refresher: linear regression</h2>
+<p>We have inputs <span class="math inline">\(x^{(i)}\)</span> and outputs <span class="math inline">\(y^{(i)}\)</span>. The prediction is <span class="math inline">\(\hat y^{(i)} = a_0 + a_1 x_1^{(i)} + \cdots + a_n x_n^{(i)}\)</span>. The <strong>residual</strong> is the difference between the correct answer and the estimated answer:</p>
+<p><span class="math display">\[r^{(i)} = y^{(i)} - \hat y^{(i)}.\]</span></p>
+<p>We minimize the sum of squared residuals — that is the cost function for linear regression. Ordinarily <span class="math inline">\(y\)</span> is continuous (logistic was the special case for binary <span class="math inline">\(y\)</span>).</p>
+<p>For inference, the null hypothesis is usually of the form <span class="math inline">\(a_j = 0\)</span> for some <span class="math inline">\(j\)</span>. The test: read off the p-value from <code>summary(lm(...))</code>.</p>
+<p>The problem is that <strong>just reading off the p-value is really bad practice</strong>, because the p-value can be large or small for reasons not directly related to whether your actual hypothesis is true or false.</p>
+<h2 id="the-assumptions">The assumptions</h2>
+<p>If the assumptions are wrong, the p-value is <em>still computed</em> by the formula — but the number doesn’t mean anything.</p>
+<ol type="1">
+<li><strong>Linearity.</strong> The expectation <span class="math inline">\(E[y \mid x]\)</span> is linear in <span class="math inline">\(x\)</span>. If the relationship is not actually linear, the p-values mean nothing. Sometimes you can fix this by transforming variables (e.g., take the log of GDP per capita).</li>
+<li><strong>Residuals normally distributed around zero.</strong> The “noise” term in the regression model is <span class="math inline">\(N(0, \sigma^2)\)</span>, so the residuals — if your model is right — should look approximately normal.</li>
+<li><strong>Residuals independent.</strong> If the residuals for nearby <span class="math inline">\(x\)</span> values cluster (positive, positive, negative, negative, positive, positive…), they are not independent, which also breaks the p-value interpretation.</li>
+</ol>
+<h2 id="spotting-non-linearity-by-eye">Spotting non-linearity by eye</h2>
+<p>We saw gapminder before. If you regress life expectancy on raw GDP per capita, the picture is wrong:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(gapminder)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">ggplot</span>(gapminder, <span class="kw">aes</span>(<span class="dt">x =</span> gdpPercap, <span class="dt">y =</span> lifeExp)) <span class="op">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<figure>
+<img src="figure-regression_diagnostics/unnamed-chunk-1-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-1</figcaption>
+</figure>
+<p>It is not even a straight line. So we definitely cannot run linear regression on it as-is. We transform: regress life expectancy on <code>log(GDP per capita)</code>. That works.</p>
+<p>If you don’t fix this, the p-value will be computed by the formula, but it just doesn’t mean anything.</p>
+<h3 id="sketching-the-issue-with-residuals">Sketching the issue with residuals</h3>
+<p>If you have a curve through the data that is fitting a straight line to a U-shape, all the residuals are going to be systematically positive or systematically negative for different ranges. That is “not normally distributed around zero” and “not independent” all at once.</p>
+<h2 id="diagnostic-plots">Diagnostic plots</h2>
+<p>When you call <code>plot(lm_fit)</code>, R gives you four diagnostic plots. Let’s run them.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>gap_<span class="dv">1982</span> &lt;-<span class="st"> </span>gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1982</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap), <span class="dt">data =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">plot</span>(model)</span></code></pre></div>
+<figure>
+<img src="figure-regression_diagnostics/unnamed-chunk-2-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-2</figcaption>
+</figure>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
+<h3 id="residuals-vs-fitted">1. Residuals vs Fitted</h3>
+<p>This plots the residuals against the fitted values <span class="math inline">\(\hat y\)</span>.</p>
+<p>What you expect when the model is correct: a fuzzy cloud around 0 with no systematic pattern — for some fitted values residuals are positive, for some negative, and the amounts are comparable.</p>
+<p>What goes wrong: if residuals systematically clump (e.g., all positive for small <span class="math inline">\(\hat y\)</span>, all negative for medium <span class="math inline">\(\hat y\)</span>, all positive again for large <span class="math inline">\(\hat y\)</span>), that indicates non-linearity, non-independence, or both.</p>
+<h3 id="qq-plot-of-residuals">2. Q–Q plot of residuals</h3>
+<p>Q–Q stands for quantile–quantile. You take all the observations (here, residuals) and compare them to a normal distribution. If the residuals are perfectly normal, the points should lie on a straight line. Deviations from the line indicate heavier-than-normal tails or outliers.</p>
+<p>In the gapminder fit, you typically see the tails go further than what you would expect from a perfectly normal distribution — there are some outliers on the left and some on the right. Most of the points are on the line; it is fine.</p>
+<h3 id="scale-location">3. Scale-Location</h3>
+<p>This plots the square root of the standardized residuals against the fitted values. Ideally this is a flat horizontal cloud — the variance of residuals is the same regardless of fitted value.</p>
+<p>If the cloud grows with the fitted value, the variance is not constant — your assumption is violated. The residuals are larger in absolute terms when the prediction is larger.</p>
+<p>Why might that happen? Imagine your error is <strong>multiplicative</strong> rather than <strong>additive</strong>: if life expectancy is 50, you might be off by ±5; if life expectancy is 70, you might be off by ±7. That is “plus or minus a percent” rather than “plus or minus a constant.” If you see Scale-Location growing with fitted value, that is an argument for predicting <code>log(y)</code> instead of <code>y</code> — because <span class="math inline">\(\log(0.9 y) = \log y + \log 0.9\)</span>, which makes multiplicative on the original scale into <em>additive</em> on the log scale.</p>
+<h3 id="residuals-vs-leverage">4. Residuals vs Leverage</h3>
+<p>Tells you which observations have a lot of <em>influence</em> on the fit. Standardized residuals on one axis, leverage on the other. Mostly a sanity check; lets you spot specific high-influence outliers.</p>
+<h2 id="outliers">Outliers</h2>
+<p>You can look up the row numbers of the most extreme residuals:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>worst &lt;-<span class="st"> </span><span class="kw">order</span>(<span class="kw">abs</span>(<span class="kw">residuals</span>(model)), <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>gap_<span class="dv">1982</span>[worst, ]</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 6
+##   country      continent  year lifeExp        pop gdpPercap
+##   &lt;fct&gt;        &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
+## 1 Angola       Africa     1982    39.9    7016384     2757.
+## 2 Sierra Leone Africa     1982    38.4    3464522     1465.
+## 3 China        Asia       1982    65.5 1000281000      962.
+## 4 Myanmar      Asia       1982    58.1   34680442      424 
+## 5 Sri Lanka    Asia       1982    68.8   15410151     1648.</code></pre>
+<p>Doing this on <code>gap_1982</code>, the most extreme outliers tend to be resource-export economies (Sierra Leone, Angola, Gabon — diamonds, oil, etc.).</p>
+<p>The issue: if you are a resource-intensive economy, your GDP per capita might be kind of high, but this is all resource exports — so this GDP per capita doesn’t really influence life expectancy the way you would expect. There are several extremely rich countries today that are mostly rich because of resource exports; their life expectancy is good, but not in proportion to how rich they are.</p>
+<h3 id="should-you-throw-out-the-outliers">Should you throw out the outliers?</h3>
+<p>Here, <strong>I would not</strong>. If you start throwing out data points because “oh, they have too much diamonds, so they don’t count” — well, you end up throwing out lots of countries because there are special circumstances always. The relationship you are interested in is between life expectancy and GDP per capita. If you start making exceptions, that is more an argument that maybe GDP per capita is not what you care about — maybe you care about GDP per capita not including resource extraction. But that’s an argument about what you want to measure, not about how to construct a data frame.</p>
+<p>A subjective call, depending on the question. If the question is the general relationship between GDP per capita and life expectancy, leave them in. If the question is specifically about how the resource economies behave, separate them out with another input variable.</p>
+<h2 id="after-diagnostics-read-the-summary">After diagnostics: read the summary</h2>
+<p>Once you are satisfied the model is approximately correct, you can interpret the table. Let’s add the categorical variable <code>continent</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>model2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap) <span class="op">+</span><span class="st"> </span>continent, <span class="dt">data =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">summary</span>(model2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(lifeExp) ~ log(gdpPercap) + continent, data = gap_1982)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.32013 -0.03726  0.00159  0.05155  0.23043 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       3.258174   0.066364  49.096  &lt; 2e-16 ***
+## log(gdpPercap)    0.091712   0.008847  10.366  &lt; 2e-16 ***
+## continentAmericas 0.128518   0.025350   5.070 1.28e-06 ***
+## continentAsia     0.115691   0.021698   5.332 3.94e-07 ***
+## continentEurope   0.153334   0.028489   5.382 3.13e-07 ***
+## continentOceania  0.148506   0.069386   2.140   0.0341 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.09141 on 136 degrees of freedom
+## Multiple R-squared:  0.7645, Adjusted R-squared:  0.7559 
+## F-statistic: 88.32 on 5 and 136 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p><code>log(gdpPercap)</code> is definitely positively associated with life expectancy — positive coefficient, very small p-value.</p>
+<p>For the continents, the table shows one row per continent (with one dropped as the baseline). Each row gets a coefficient with its own p-value.</p>
+<p>For example, the Asia coefficient is around <span class="math inline">\(+0.07\)</span> with an SE around <span class="math inline">\(0.03\)</span> — about <span class="math inline">\(2.5 \cdot 0.03 \approx 0.075\)</span> — so the 95% CI is roughly <span class="math inline">\([0, 0.15]\)</span>. Plus a small p-value. The interpretation: “when you’re estimating the life expectancy for a country in Asia, you add about 0.07 (on log scale) — that is definitely not zero.” So the prediction for Asia is definitely different from the prediction for the baseline (Africa).</p>
+<h2 id="the-multiple-comparisons-problem-in-regression">The multiple-comparisons problem in regression</h2>
+<p>In general, if you read off multiple p-values, one of them is going to be small <strong>just by chance</strong>. That is the multiple-comparisons problem.</p>
+<p>What you would do if you are really rigorous: <strong>pre-decide</strong> on the specific question. For example, “in a given year, is the life expectancy in Asia higher than the life expectancy in Africa?” Then run the regression and look at <em>that one</em> coefficient. If its p-value is &lt; 5%, reject the null. That is pre-registration.</p>
+<p>What people often actually do: look at all the coefficients and report whichever is small. If you look at <span class="math inline">\(k\)</span> coefficients, even if everything is null, you’d expect <span class="math inline">\(0.05k\)</span> of them to be “significant” by chance. So unless your sample is very small, almost something is going to come out “significant”.</p>
+<h2 id="the-f-test">The F-test</h2>
+<p>There is a single test that asks: are <em>all</em> the coefficients zero?</p>
+<p>The <code>summary(lm(...))</code> output reports an <strong>F-statistic</strong> at the bottom along with a p-value. If that p-value is small, you reject the joint null “all coefficients are zero” — at least one of them is non-zero.</p>
+<p>In R you can also compare two nested models:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>small &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap), <span class="dt">data =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>big   &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap) <span class="op">+</span><span class="st"> </span>continent, <span class="dt">data =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">anova</span>(small, big)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: log(lifeExp) ~ log(gdpPercap)
+## Model 2: log(lifeExp) ~ log(gdpPercap) + continent
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1    140 1.4848                                  
+## 2    136 1.1365  4   0.34832 10.421 2.158e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>If that p-value is small, the continents add real explanatory power on top of <code>log(gdpPercap)</code>.</p>
+<p>A common workflow: predecide that you will look at the F-test first. If the F-test rejects the joint null, then you have license to find a specific coefficient that is non-zero. Otherwise you are not allowed to claim any of them are.</p>
+</div>
+</body>
+</html>

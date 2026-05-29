@@ -1,0 +1,193 @@
+Uh so the midterm as uh we decided is uh on Friday. Uh so it's going to be like 1 hour 10 minutes. I did not finish writing it but I'll do something reasonable for that amount. We'll then have a break and then then we'll have a lecture. Uh because like especially because we missed the three the three hours that they did not think uh we'd miss. So yeah. Uh, so, um, I think I kind of did the usual thing as far as what people do for explaining the midterm, but I also recognize that it's a compressed course, so it's probably like a little bit stressful. So, the best thing that I would offer is, you know, make sure that you can do mini project one and two basically by yourself. So we are not testing you I'm not testing you on syntax or anything like that except to the extent that was advertised which is a small extent essentially you only need to be able to combine you know group by summarize mutate and you need to you need to be able to use replicates as needed and you need to uh and you need to kind of com combine things algebraically. So basically you like write math but in R I think if you do mini project one that should be kind of that should give you a very good idea of the kind of thing that they that they ask. I would caution like obviously I explicitly said that I don't care if you use AI or not. I genuinely do not just because like there's no way to police that like that that's not realistic. At the same time okay like the the midterm is the policing. So make sure that you can do things from scratch. Um uh I will so I will announce like a session tomorrow. Um I'll see you when I have time. I think I have time like tomorrow late afternoon. So we can just sit and you can work on whatever you want to work on and get help. Uh if you like if that helps. Um just ask questions uh whatever. Um, is there like there's not very many people in the class, so I'm open to kind of Is there like requests?
+
+Uh, okay. Like you're I I I do recognize that it's been like whatever two weeks, so it is kind of stressful. Uh, but it's just 10% and you you've you've all that you've all done at least five years of university already. It's going to be like that despite the fact that it's been whatever two weeks. Uh so that is that. So what I want to do today is I want to do a little bit of a workshop on agentic coding. So I cooked up an example that I think is kind of a reasonable example with like interesting stuff to do. So I'll do it and I invite you to kind of try to do it along with me as well and I want for at least the people who are here to kind of get something working uh out of it by the end. So this is the thing.
+
+So, I basically made up something that's kind of
+
+uh 1262. No,
+
+no, 166. Okay. So, uh I whipped up something that kind of works already. So, we now have a website as you've seen. Uh, so wait, where is it?
+
+Uh, psych. It's not posted. Uh, okay. Uh, that that that might actually be even better. So, I'll just tell you what my concept is and we'll work through it. And again, I encourage you to actually do it along with me. So, here's the idea. So we are we are doing kind of uh Reddit. So uh U of has a subreddit. Actually I think most people given what they saw in the project proposals most people are aware of Reddit. Is there anyone here who is like not aware of how this works? All right. Uh well it's it's a forum people post on it. So what they thought is okay I'll try to get something that's kind of interesting. I also noticed in a couple of proposes uh proposals uh people proposing to do sentiment analysis which I'm not against. I approved all of those. I do actually I do however want to give you an alternative uh kind of more modern uh things to things to do other than kind of the classical sentiment analysis from 15 years ago. So that's also going to come up. Anyway, sorry that was a long advertisement. So here's what I want to do.
+
+We have like a scenario here, right?
+
+So basically there is this subreddit with U of students. They talk about their experiences at U of some of those experiences are positive, some of those are negative. So that's the sentiment analysis that actually several people proposed. But by itself at least I believe that looking at sentiment anal just doing sentiment analysis. So to be clear if people don't know so sentiment analysis
+
+is uh basically taking in text
+
+and determining something like that whether the sentiment is something like positive, negative, neutral. Sometimes people uh rate those uh people have done a lot of this in part it just makes sense. So you have a lot of social media text. You for example want to know how someone feels about kind of some kind of stock. I think one one person in class is actually proposing to do that. And the idea is that if in general people on Twitter are talking positively about some kind of stock, you might imagine that it's going to go up tomorrow or something like that, right? Uh so that's the original sentiment. So to be very clear and to the person uh uh uh I I I wrote this in comments to whoever uh is proposing it uh this is not a good way to play on the stock market by itself. The reason this is not a good way to play on the stock market by itself is uh you you're you're playing against pros. Uh so every point firm that's uh also trying to predict next in fact not not next day's prices but the next seconds's prices is taking in all of Twitter. It's also taking earning calls. It's taking everything. It's doing everything including sentiment analysis. If you by yourself detect anything like that like within whatever even an hour that's already priced in. don't worry about it. So, uh, so there there are professionals doing it. With that said, it's not like it's not of scientific interest, right? So, you can still I forget what the idea was that they pitched uh uh for the stock market, but you can still say, okay, so uh uh yes, fine. like just looking at the sentiment that's already priced in. But can you look at the movement throughout the day and just not in terms of actually playing on the stock market, but saying okay like does the sentiment provide information over and above just is it going up throughout the day or is it going down throughout the day and presumably those are related, right? So of course like if it's going down the sentiment is not going to be positive but you know if you plug in two variables it starts being to my mind interesting and I think this is what they suggested to the person except grade scope is not inaccessible. So if you're hearing this this this this is my idea. Again I I apologize for the grade scope thing. I thought it would be fine for the summer. They decided that it's not fine. I don't know if they can restore it. So we're moving to quirkus for now. Uh if you lost a comment, just email me. I'll restore what I said uh about your project on the weekend. I hope I can remember it. It's possibly going to be an even better comment. Who knows? And I do remember everyone's grades. So yeah. Uh so okay. So anyway, going back to this. So uh let's say that you're working at uft
+
+uh want to know
+
+why students okay why students aren't happy early so like why why students are happy and why they're unhappy. Uh, so I think that's another way to put kind of an interesting spin on the sentiment analysis by itself. Just saying I'll take you of posts and I analyze each of them and see whether the student is happy or not. Okay, the best that that's going to tell you is the percentage of people on our U of who are happy and unhappy. And who cares? One, it might not even be about you of two, probably if they're happy in their life, maybe they're not on Reddit, but like there could be all sorts of things. At the end, you just get a number. It doesn't tell you anything. Uh, but you can say, okay, so the percentage, and I generally believe that the percentage of happy and unhappy posts on that subreddit just tells you nothing. It's it's just a number. uh if you can explore okay like why are those people unhappy are they actually unhappy about uft or life in general that gets to be more interesting uh so that is kind of what I want to do uh so okay so uh here's basically the plan for uh what I want to do here so I want to scrape like 1,000 argu So 1,00 is a little bit poor, but whatever.
+
+Uh, okay. Let's that it's a little bit 3,000. So I do want to do So I do want to separate them out into positive, negative, and neutral, but I also want to figure out which of them are not about U of at all. So if someone's just venting about the relationship or something, I mean, maybe it's U of's fault, but like probably not, right? So um
+
+uh so I want to say okay so like figure figure out which of the polls are actually about uft and are expressing a sentiment
+
+and and I want to say okay so like out of those what I want to do I'll introduce you to a method in this class when I was thinking about it it's like there's like lots of methods lots of things that you can do uh I'll introduce some of them I guess in the second half of the semester but here what I want to do is what's called kind of cluster the uh positive and negative uft related posts into topics uh So cluster has a mathematical meaning. Uh how many people know the word clust or like know like the kind of machine learning clustering? Okay. So cluster mean kind of means kind of separate into groups. Okay. And there's lots of methods. I'll introduce you to one of them. Okay. And the idea here is that the output would be
+
+I generally I I did run it at home but it's on my home computer. So we are re reproducing it from scratch and I I'll encourage you to do it with me. So the output would be uh the breakdown of what our uft bolsters are unhappy and happy about
+
+by topic. Make sense? So okay uh so we are starting to do it. So I'm going to do it with uh with the uh uh with with the agentic clot code. Uh I'll kind of interleaf between doing the thing uh here and checking stuff with that. Uh so this is going to be in Python. I believe everyone knows like a little bit of Python. I'm not actually going to write all that much Python. So hopefully that's fine. Uh h so is there anyone who does not have either codeex or quad code over here you uh does no means I do not have it or no means no I got it okay does anyone not have it I wasn't verified for the credits all right I'm sorry to hear that uh all right so um so there is still some credits uh so uh so so this is uh so this is kind the so this so this is the chat window uh if you didn't install clot code so cloud code I believe actually requires that you have uh a cloud account and I think a non-paid cloud account it just give you is giving you nothing uh this chat here is going to give you something uh do do you have this
+
+right uh So, uh, for you, like if you don't have free credits, uh, just kind of like you're you're going to run out pretty fast probably. So, when I say 3,000, you do 30 basically. Uh, so, okay. Uh, all right. So, does does this one work? So just to make sure uh so for the people who've never who've never done it just try just like try something quick. So open a folder. So I do file open folder. I select
+
+so I select the U of sentiment folder. That just like the folder where I decided to put my stuff. I do open
+
+name it like plan whatever. Uh but here uh I'm just going to build like some kind of Python code. I I know what what what what should we do? Um,
+
+okay.
+
+Yeah. And unfortunately, uh, if you don't have pi, I I wanted to play like a musical clip, but that would be annoying for some of you. Uh, so whatever that prints out whatever, like an asky Christmas tree or something. So I'm just saying this. It's going to create the file.
+
+Amazing. So
+
+here it is. Uh so here I say keep uh so over here you get to decide on which which model so you kind of have to say GPT claw is probably not available to you. Uh so it created this whatever so it prints this. So if I run it, so I just press
+
+Oh, come on.
+
+Sorry. Like the zoom thing is interfering.
+
+Okay, the zoom thing is really interfering. I'll run it like this.
+
+Uh, your run button should just work.
+
+Sorry.
+
+Okay, my run my run button now works and here you have like whatever the Christmas tree. All right, so that's the general workflow. So it created the file over here. So to see all the files if you don't see them uh you press the explorer button that gives you files. All right, does everyone have it working? I I imagine most people have done it anyways. Uh okay. All right. So, we're back to the plan. I'll switch to my expensive clot code.
+
+So, again, like we had done last time, I'll say
+
+uh so in principle by the way, so I created plan.txt. I can just tell it like look around and plant txt like tell me what you think like give me like a more elaborate plan. Uh it's going to do it. I don't usually use it as my workflow because it's kind of too easy at least for me to get lazy and stop reading and then you get nothing. Uh but you can in principle you could just say like this is the plan just elaborate run it by me and then go and see what's going on next. So okay. So, I'm going to say uh got me 3,000 posts uh from Ruft.
+
+Uh it is going to uh look at the plan anyways because the uh because the thing is open. So, it kind of knows what I'm thinking. Um I'm going to allow this. Uh so I'm going to switch to auto uh to auto mode here. So that is going to make it ask me for permission less.
+
+So while we're so while we're working on this uh how are we going to figure out which posts are actually about U of uh and how are we going to figure out whether they're expressing a sentiment? So the old way of doing this is you can have a language model that's spec well the really old way of doing this is look it look it up by keyword right so like look which uh posts mention things like university and uft and so on and then equally for positive emotions you you just look for words that correspond to pos positive emotions for negative emotions you look for words that correspond to negative emotions and you get a score of I have like this many words that are like happy, excited, whatever and I have this many words that are like sad, frustrating, whatever. And I add up how many of what kind of words I have and that gives me an idea of supposedly the sentiment being expressed. Uh that obviously has issues, right? So, for one thing, uh if you look things up by keywords, then uh if you have the phrase not happy in the post, you might accidentally just pick up on the happy, not on the not. That's a very common failure case for uh keyword based things is negation is tricky. You might think, oh, like what's your problem? Like look at not and just invert whatever. But then it could be like I'm not saying that I'm a county or something like that. And there you have like multiple negations. There's there's words that are separate and saying it's it's all complicated. Uh so the next iteration here uh which I'm not really going to teach you is taking a language model and fine-tuning it for a particular task for so essentially you're taking a model and you're teaching it okay like here are examples of positive emotions here example of negative emotions you know figure this out from examples uh that again is kind of old hat at this point. People do this, but they shouldn't. What actually works better is just asking the language model directly like here's the sentence, what's the sentence being expressed? So, we're going to we're going to obviously uh you know verify that it works, but it's but that that that actually just works better. So, um All right. So, are we okay? So, I got I got me some posts.
+
+Uh, so,
+
+so it did whatever. Uh, I I I think this is this actually seems like quite enough. Uh,
+
+so I can stop. Yes, I think it got unhappy because it only got like 2,2700 which is like uh completely fine. Just pressed escape stopped. Uh I'll I'll just tell it. So we are working with posts.
+
+Um, so okay. So we so we have this. So the next thing I want to do is I want to make it reproducible. So I'll tell it okay like we're working with U of post. I'll make a new file to a new file. A new file to process it. So I'll I'll just say okay. So like we now need
+
+uh to filter the post as uft related or not. Uh so I have claw in kind of in here already. The most straightforward thing that I could do is just tell it to do it. Except I need it to be reproducible. So here's what I would suggest we do.
+
+So, so like uh so what I'll say is this. So like make a new file for testing uh filtering to just uft related content.
+
+I'll say pick 100 pick 100 posts uh and
+
+and classify each using yourself I guess as oft related or not. So that we will have to check because we have no idea if that works or not. So, what I'll do is I'll ask it to dump all of that into an Excel file.
+
+So to make this uh I'll say like semi-reproducible
+
+make a Python file that does this
+
+right. So what's happening here is because I have the claude API here like you could imagine that you would like plug everything into cloud on the web or whatever. I don't need to do this because I have clo I have claude right here right uh I will I will I will then try to uh I will then try to verify how it works.
+
+So uh while we are doing this I will
+
+just I'm happy about so while we are doing this uh I will show you kind of the more civilized way of doing this uh which is you explicitly using an API. Uh so uh if you Google
+
+uh not open AI my name
+
+like this. Uh so essentially you can have a Python library where you make a request to um where where you make a request to for example for example open AAI as if you're using the JAG interface right or something something close to it. So the way it usually works is
+
+okay. So it actually wants to do it like this. I am going to refuse and I'm going to tell it just like do it yourself.
+
+Uh hopefully that works.
+
+So it wanted to do it the civilized way. I told to do it yourself. Yeah.
+
+Uh so uh so I mean like how how much it cost? Like the answer is pennies. Uh so uh so I'm paying like a flat fee and that's that's that's completely fine. But like this is like this is this is like very small. Uh so how many tokens uh uh we can find out? Uh
+
+uh so so like essentially the number of tokens is kind of like the the number of bytes in the file. So like however many well bytes well bytes is like letters so I guess like bytes divided by like two or three or something like that. Uh so but like it's it's it's nothing. Uh so
+
+right so while it's working
+
+I'll open another one.
+
+Okay. Sorry. I I will like it's it's just like not posted on the website. Uh give me just like one second. I'll post the civilized way on the website. Sorry. Uh it was for for some reason not on lecture uh not on like the lectured web page.
+
+Yeah. So so it's uh like it costs like so little that I am about to give you my API key.
+
+Uh
+
+uh sorry.
+
+Okay,
+
+Apologize for this.
+
+No.
+
+Oh, it's because it's topics.
+
+Yeah.
+
+Yeah, sorry about that. Did not post.
+
+All right. So what you want to do is just like open this link and if you save it you can open it in VS Code.
+
+Actually put it here.
+
+All right. Okay. So that so that that is the right top. We can open it in uh via uh with uh VS code as well. That is what I had been doing up until now. So I will just show you the civilized way of doing it.
+
+Oh no.
+
+Um, okay. After the break, I guess. Uh, but it's done with uh the previous thing. So, it made the Excel file. So, I specifically told it to make an Excel file just so that they can like read it more easily.
+
+All right. Uh so here we have uh so it just made it. So here it made a column that's like U of t related. Uh as you can kind of as you can kind of see it messed up a little bit. So it started saying false true and then it then it's then it's going like 1 zero. So that's like not not super promising. Uh what I would usually do like if it were a formal paper what I would do is I would go through every one of those. I would label them myself and then after the fact I would check whether the labels make sense or not. Uh, if it were like a peer-reviewed paper, I would ideally have several people do it, then measure how much of the time they agree and then look at the consensus versus kind of what said. Right now, I'm just doing kind of like a proof of concept. So, I'll just take a look at whether it kind of makes sense at all or not. That is kind of small.
+
+there.
+
+Uh, all right. So, this is supposedly true. So, going to keep this quick. I have some help for one of my assignment from this guy on discord and I just got an email. I would actually say this is not uft related. This is like a general academic, right? Can you see this? Probably not, right? Uh
+
+all right. Uh is this U of related? H like arguably
+
+uh okay this maybe uh not trying to be dramatic or anything but I haven't gotten a single grade except for a CR credit. You've guys gotten grades for a quick second. Uh so that that that seem that seems uh related. I will check
+
+whether that actually was I think yeah so this is like the U of related so that seems all right so just kind of like as a a as a first pass I can kind of see that some of the examples I agree with some of the examples I don't agree with so the usual things that you can do here are you can give more instructions about what it means means to be UT related. Uh the thing that really works well is giving examples. So I can say okay so I've looked at
+
+why is my self text
+
+uh okay so the so this is like t text is empty my work progression throughout the day and this is not oft related so this is good I'm going to say okay so this is number of people got almost nothing nothing done during reading week week. Is it U of related? This says true. I would say no because this is like a person at U of but they're not talking about U of as such. Something like that. So, uh what about this? Uh so going to keep this quick. I have some help for one of my assignments. Blah blah blah. Is it T of T related? I would say okay. Yes, probably because this is about like ATA. Uh, so did it say Y2 related? Uh, yes, it said true. Uh, so what I'm going to do here, so this is kind of quick and dirty. If you do this kind of thing with the project, obviously don't do just three examples. Uh I can just edit it here and I can say okay so ground truth just made a column over here and I'm going to say okay so uh so this is not related so no and reason
+
+is this is generic.
+
+Uh number of people who got almost done during reading week. Uh I decided again like if you're writing a research paper of course like you think about it, you like whatever. Uh here we're doing an example. I would say no. And I would say generic
+
+discussion of academics not u specific.
+
+And here I'm going to say okay. So this is yes because this is saying I'm going to keep this quick. I had some help from our assignments blah blah blah. This is generic but then it say I just got an email from my TA saying that I'm under investigation for possible plagiarism uft related because the TA is employed by U of U of T related ground truth. Yes. Sorry this is a mess but I'm reading it out. So yes and the reason is uh related to uft of specific policies
+
+employees. So this is obviously just a spreadsheet. The reason I'm doing it in Excel is so that it's kind of organized because what I want to do now is I want to is I want to go back to my cloud and I want to say
+
+so like I annotated
+
+uh the first three rows with ground truth and reasoning.
+
+Uh uh please produce second sample of 100. That's closer to the ground.
+
+So it's going to read it. I named it, you know, like if you make a real big mess, it's not going to be able to do it. But I named the column, so it's going to be fine. You can also keep track of it's actually doing something that kind of makes sense.
+
+All right. So while it's So while it's working on that
+
+couldn't treat it because it's open.
+
+So while that's working on that, so my plan for labeling is going to be kind of basically the same. Again, if you're kind of depending on the seriousness of the project, you're going to check more or less. Uh certainly like if you want to publish something like this, you want multiple labelers. You want to see how much they agree, stuff like that. If you're interested in that, we can talk about uh we can talk about it separately. Uh but basically my plan is okay. So I will want to scrape more and I will want to figure out which are U of similar for sentiment. to be honest, sentiment is going to be less fragile than u of related because my standard for what I mean by uft related I kind of I mean I think I made up something reasonable but other people might disagree right
+
+um so okay so uh basically what's going on so here because I'm kind of just not calling the not calling the API I just using the clot code uh it's keeping track kind of of what I'm doing uh in classify u of related but the actual job is going to have to be requested here after the break I'll upload the right file and I'll show you how to do it kind of the more civilized way but if you're doing a proof of concept this seems pretty reasonable if you have a clot subscription this is actually like the cheap way of doing it. I'm not paying anything for this on top of my usual subscription, right? Uh so uh yeah. All right. So you don't have to like read the whole thing. Obviously kind of what it produces can be sometimes difficult to read. Uh the idea here is more that you always tell it okay like write the plan to a file write what you're doing to a file so that you can kind of reproduce it again. Of course it's stochastic it's going to give you somewhat different answers every time in the in in the nature of nature. All right. So that is what we got. Uh oh. So we are at the 300 p.m. mark. Uh so you seem to be in the wrong room. All right. I mean I could change the live sh
+
+So, um, so yeah, so let's take a 10-minut break. Uh, I'll go talk about math physics for a second like to the people outside and I'll come back. Uh so after the break uh uh we're going to do like the API. I'm going to dig up my key which I did not post uh post it. I show you how to do it with uh with the API and we'll do kind of like the project uh for like half an hour and then we'll switch back to stats. I think we're like winding down the stats. Uh so like it's going to be machine learning like soon. Hey man, it's working anyways. Uh is uh did people kind of get something to work? Did anyone not get something to work?
+
+Yeah, that makes sense. Yeah. Yeah. Um All right. Well, like you can watch me. So I like to be honest. So like I I pay like a hundred bucks US for plot codes just so that they don't have to think about it. It's Yeah. two two TTC passes I guess. I don't know how much is a TTC pass. Yeah.
+
+Uh but like you don't have to. So I think kind of like a 20 bucks subscri subscription kind of gets you what you want. If you get approved for credits uh then you you can do it. I do I do recommend that you get kind of the 20 bucks of kind of like whatever. like uh like most people use like plot or gio or gpt or gemini I guess but like they're more or less the same and 20 boxes
+
+but yeah like it's like part of it is like it knows that it it knows the time paid up so
+
+All right. Yeah, we are we are officially on the break. I'm going to try to get Yeah. Okay. I'll be back in three minutes and I'll get the API key.

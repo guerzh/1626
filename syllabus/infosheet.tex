@@ -1,0 +1,172 @@
+%%  Course information sheet for SML 480, Spring 20XX,
+%%  at Princeton University
+%%
+%% 
+%%
+\documentclass[11pt]{article}
+\usepackage{array,calc,fancyhdr,lastpage,rotating, url}
+\usepackage[hmargin=.5in,vmargin=.75in,
+            footskip=.25in,headsep=.5in-\headheight]{geometry}
+
+
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+% Page layout: stretch text to fill up page.
+\flushbottom
+
+% Formatting macro for each information category.
+\newenvironment{category}[1]%
+   {\ifvmode\else\unskip\par\fi\vfill\noindent
+    \smash{{\parbox[t]{.75in}{\raisebox{-10ex}{\begin{turn}{60}
+        {\parbox[t]{1in}{\centering\bfseries#1}}\end{turn}}}}}
+    \hfill\begin{minipage}[t]{6.625in}\par\ignorespaces}%
+   {\ifvmode\else\unskip\par\fi\end{minipage}\par\vfill\ignorespaces}
+
+% `itemize' with less vertical space.
+\renewenvironment{itemize}%
+   {\ifvmode\else\unskip\par\fi\begin{list}{$\bullet$}%
+       {\setlength{\topsep}{.25ex plus .125ex minus .1825ex}
+        \setlength{\itemsep}{\topsep}\setlength{\parsep}{0ex}
+        \setlength{\leftmargin}{1.75em}\setlength{\labelsep}{.5em}
+        \setlength{\labelwidth}{1.75em}}\ignorespaces}%
+   {\ifvmode\else\unskip\fi\end{list}\par\ignorespaces}
+
+% Stretchable medskip.
+\newcommand*{\medstretch}{\vspace{1ex plus .75ex minus .75ex}}
+
+% Right-justified columns for calendar.
+\newcolumntype{P}[1]{>{\raggedleft}p{#1}}
+% Table dimensions for calendar.
+\setlength{\extrarowheight}{.5ex}
+\newlength{\weekendwidth}
+\setlength{\weekendwidth}{.25in}
+\newlength{\weekdaywidth}
+\setlength{\weekdaywidth}{(\textwidth - (\weekendwidth * 2)
+  - (\arrayrulewidth * 8) - (\tabcolsep * 14)) / 5}
+
+% Formats, symbols, abbreviations.
+\let\altemph\textsl
+\let\strong\textbf
+\let\code\texttt
+\let\latinabb\emph
+\newcommand*{\txtbksl} {\symbol{"5C}}% \
+\newcommand*{\txtcaret}{\symbol{"5E}}% ^
+\newcommand*{\txtunder}{\symbol{"5F}}% _
+\newcommand*{\txtlcurl}{\symbol{"7B}}% {
+\newcommand*{\txtrcurl}{\symbol{"7D}}% }
+\newcommand*{\txttilde}{\symbol{"7E}}% ~
+\newcommand*{\etc}{\latinabb{etc}}
+\newcommand*{\eg}{\latinabb{e.g.}}
+\newcommand*{\ie}{\latinabb{i.e.}}
+
+% General formatting macros.
+\newcommand*{\noclass}[1]{{\small#1}}
+\newcommand*{\classon}[1]{\strong{#1}}
+\newcommand*{\changed}[1]{\underline{\bfseries#1}}
+%%\newcommand*{\examperiod}{\altemph{Exam Period}}
+\newcommand*{\specialday}[1]{\altemph{\small #1}}
+\newcommand*{\examperiod}[1]{\specialday{#1 Period}}
+\newcommand*{\schoolweek}[1]{\specialday{#1 Week}}
+\newcommand*{\schoolbreak}[1]{\specialday{#1 Break}}
+\newcommand*{\officehour}{{TA Office Hour}}
+\newcounter{tutorialno}\setcounter{tutorialno}{0}
+\newcommand*{\tutorial}[1][]
+   {{Tutorial~\ifx\empty#1\empty\stepcounter{tutorialno}\else
+    \setcounter{tutorialno}{#1}\fi\thetutorialno}}
+\newcounter{lectureno}\setcounter{lectureno}{0}
+\newcommand*{\lecture}[1][]
+   {{Lecture~\ifx\empty#1\empty\stepcounter{lectureno}\else
+    \setcounter{lectureno}{#1}\fi\thelectureno}}
+\newcounter{exerciseno}\setcounter{exerciseno}{0}
+\newcommand*{\exercise}[1][]
+   {\strong{Exercise~\ifx\empty#1\empty\stepcounter{exerciseno}\else
+    \setcounter{exerciseno}{#1}\fi\theexerciseno}}
+\newcounter{assignmentno}\setcounter{assignmentno}{0}
+\newcommand*{\assignment}[1][]
+   {\strong{Assignment~\ifx\empty#1\empty\stepcounter{assignmentno}\else
+    \setcounter{assignmentno}{#1}\fi\theassignmentno}}
+\newcounter{termtestno}\setcounter{termtestno}{0}
+\newcommand*{\termtest}[1][]
+   {\strong{Term Test~\ifx\empty#1\empty\stepcounter{termtestno}\else
+    \setcounter{termtestno}{#1}\fi\thetermtestno}}
+
+% Headings.
+\pagestyle{fancy}
+\let\headrule\empty
+\let\footrule\empty
+\lhead{{ESC 180}}
+\chead{{\scshape Course Syllabus}}
+\rhead{{Fall 2022}}
+\lfoot{{Division of Engineering Science, University of Toronto}}
+\cfoot{{}}
+\rfoot{{Page \thepage\ of \pageref{LastPage}}}
+
+
+\begin{document}
+
+\begin{category}{Overview}
+    Welcome to \textbf{ESC 180 -- Introduction to Computer Programming}! 
+This course serves as an introduction to computer programming and computer science. We will introduce the Python programming language. We will use Python to solve a variety of problems, and practice problem-solving techniques that are applicable to computational problems. We will discuss good practices in software engineering (designing and building large software systems). We will analyze the efficiency of algorithms, and discuss designing efficient algorithms. Various research areas in computer science (AI, software engineering research, the theory of computation, etc.) will be introduced throughout the term. No previous knowledge of programming or computer science is assumed.
+\end{category}
+
+
+\begin{category}{Website \& Forum}
+	{\large\begin{tabular}{rl}
+			Website: &
+			\code{https://www.cs.toronto.edu/$\sim$guerzhoy/180/}\\
+			Forum: &
+			\code{https://piazza.com/utoronto.ca/esc180/}
+		\end{tabular}}
+		\par\medstretch
+		All course handouts will be posted on the course website.
+		\altemph{Students are responsible for reading
+			all announcements on the course forum on Piazza.}
+	\end{category}
+	
+	\begin{category}{Instructor}
+		\begin{tabular}[t]{llllll@{}}
+			\strong{Instructor} & \strong{Email} &
+			\strong{Office} &  &
+			\strong{Office Hours}\\
+			Michael Guerzhoy     & \code{guerzhoy@cs.toronto.edu}
+			& BA 2028 &  & TBA 
+		\end{tabular}
+		\par\smallskip
+		
+	\end{category}
+	
+	\begin{category}{Grading}
+		The grading scheme for the course is as follows. 
+		
+		
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			& Worth & Date                       \\ \hline
+			Labs					 & 10\%  & 10 labs throughout the term                            \\ \hline
+			Projects					 & 20\%  & 3 projects, tentatively due Oct. 12, Nov. 15, Dec. 5                            \\ \hline
+			Midterm           & 30\%   &    Oct. 27  \\ \hline
+			Exam   & 40\%   &  TBD \\ \hline
+			
+		\end{tabular}
+		
+	\end{category}
+	
+
+
+\begin{category}{Labs}
+	Unless specified otherwise, a lab needs to be completed every week. Labs must be completed in teams of two students. Teams that make their best effort toward completing the lab will be awarded full credit. 
+\end{category}
+
+
+\begin{category}{References}
+The following textbooks are not required, but you may find them useful as additional references.
+
+\begin{itemize}
+\item Allen B. Downey, Think Python 2e. Available for free at \url{https://greenteapress.com/wp/think-python-2e/}
+\item Paul Gries, Jennifer Campbell, and Jason Montojo, Practical Programming (2nd ed.).\\ \url{https://pragprog.com/titles/gwpy2/practical-programming-2nd-edition/} (other editions are fine.)
+\end{itemize}
+\end{category}
+
+
+\end{document}

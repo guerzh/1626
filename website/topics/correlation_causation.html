@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Correlation, R², and Causation</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Correlation, R², and Causation</h1>
+</header>
+<h2 id="even-with-valid-assumptions-regression-doesnt-prove-causation">Even with valid assumptions, regression doesn’t prove causation</h2>
+<p>Suppose you have checked your linear-regression assumptions (linearity, normal residuals, independence), and they hold. Suppose you reject the hypothesis <span class="math inline">\(a_1 = 0\)</span>. It is still <strong>not</strong> necessarily the case that <span class="math inline">\(x_1\)</span> influences <span class="math inline">\(y\)</span> in a causal way.</p>
+<p>This is “correlation does not imply causation.” We have used this phrase informally — let’s go through the alternatives explicitly.</p>
+<h3 id="reverse-causation">1. Reverse causation</h3>
+<p>The data looks like:</p>
+<pre><code>y
+|              /
+|           /
+|        /
+|     /
+|  /
++--------------- x</code></pre>
+<p>You drew a line through the data, estimated <span class="math inline">\(\hat y = a_0 + a_1 x\)</span> with <span class="math inline">\(a_1 &gt; 0\)</span>, and rejected <span class="math inline">\(a_1 = 0\)</span>. Now, you should resist saying “x causes y.” It might be that <strong>y is causing x</strong>.</p>
+<p>Worked example: life expectancy and GDP per capita. The story we told was: if you’re richer, you have more money, you spend more on health care, so life expectancy is higher. That is causal: GDP → life expectancy.</p>
+<p>But the story could go the other way. Maybe if you know you live longer, you work harder at your job, and therefore GDP is higher. That is: life expectancy → GDP. From the data alone you cannot tell.</p>
+<h3 id="common-cause">2. Common cause</h3>
+<p>It might be that neither <span class="math inline">\(x\)</span> causes <span class="math inline">\(y\)</span> nor <span class="math inline">\(y\)</span> causes <span class="math inline">\(x\)</span>, but a third variable causes both.</p>
+<p>For life expectancy and GDP per capita, what is a common cause? Let’s make something up.</p>
+<ul>
+<li><strong>Pleasant climate.</strong> Year-round nice weather: not too much tropical disease in summer, not freezing in winter. That probably increases life expectancy. And you can be outside working all year round, exercise more — probably positive effect on GDP per capita too. (Doesn’t really hold in the real world, but you could imagine it.)</li>
+<li><strong>A plague.</strong> When there is an epidemic, life expectancy goes down. And GDP per capita goes down because people are sick. Same direction for both, common cause: the epidemic.</li>
+</ul>
+<h3 id="indirect-causation">3. Indirect causation</h3>
+<p>There might be a causal chain, but it is very indirect. For example: GDP per capita correlates with being a member of the World Health Organization (which costs a country some dues), and being a WHO member gives access to programs that improve health. The causal effect of GDP on life expectancy is real but routed through a long path; you wouldn’t read it off the slope of the line.</p>
+<h3 id="coincidence">4. Coincidence</h3>
+<p>Sometimes correlation is just a coincidence. The classic meme example:</p>
+<pre><code>Pirates vs Global average temperature: positively related.</code></pre>
+<p>The number of pirates has decreased over the centuries; global temperatures have increased. Plot one against the other and you get a positive correlation. Arguably a coincidence.</p>
+<p>Or it might be a <strong>Type I error</strong>: with a 5% threshold, you reject inappropriately 5% of the time. If you tested 20 random pairs of variables, on average you’d find one “correlation” that is just luck.</p>
+<h2 id="r²-and-correlation">R² and correlation</h2>
+<p>Informally we said “correlation does not imply causation.” Technically we have not defined correlation yet, except to say it is “kind of like a line that goes through the data.” Here is one way to define correlation.</p>
+<p>Let’s say you’re trying to predict <span class="math inline">\(y\)</span> from <span class="math inline">\(x\)</span>. The simplest thing you can do is predict the average value every time: <span class="math inline">\(\hat y = \bar y\)</span>. The next simplest is linear regression: <span class="math inline">\(\hat y = a_0 + a_1 x\)</span>.</p>
+<p><strong>R²</strong> is basically a comparison between how well you can do if you just predict the average every time vs how well you can do with linear regression.</p>
+<p>Let’s compute the sum of squared errors for both:</p>
+<ul>
+<li><span class="math inline">\(\text{SSE}_{\text{model}} = \sum_i (y_i - \hat y_i)^2\)</span> where <span class="math inline">\(\hat y_i\)</span> is the regression prediction.</li>
+<li><span class="math inline">\(\text{SSE}_{\text{baseline}} = \sum_i (y_i - \bar y)^2\)</span> — predicting the average every time.</li>
+</ul>
+<p>Define:</p>
+<p><span class="math display">\[R^2 = 1 - \frac{\text{SSE}_{\text{model}}}{\text{SSE}_{\text{baseline}}}.\]</span></p>
+<p>This ratio is always positive (well, <span class="math inline">\(0 \le R^2 \le 1\)</span> when the model is at least as good as the baseline), because you can always set <span class="math inline">\(a_1 = 0\)</span> and recover the baseline. If <span class="math inline">\(R^2\)</span> is close to 1, the model is much better than the baseline → strong linear trend. If <span class="math inline">\(R^2\)</span> is close to 0, the model is no better than the baseline → no linear trend.</p>
+<p>In R, calling <code>summary()</code> on an <code>lm</code> fit prints the full regression summary. The <span class="math inline">\(R^2\)</span> appears near the bottom on the line beginning with <strong>Multiple R-squared</strong>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">library</span>(gapminder)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>gap_<span class="dv">1982</span> &lt;-<span class="st"> </span>gapminder <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1982</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap), <span class="dt">data =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(lifeExp) ~ log(gdpPercap), data = gap_1982)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.36815 -0.05800  0.00552  0.06273  0.26010 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.052654   0.059810   51.04   &lt;2e-16 ***
+## log(gdpPercap) 0.126601   0.007132   17.75   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.103 on 140 degrees of freedom
+## Multiple R-squared:  0.6924, Adjusted R-squared:  0.6902 
+## F-statistic: 315.1 on 1 and 140 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Look at the <strong>Multiple R-squared</strong> line above — that is the <span class="math inline">\(R^2\)</span> for this fit. You can also pull it out programmatically:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">summary</span>(model)<span class="op">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.6923848</code></pre>
+<h3 id="correlation-r">Correlation <span class="math inline">\(r\)</span></h3>
+<p>If <span class="math inline">\(y\)</span> is being predicted from a single <span class="math inline">\(x\)</span>, the correlation <span class="math inline">\(r\)</span> is the <strong>signed square root of <span class="math inline">\(R^2\)</span></strong>. The sign matches the sign of <span class="math inline">\(a_1\)</span>: positive if the trend is upward, negative if downward.</p>
+<p>So “<span class="math inline">\(r\)</span> close to ±1” means strong linear relationship; “<span class="math inline">\(r\)</span> close to 0” means no linear trend.</p>
+<h2 id="anscombes-quartet">Anscombe’s quartet</h2>
+<p>A famous warning about R² (and correlation). There are four data sets, all with the <strong>same</strong> <span class="math inline">\(r \approx 0.816\)</span>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">data</span>(anscombe)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="kw">plot</span>(anscombe<span class="op">$</span>x1, anscombe<span class="op">$</span>y1, <span class="dt">main =</span> <span class="st">&quot;Set 1&quot;</span>); <span class="kw">abline</span>(<span class="kw">lm</span>(y1 <span class="op">~</span><span class="st"> </span>x1, <span class="dt">data =</span> anscombe))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="kw">plot</span>(anscombe<span class="op">$</span>x2, anscombe<span class="op">$</span>y2, <span class="dt">main =</span> <span class="st">&quot;Set 2&quot;</span>); <span class="kw">abline</span>(<span class="kw">lm</span>(y2 <span class="op">~</span><span class="st"> </span>x2, <span class="dt">data =</span> anscombe))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">plot</span>(anscombe<span class="op">$</span>x3, anscombe<span class="op">$</span>y3, <span class="dt">main =</span> <span class="st">&quot;Set 3&quot;</span>); <span class="kw">abline</span>(<span class="kw">lm</span>(y3 <span class="op">~</span><span class="st"> </span>x3, <span class="dt">data =</span> anscombe))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="kw">plot</span>(anscombe<span class="op">$</span>x4, anscombe<span class="op">$</span>y4, <span class="dt">main =</span> <span class="st">&quot;Set 4&quot;</span>); <span class="kw">abline</span>(<span class="kw">lm</span>(y4 <span class="op">~</span><span class="st"> </span>x4, <span class="dt">data =</span> anscombe))</span></code></pre></div>
+<figure>
+<img src="figure-correlation_causation/unnamed-chunk-3-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-3</figcaption>
+</figure>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p>They look completely different.</p>
+<ul>
+<li><strong>Set 1.</strong> A genuine linear-ish trend with noise. You actually want to run a linear regression.</li>
+<li><strong>Set 2.</strong> A clear upward trend, but it is a parabola, not a line. You measured the parabola on a part where it looks linear.</li>
+<li><strong>Set 3.</strong> A weak upward trend that is mostly driven by one outlier. R² is way overestimated by the outlier.</li>
+<li><strong>Set 4.</strong> <span class="math inline">\(y\)</span> is essentially constant, except for one outlier with a different <span class="math inline">\(x\)</span>. There is no actual linear relationship at all.</li>
+</ul>
+<p>A large correlation could be all of those things. <strong>Always visualize.</strong></p>
+<p>A small correlation also doesn’t really tell you much by itself: there could be a strong non-linear relationship that the linear <span class="math inline">\(r\)</span> doesn’t capture.</p>
+<h2 id="a-low-correlation-example">A “low correlation” example</h2>
+<p>Here’s one floating around Twitter that the lecturer brought up: <span class="math inline">\(r = 0.23\)</span>, but the points are essentially a featureless cloud. You would not say there is a “weak linear relationship” — the picture says there is no relationship.</p>
+<p>The take-away: <span class="math inline">\(r\)</span> is a number computed from a formula. The formula returns a number even when the picture says “no signal.” Look at the picture.</p>
+<h2 id="the-workflow">The workflow</h2>
+<p>Summary of how to do regression carefully:</p>
+<ol type="1">
+<li><strong>Formulate a null hypothesis.</strong></li>
+<li><strong>Collect some data.</strong></li>
+<li><strong>Visualize the data</strong> to check the model assumptions.</li>
+<li><strong>If assumptions are approximately satisfied</strong>, run the regression.</li>
+<li><strong>Run diagnostic plots.</strong> Check normality of residuals, residuals vs fitted, scale-location, residuals vs leverage.</li>
+<li><strong>Read the table.</strong> Be aware that p-values from a table with many coefficients are vulnerable to multiple-comparisons issues.</li>
+<li><strong>Don’t conclude causation just because you reject the null on a coefficient.</strong> Ask about reverse causation, common cause, indirect causation, coincidence.</li>
+<li><strong>Report transparently.</strong> Specify your hypothesis, your model, your assumptions, your diagnostics.</li>
+</ol>
+<p>If you do all of that, you can say something like: “We rejected the null that <span class="math inline">\(a_1 = 0\)</span> at the 5% level; consistent with a positive association between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>; we cannot rule out reverse causation or confounding.”</p>
+</div>
+</body>
+</html>

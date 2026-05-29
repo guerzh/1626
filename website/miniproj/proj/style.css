@@ -1,0 +1,90 @@
+/* Clean academic handout styling. */
+
+html { font-size: 16px; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  max-width: 44rem;
+  margin: 2.5rem auto;
+  padding: 0 1.25rem;
+  color: #222;
+  line-height: 1.55;
+  background: #fff;
+}
+
+header.title-block-header {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.75rem;
+}
+
+h1.title {
+  font-size: 1.8rem;
+  margin: 0 0 0.25rem 0;
+}
+
+p.author, p.date {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-top: 2.25rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-top: 1.75rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin-top: 1.25rem;
+  font-style: italic;
+}
+
+p, ul, ol { margin: 0.6rem 0; }
+
+a { color: #1a4f8a; }
+a:hover { text-decoration: underline; }
+
+code {
+  font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: #f4f4f4;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+pre {
+  background: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+blockquote {
+  border-left: 3px solid #ccc;
+  margin: 1rem 0;
+  padding: 0.25rem 1rem;
+  color: #555;
+}
+
+/* MathJax display equations */
+.math.display {
+  overflow-x: auto;
+  padding: 0.25rem 0;
+}

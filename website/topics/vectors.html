@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Vectors in R</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Vectors in R</h1>
+</header>
+<h2 id="vectors">Vectors</h2>
+<p>In R you usually operate on <strong>vectors</strong>. (These are similar to numpy arrays if you are more familiar with numpy.) Vectors are defined using the <code>c()</code> operator, which also stands for “concatenate” (similarly to <code>cat</code>, just different histories):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>offer &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">241</span>, <span class="dv">590</span>, <span class="dv">533</span>, <span class="dv">425</span>, <span class="dv">261</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>offer</span></code></pre></div>
+<pre><code>## [1] 241 590 533 425 261</code></pre>
+<p>This is a vector. You can access elements of it using e.g. <code>offer[1]</code>. <strong>R, unlike Python, is one-based:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>offer[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] 241</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>offer[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] 590</code></pre>
+<p>You can index a range:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>offer[<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>## [1] 590 533 425 261</code></pre>
+<p><code>length</code> gives you the length:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">length</span>(offer)</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Technically everything is a vector. If you define it like <code>a &lt;- 42</code>, that is the same as saying <code>c(42)</code>; it is just a vector of length one.</p>
+<p><code>sort</code>, <code>unique</code>, <code>min</code>, <code>max</code> do what you’d expect:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">sort</span>(offer)</span></code></pre></div>
+<pre><code>## [1] 241 261 425 533 590</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">unique</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">min</span>(offer)</span></code></pre></div>
+<pre><code>## [1] 241</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">max</span>(offer)</span></code></pre></div>
+<pre><code>## [1] 590</code></pre>
+<p>Here is a way to do <code>max</code> that is kind of weird: sort, then get the last element by <code>length(offer)</code>:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">sort</span>(offer)[<span class="kw">length</span>(offer)]</span></code></pre></div>
+<pre><code>## [1] 590</code></pre>
+<p>It is the same answer as <code>max(offer)</code>.</p>
+<h2 id="boolean-operations-on-vectors">Boolean operations on vectors</h2>
+<p>You can do boolean operators that apply elementwise:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a>offer <span class="op">&gt;</span><span class="st"> </span><span class="dv">533</span></span></code></pre></div>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<p>So <code>offer &gt; 533</code> produces a vector of <code>FALSE</code>s and <code>TRUE</code>s. (<code>F</code> and <code>T</code> are shorthand for <code>FALSE</code> and <code>TRUE</code>.)</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a>offer <span class="op">&lt;</span><span class="st"> </span><span class="dv">550</span></span></code></pre></div>
+<pre><code>## [1]  TRUE FALSE  TRUE  TRUE  TRUE</code></pre>
+<p>In R, as well as in pandas, a lot of what you do is index using a vector of <code>FALSE</code>s and <code>TRUE</code>s. You can just say:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a>offer[<span class="kw">c</span>(F, T, F, F, F)]</span></code></pre></div>
+<pre><code>## [1] 590</code></pre>
+<p>This selects the elements that correspond to <code>TRUE</code>. So very often you will see people doing:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a>offer[offer <span class="op">&gt;</span><span class="st"> </span><span class="dv">533</span>]</span></code></pre></div>
+<pre><code>## [1] 590</code></pre>
+<p>That selects the elements of <code>offer</code> that are greater than 533. Recall that <code>FALSE</code> means “drop” and <code>TRUE</code> means “keep”.</p>
+<h2 id="combining-conditions">Combining conditions</h2>
+<p>In R you use <code>&amp;</code> for AND, <code>|</code> for OR, and <code>!</code> for NOT:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a>offer <span class="op">&gt;</span><span class="st"> </span><span class="dv">400</span> <span class="op">&amp;</span><span class="st"> </span>offer <span class="op">&lt;</span><span class="st"> </span><span class="dv">550</span></span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a>offer[offer <span class="op">&gt;</span><span class="st"> </span><span class="dv">400</span> <span class="op">&amp;</span><span class="st"> </span>offer <span class="op">&lt;</span><span class="st"> </span><span class="dv">550</span>]</span></code></pre></div>
+<pre><code>## [1] 533 425</code></pre>
+<p>Here, <code>TRUE</code> corresponds to elements that are both greater than 400 and smaller than 550. So this gets the elements between 400 and 550.</p>
+<p>The elements of <code>offer</code> outside the range 400..550:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true"></a>offer[<span class="op">!</span>(offer <span class="op">&gt;</span><span class="st"> </span><span class="dv">400</span> <span class="op">&amp;</span><span class="st"> </span>offer <span class="op">&lt;</span><span class="st"> </span><span class="dv">550</span>)]</span></code></pre></div>
+<pre><code>## [1] 241 590 261</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true"></a>offer[offer <span class="op">&lt;=</span><span class="st"> </span><span class="dv">400</span> <span class="op">|</span><span class="st"> </span>offer <span class="op">&gt;=</span><span class="st"> </span><span class="dv">550</span>]</span></code></pre></div>
+<pre><code>## [1] 241 590 261</code></pre>
+<p>The <code>!</code> operator turns <code>TRUE</code> into <code>FALSE</code> and vice versa, so we keep the elements we dropped before and drop the elements we kept.</p>
+<h3 id="pie-or-ice-cream">Pie or ice cream</h3>
+<p>Here is the classic example, just to amuse people. Let’s say that you want to say “for dessert I’ll have pie or ice cream”. In English what we usually mean is <em>either pie or ice cream, but not both</em>. In R and in Python the <code>or</code> does <strong>not</strong> work like that:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true"></a>pie &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true"></a>ice_cream &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true"></a>pie <span class="op">|</span><span class="st"> </span>ice_cream</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>This is <code>TRUE</code> because both <code>pie</code> is <code>TRUE</code> and <code>ice_cream</code> is <code>TRUE</code>. That would be unfortunate at the dessert table.</p>
+<p>How do you say it correctly? It is an annoying thing because there is a very simple answer: <code>pie | ice_cream</code> means exactly one is true if <code>pie != ice_cream</code> (one is true, the other is false):</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true"></a>pie <span class="op">!=</span><span class="st"> </span>ice_cream</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>You can also do a more complicated expression:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true"></a>(pie <span class="op">|</span><span class="st"> </span>ice_cream) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(pie <span class="op">&amp;</span><span class="st"> </span>ice_cream)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>This says: one is true, but it is not true that they are both true. Equivalently:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true"></a>(pie <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>ice_cream) <span class="op">|</span><span class="st"> </span>(<span class="op">!</span>pie <span class="op">&amp;</span><span class="st"> </span>ice_cream)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<h2 id="parallel-vectors">Parallel vectors</h2>
+<p>Those were the average offers to various specialties of doctors (US, 2018). Let’s also store the specialties:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true"></a>offer &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">241</span>, <span class="dv">590</span>, <span class="dv">533</span>, <span class="dv">425</span>, <span class="dv">261</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true"></a>spec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;family doc&quot;</span>, <span class="st">&quot;cardiologist&quot;</span>, <span class="st">&quot;orthopedic&quot;</span>, <span class="st">&quot;dermatologist&quot;</span>, <span class="st">&quot;psychiatrist&quot;</span>)</span></code></pre></div>
+<p>So for example, the offers to cardiologist were $590k per year in 2018. Suppose we want to automatically figure out which specialty makes the most money.</p>
+<p>If we knew it were specialty number 2, we’d just do <code>spec[2]</code>. But how do we figure out the <code>2</code>?</p>
+<p>We’d like to compute <code>spec[c(F, T, F, F, F)]</code>. Can we compute the logical vector? Here is an idea:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true"></a>offer <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(offer)</span></code></pre></div>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<p>Combining those ideas:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true"></a>spec[offer <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(offer)]</span></code></pre></div>
+<pre><code>## [1] &quot;cardiologist&quot;</code></pre>
+<p>If you just wanted the maximum offer, you could do this:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true"></a>offer[offer <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(offer)]</span></code></pre></div>
+<pre><code>## [1] 590</code></pre>
+<p>This is just <code>max(offer)</code> again, but it is a useful pattern.</p>
+<p>So how do we get the index <code>2</code>? We can generate the vector <code>1:length(offer)</code>:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true"></a><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(offer)</span></code></pre></div>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<p>And now we can simply do:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true"></a>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(offer))[offer <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(offer)]</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>If you have an index, you don’t need to do it that way to get the actual specialty — this is just for fun:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true"></a>idx &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(offer))[offer <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(offer)]</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true"></a>spec[idx]</span></code></pre></div>
+<pre><code>## [1] &quot;cardiologist&quot;</code></pre>
+<p>These days, those things are changing because you are mostly doing this with LLMs. LLMs would generally not give you something like that. But sometimes you still work with vectors and you have got to read code.</p>
+</div>
+</body>
+</html>

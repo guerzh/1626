@@ -1,0 +1,333 @@
+Okay. So, as promised, I sent you Yeah, I'm sorry. I'm going to spam you again.
+
+So, you you can also just uh read. So, I'm just going to comment this here. Uh so uh what I promised you before the break was to show you kind of the civilized way of uh doing the same thing. So what what I mean by univilized is I basically instead of having a whole program that was doing the classifying I just said like do it in the window. The reason that so this does work because cloud code is able to call the model in the background but that's like not the most civilized thing that you can do because it requires me to basically in the chat window to give it instructions to do it not super reproducible right so uh here is uh kind of the normal way that you can do it so uh ordinarily uh what you would do if you're using for example OpenAI, you would use the OpenAI API. I'm not going to give you my uh open. So the way it works is you have an API key that's basically a string that's connected to your account and then you pay per request. Uh so you can do that if you have an OpenAI account. Uh what I'm going to do instead is um so I gave you this uh API key which is like a fake OpenAI API key and then there is this library which is equivalent to OpenAI but not so it from inside of it it calls OpenAI it's called not not OpenAI. So uh I'm going to save it. So this is linked from pata now.
+
+Uh so we are over here. So I saved it. I'm going to extract it.
+
+No.
+
+So it's the zoom is messing with me.
+
+Okay. So I'm going to extract it. So extract here. So what you want is you want for there to be not open AAI folder in Python depending on what's in the folder you can import a folder and that's going to allow you to call it. So I am now going to say like import no not open AI
+
+and I'm going to just take the setup here. So this you can just copy uh this is a way of calling the not open AI API which within itself calls open AAI and getting a response. So this you just take as given. It's like a chunk of code that does the thing. So
+
+uh going to write it like this. Uh you need the the API key. So what you want to do is if you have your own actual open AI API key that would be different. I'm just going to copy this one which I gave you. So, this is just linked to my account which has like a $10 limit. So, don't worry. You can do spend $10. Uh uh and also it like goes via Yeah. Uh All right. So,
+
+so basically what so basically what's going on here is there is uh so this is this is the function it calls uh it calls this the chat completion is the thing that you got uh that you got from not openai and it returns the response string so I just call Next.
+
+Uh, I didn't actually print the response, so that's not going to do anything. But if I did print the response.
+
+All right. Uh so so you can you you you can kind you can kind of talk to it like this. Yeah. So sorry. Is this library like a rapper to just calling open or Yeah, I it's a rapper to calling my open AI. So I So I set it up and then I like this is just like a pedagogical thing. It's just like convenient because like I don't want to be giving out my open AI keys, right? So it's like a wrapper where like on the server I set it up with my real open AI key and then uh this is just like it like basically like my key that I generate that I can then give out to students. Uh so uh yeah uh so um so that's basic so that's basically the idea. I can ask it to do something to do something sensible. So for example I can ask it to do sentiment analysis.
+
+So I'm just going to copy this just like to do a proof of concept. So I just did Ctrl C
+
+uh
+
+so in Python uh you can do a string that's like three text. So that just allows for the string to be a multi-line string. Just copy that.
+
+And here I can just say and this is now not a chat window. This is a program where I can say you know.
+
+So for each uh post below
+
+classify the sentiment as positive, negative
+
+or neutral.
+
+And what do they call this? RU of T.
+
+So I'm going to do it like this. And now I can just run it. And this is actually reproducible kind of. So OpenAI of course every time potentially gives you something different.
+
+But uh this is kind of like the whole pro uh this is like a program. So if you are doing something like sentiment analysis, I would suggest doing something that's reproducible, meaning something like this with calling the with with calling the uh API rather than relying on your basically typing the same thing in the chat window every time. This also allows you to specify like the model. So when you're reporting, you're saying not like I use the chat. Technically, you can look up which model you're using over here. Uh, sorry. Uh, oh, this is this is this is this is just claw. Uh, so so technically you so technically you can look up but here this is like the specific model. So like when you're reporting the results you say well like in order to do sentiment analysis what I did was this is technically called zero shot with this GPT model. Zero shot means you did not provide examples. Uh so few shot would mean that you provided some examples of the kind of thing that you wanted. That usually works better. Uh again, how do you know if it works better? If it works well or not? Well, like you check. Yeah. So when you set it back in with the um 2000 that be one shot. Uh so that would be that would be uh so that would be few that would be few shots in a sense that I gave kind of ground fruit values and I said like go of those and it's like few of them. So that so that would be few. The other uh term that people use for that is in context learning. So that would be fu shot and in context learning here are kind of the same thing. That just means you're providing examples and you're saying give me something that's like that.
+
+Uh so all right um does that kind of make sense to people? Cool. Uh all right. So while we were doing things the civilized way uh here we uh here we got something. So so we got whatever like uft related sample. Uh so it kind of said what it did. Again this is not super reproducible. You can always paste this into the prompts in this kind of code and this would be instructions. That again makes it more reproducible in the sense that when you report on it you say well like this is the prompt I use used those are the examples I used this is the process I used something like this. Uh here what it did is it just came up with it. So like not ideal in terms of research unless it actually came up with something good. So, okay.
+
+So I'm going to say make a spreadsheet for all uft posts uh CSV indicate uft relatedness
+
+and sentiment. Thanks.
+
+To like color code the spreadsheet. It was kind of ugly before.
+
+Uh so uh it's going to work for a while. We're going to come back to it uh once once it's done. Uh hopefully this is kind of an uh Oh, I I think it wants to use
+
+Uh, so you're I'm just telling it for uh
+
+uh so here like sometimes it gets conf I mean sometimes it does useful things because it sees that the file like it sees a file and like a lot of the time it's useful but a lot of a lot of the time it's just BS. Uh so I just told it what to do. Uh so hopefully it's going to do it.
+
+So all right uh I I I hope this is useful. I imagine that uh it's kind of common sense. I also see at like not you guys with I did not really interact with many of you but a lot of the time at least I see that okay like technically this is just English at the same time I see students not doing this so uh so hopefully it's kind of useful uh and like I think it's just cool like you you you like you can do anything if you put your mind to it so yeah uh so all right cool so we are working on That's uh in the meantime we are back to math. So, what I want to do now is go back to
+
+uh so I want to go back and talk about E values again. Uh given that this is going to be on the test, this should be of great interest to you. Uh so uh I'm going to introduce like a small new thing but basically this is like uh re redoing uh uh redoing things that we that we've done before. Right? So this this is frequent this is frequent frequentist statistics sorry uh and this is again Darwin Darwin's finches. So to recap what we're doing so we have those two populations of finches in the years 78 and 76 and we want to know whether the beaks are different in 78 and 76. uh what do we uh so we have the empirical data right so the empirical data is they look different but just because they look different doesn't mean that it's not due to chance just because you caught a couple of birds like you measured those numbers they look a little bit different doesn't mean anything. So uh we visualized we kind of said okay like it kind of looks like there is a systematic difference right so 78 it looks like like it looks like it's not random it looks like there is two distributions that are not overlapping so what so uh what's what's the kind of frequentest way of doing Yes,
+
+we say
+
+the null hypothesis
+
+is that the populations are the same.
+
+We compute
+
+that's what they think.
+
+We ask what's the probability of
+
+a more extreme
+
+value of talent.
+
+Okay. So looking at this table, what are we saying? We're saying okay the for example the difference here is like 0.5 something. This is not a great test statistic, but we can ask okay like if the two groups are actually the same, what's the probability of the difference being at least as large as what we observe? And then if that probability is small, then we reject, right? So we had several ways of uh so so this is this so we can this is kind of for pedagogical purposes we can say okay like maybe I'll compute
+
+maybe I'll compute the test statistic like this right so I'll compute the the difference between the average weak depth and I'll divide by the standard deviation The reason I want to divide by the standard deviation is that if those guys are like extremely spread out, then it's different from if they're extremely concentrated. Like if you have a sample that's extremely concentrated around 10 and extremely concentrated around 9.5 are clearly different. They're very spread out. No. So dividing by by this makes sense, right? So that so that's what we've done. So you can then say okay like how much of the time if the null hypothesis is true is this going to be as extreme or more extreme than what we observe and then there is several ways of thinking about it. So one way of thinking about it is I'll just simulate fake data with the null hypothesis being true and for each fake data set that's what you did in print in project one I'll say okay like is the test statistic there small or is it large compared to what I actually observe if in the fake data you never observe a test statistic that's as large as what you see that's a reason to reject
+
+The other way of doing it which uh if you've taken statistics uh you've seen more of is sometimes there is a theoretical probability distribution that you can just derive. So you can say for example I'm sorry this is method two
+
+sorry method three. So you can say for example that if you compute this particular t. So this particular t is the difference between the average for population two and population three uh divided by the standard standard deviation. Like there's like a way there's like a way to do it. Uh so this is kind of the standard deviation of population one standard deviation of population two squared. It's a formula. You don't need to remember it. uh what you need to know is that there is actually a distribution that corresponds to this. So what it means is that you can theoretically derive what the t is going to be if the null hypothesis is true. Right? So what does it mean? It means like if you repeat this experiment multiple times, you'll get a t every time and there's going to be a distribution
+
+which like it's going to look approximately normal actually. So like the distribution for this t under the null hypothesis is going to be like this right you can then say okay like I know the distribution is going to be like this you'll know the shape of it and you observe the actual t if your actual t is like over here you're saying that's a very unlikely t if your actual t is over here you'll say that doesn't tell me anything I could see this kind of value of even if the null hypothesis were true. Right? So sometimes so certainly kind of for the example of comparing means of two populations there is a theoretical estimate. This is called specifically the students tistic. There is an autom so there is a manual way of checking okay like is this t statistic unusual or not unusual if the null hypothesis is true does that is that good right uh so uh there is like a semi a semmanual way of doing it
+
+so the semmanual way of doing it is this So PT so so tbook is like the t statistic in the formula that you just saw. This is just like the r way of just computing this formula. Trust me. Okay. Uh and then pt is what's the probability of observing something that's at least at least as large at least as large or larger. uh you need to compute the degrees of freedom. That's part of the formula, right? And PT is just like what's the probability uh well technically like what's the probability of observing something smaller and then what's going on? I will show it to you. I will not test you on this for test one. So, so what we're saying is that if you have t here, so pt is the probability that you'll get a t that's smaller. So this is like minus the absolute value of the t. So it's definitely the negative one. And then this is what's the probability of getting something that's as extreme to this end. And then it's times two because you also want to consider this
+
+Right? So that's like the manual way of computing the P value. Does that make sense to people? All right. And as you see ex extremely small. Uh so there is so this is the same picture that I just drew. Uh so there is a built-in thing in R. there almost always is for kind of the usual situations if you know what situations you're in. Uh so that's just called the t test. It does exactly the same thing. It just computes the t statistic according to the formula and then it plugs in to compute the probability that corresponds to like this area in this area. Uh and that should be kind of the same the same number. All right.
+
+Uh so um why why do we do this? Well, obviously kind of like no simulation. It gives you kind of an exact answer assuming that the model is correct. It doesn't make you kind of specify what the data generating model is. Doesn't do like the fake data generation. uh it's historically it was useful because simulation was not actually possible right so uh student so student is the pseudonym pseudonym of um his name was William Gosset uh he worked for the Guinness Brewery uh and he was really concerned about like making beer and like measuring small amounts of like beer batches at the Gunness Brewery and he supposedly I I believe this is true. So he developed this method uh this would be like 1920s 1930s something like that in order to know okay like is this batch of beer different from that batch of beer. His li limitations were that the batches of beer were kind of small and also he did not have simulations. So he had to have something that worked kind of with a formula. We are not really in that situation. So in a way this is kind of outdated. In a way not because if everyone comes up with their own fake data simulation like those simulations are going to be wrong half the time. That's probably worse than using a standard test which might also not be appropriate but at least there's just the one. Uh so uh that that's the situation. There are no this is one of those things where there are no clear answers. Uh however uh the t test is known to actually be very robust. So even if the model assumptions are not exactly correct, the t test kind of gives you the right answer. Uh love the t test. Uh so yeah uh right uh makes sense. Sorry and I did not say so the t test tasks refers to this procedure of computing the t value for the t statistic. Yeah. Uhhuh.
+
+Yeah. This one. No, the ruin r functions. Oh, the t test. Yeah. Yeah. What's the tilda? What's uh right. Uh so the till the operator. So that so that's this guy. So this object in R is called a formula. So that just like in a way that's a way to just tell uh uh tell R, you know, like we're looking uh we're looking at the year column and the depth column in finches. Uh in this case, this refers to like we're breaking things down by year and we're comparing the depth. Okay. So it's basically just you can put in any two you want to kind of do a comparison. Uh so it ha it has to be like numeric so like right hand side has to be c has to be like two categories exactly left hand side has to be numerical but yeah yeah so the the t test is for comparing specifically kind of two two means
+
+okay uh why don't you ask me about this h so uh so here again like there's like different assumptions uh that kind of make the formula slightly different. So variance of people refers to the assumption that the the variances of the standard deviations for the two groups for the two years are the same. Uh you could also have a different flavor of it where you don't assume that the two groups have the same areas. The formula is slightly different. Uh so okay and like like to be honest like like the standard textbook is going to spend a lot of time on this. I'm not like part of it is that there's like other stuff to do in this course but part of it is that there are like thousands and thousands of tests. Uh there are like the traditional ones that are in the introduction to statistics. You can take introduction to statistics if you want. they'll tell you about, you know, maybe like five or seven or 10 of those tests out of the thousands that exist. Um, I kind of I I think it's important if you're doing, you know, traditional quantitative research where PE reviewers and journals expect specific tests, but also it's going to be field. So if you are doing quantitative research uh in a specific field just look up what previous work does and just do the same like different fields just have different traditions. What I'm trying to do here is trying to make you aware of like this is one test. There's like thousands more. Uh we are kind of trying to say okay like when when when is when is which model appropriate stuff like that. Uh and when you're doing analysis a priority hopefully I'll show you my analysis today. if not then on Friday where I did have to do something that's kind of denovo without kind of a set method that's one thing a lot of the time what you want to do is just what people in the field do because that's what reviewers expect and that's the system uh sometimes what reviewers expect often is completely wrong and they're confused. Uh, but if you're critiquing that, you're really doing statistics research, not researching like your specific domain, which I think everyone should do. I'm a statistician, but like realistically, that's not how things work. Uh, hopefully that makes sense. Uh, okay. So, I'm not saying report wrong numbers. I'm not saying don't think about things. I'm saying there's also field norms, and that's probably what you should call. Uh, so, okay. All right. So the last thing that I want to do uh that I wanted to do this is one example of an exact test. So this is a famous experiment. It's called lady tasting tea. Uh and a classic that Fischer came up with. Uh this is appar story. The reason they know it it's it's a true story is that I I I I also did that. So uh there so there was anyway like a person who claimed that uh she could tell uh whether milk has been poured uh in the cup before or after tea. So in England it's apparently a big a like I I myself am not in favor of milk with tea but uh so um uh so yeah so Fischer the statistician uh was uh kind of like not sure that that was true. Uh uh so the proposal was that they would make eight cups of tea that half of them would have milk poured before the tea half would have milk poured in after the tea and then there would be a blind test. Uh so spoiler alert uh this particular person actually got it right apparently. Um I myself repeated this experiment because uh my mom was making me like uh carry like water for her a lot from from the grocery store and I was very convinced that she cannot tell the taste of bottled water from non-bottled water and I made her do it and my mom cannot tell the difference. She nevertheless drinks bottled water. But then uh true true story, we we're we're cool. Uh so anyway, uh so um how do you go about it? So is is the setting clear? So we have eight cups, half of them milk before tea, half of them tea before milk. And um and we want to know how many basically does the person has to get has to guess right for us to think that the null hypothesis that she cannot tell the difference can be rejected. Right? So there is math here which so how many people know kind of the combinatorics there like do you know like the H24 notation
+
+okay uh we're we're we're okay so I'm going to tell you the story but I'm not going to I'm not going to going to do the math uh you can read it on your own free time. So the story is bas the story is basically like this. So what's the test statistic here? The test statistic is
+
+So number of cups right so let's say we call it end right so let so let's say that we so let's say we measure the end so we want to know for example what is the probability that n is greater or equal than seven given the null hypothesis. The m the null hypothesis is just random guesses. Right?
+
+So rather than teach you the the combinant works which maybe another time uh I'm just going to give you the intuition right. So what so what so what's the intuition? Well there are all of those possibilities. Right? So guess right guess wrong. Guess right. I guess right right
+
+or it could be like this
+
+or it could be like this. Whatever. Right. So those are all possibilities.
+
+out of those we have, you know, several uh we have several situations where the guess is correct where there's like at least seven correct random guesses and we have lots of situations where that's not right. So what's this? So what's this probability? Well, this is
+
+Basically,
+
+the number of
+
+cases where
+
+and it's greater than seven.
+
+divided by the number of possibilities.
+
+So with seven it's actually easy to compute. So how many cases are there out of all of those where the number of correct guesses is seven or more?
+
+Yeah, it would be eight because you have like seven possibilities of guessing wrong the ones like you guess the first one wrong, the second one wrong, the third one wrong and then you have a possibility of guessing everything wrong. So there's eight in total
+
+and then uh how many possibilities that's uh trick here?
+
+So two two to the power range, right? Uh so
+
+so to so I'm just going to give you an intuition. I'm not going to test you on this because like I want to show you this but like it's this is not like the core of the course and then like for seven it's easy for six it's going to be more annoying to do. So uh so so so what's the idea here? It's you have like two options for like guess wrong guess right. Two options for guess wrong guess right. Two options for guess wrong guess right. So if you just guess once that's obviously like two possibilities. Guess twice, it's two times two possibilities. So four to guess three times. So you have like you know xxx
+
+correct x correct.
+
+So how many of those are there? Well 2 * 2 * 2. And one way of thinking about it is okay like everyone can see that this is four if you start with an X right and then well you could start with an X or you could start with a V. So that's two times that so that's eight make sense. So that's that so that's kind of the expression. Uh so so this is the probability as it turns out for this particular experiment. If uh if you compute the number of cases where n is greater or equal to six which is going to involve like more annoying things uh then it's it's going to be different. So okay
+
+um so there is again uh so this is kind of different from uh the example with the test statistic and that's because the test statistic we have like a theory about what the distribution is for the t right so we're saying if if we compute the test statistic
+
+then it's going to be a distribution like this. So to be clear, this looks like a continuous distribution. T is not actually continuous if you have a finite number of samples, right? So there's like like there is no way that t is going to be equal to pi. That would be weird because like it's it's like discrete, right? Uh so this is this is just an approximation. This is just an exact computation, right? So you could just in some situations say okay like how many how many possibilities are there going to how many possibilities are there are there going to be for this for this for this for this? And then you're saying okay like out of all the possibilities what's the pro uh kind of what's the probability of getting something more extreme than what I'm actually seeing in the case of the lady tasting tea you can actually just enumerate all the possibilities and see what happens right and as it turns out kind of six out of eight is more than 5% of the time even if the probability of guessing is 50%.
+
+All right. Um, uh, so okay. Uh, I think that's like as much as I want to say about this. So I'll update uh I'll update the notes uh to cover this to the extent that they actually did cover it. Uh, so again for some situations and in particular for Fischer's exact per this is called Fischer's exact permutation tests.
+
+Uh there is a um
+
+uh there there there is there is a function to do this.
+
+Okay. Uh so
+
+all right.
+
+So this so this is like this and like the fisher test is like like there's like also a difference of like here you specify actually that there's like four four mil before uh 4 mil copter that so it's like slightly different but same idea. Uh how do you specify? Well there is a format these days again you can just ask chat GPT. What you really need to know is that there is such a thing as an exact test in the situation where you can just enumerate all the possibilities about which guess is right, which guess is true. Thanks.
+
+All right. Uh so that is like this.
+
+Uh so uh all right. Uh this we had already done. This is just like a re a recap uh questions about this. Does that make sense? All right. So hopefully uh this is kind of useful. So again kind of the material from today is not on the test. uh but what is on the test is like mini project one which involves this kind of thinking of what's the null hypothesis what's you know can I simulate fake data and comput that way yeah
+
+uh so uh only method two for the test yeah all right cool uh All right. Uh let's see how we are doing for our thing. Oh, we're still working on it, but as you see, there's progress. So, yeah. Uh I mean, I might run out of Well, oh no. Oh, yeah. It's it's it's fine. So, like I'm I'm not out of tokens, so it's all good. And again, I'm on a fixed trade, so it doesn't matter. So, okay. All right. Uh, let's switch to something else.
+
+Uh, so this is like one of my personal favorite topics. Opinions might differ. Uh, so this is called uh multilevel or hierarchical models. uh that those those mean the same thing. Uh so the canonical textbook on this is called like has like multi level hierarchical models in the title that mean same same thing. So so here's the kind of motivating case study. Uh so uh raiden is a radioactive gas uh that is known to cause lung cancer. Uh it's thought to be responsible for kind of a substantial number of uh lung cancer deaths. Uh so uh raiden is heavy. Uh so it's concentrated in the basement. Um and uh it's uh like it it it like lives in the ground. So if you just like build a house, you you might you might you might have it. Uh so uh rating levels differ in different homes. Uh so we are specifically thinking about uh the US state of Minnesota which is like divided up into counties and the idea here is in different counties uh raden level is measured on different levels in the house. So again there's like more in the basement uh less on the third floor just because like heavier than air I guess. Um and we want to find out what's going on. Uh so uh here is what the data looks like.
+
+Uh so you can go so this is downloadable uh from the course website. You can download it and then uh read it in uh this. So there's 85 counties. Uh and here uh what it's doing is okay like the number of rows for different counties. So you know there's whatever like 116 measurements for St. Louis County something. Uh this is the end of the counties. Uh so um so we can say okay so like what's being measured is uh let's say uh the uh log level of the raiden log just because it's convenient. It's like on on the same scale. So the average is whatever 1.22. It's not like real units because it's log anyway. I I think it's like parts per something. Uh so okay so uh you can also do it like this. So here what we're saying is I'm like pretending that I'm running a regression. The regression that I'm running is I'm predicting the log gradient levels from just a constant. So that would just have a constant because I'm actually saying like one times a constant plus a constant. What's the best estimate for log radian? And the answer is like we saw before the best test the maximum likelihood estimate is um you know the average uh is just the average log rated level right uh so uh this is uh what's called in her hierarchical models which we'll introduce in a second a complete pooling estimate. So essentially what we're saying is
+
+every county so we transform it let's transform it to counties every county gets uh uh sorry not every county like everything gets the same weight so like uh so like we're just as kind of uh average everything. This is averaging the floors, which is questionable, although you might say, well, people live on all the floors, so maybe that's reasonable. Uh, and this is also averaging all the counties. Now, the issue is that, uh, like I said, it lives in the ground, so it would be different depending on the geography, right? Uh so you might ask okay like are there are there different things that are going on in different counties? So the way you might imagine doing it is you might say okay like I'm taking county so that's a categorical variable and I'm predicting the the log rating from there. So what that's going to get me is the average for each county. Let me download and actually run it. Uh
+
+so I encourage you to do it with me if you like.
+
+So this is textbook. Uh so uh this is the file.
+
+So I'm going to
+
+still working on it. Oh, I think bro. No, I think I think still working. Okay. So it it like separated separated them out into batches and it's almost done. Okay, it's good.
+
+Doing a new window here.
+
+I'm going to save it to the same place where the file is
+
+and I'm going to so I'm going to show you what I'm copying so that you can kind of follow along. Uh so
+
+so I want this stuff and I want so this is just kind of the way this particular table is loaded. It's not really interesting. Uh this is just getting Minnesota and this is getting kind of the counties in a nice way.
+
+uh so this is because I had data here but I copied SRS2 uh not into data.
+
+Okay. So that is what it looks like. So we have different measure measurements for different houses. Uh so I can say for example LM low grade and county
+
+and I get this kind of thing. So it happens that those are just that those are just the average logarithm levels for each county and that's because that's what linear regression with categorical variable does is it the maximum likelihood estimate there is just the average okay so for like whatever ana county I don't know how to pronounce it so for anoka county uh the average lot raden would be this much plus this
+
+Make sense? So, okay. So, uh this is what's called a no pooling estimate for each county. Uh so, no pooling estimate means that in order to estimate the average log level in each county, I just average the measurements. So why might the why might this be not ideal? Well, so as we saw before in uh whatever Stevens County, there's two measurements. So if you take the average of two measurements, it could it could be anything. Does that make sense? So what you kind of want to do is what's called partial pooling. We'll switch to the slides in a second. So the idea for partial pooling is to say okay it's not reasonable to get something to get to get kind of something like this and say okay like this this so this like tiny auntie well auntie with a tiny number of measurements has like very log low log rate then well no maybe it's just those two analysis. So what I want to do is I want to somehow use the data from the entire data set in order to get better estimates for the individual counties. Partial pooling refers to partially pooling the data from the entire data set in order to estimate the uh uh in order to estimate the situation in the particular counties. So okay. So again just like back from uh the uh the R notebook. So the complete pooling would be to say go to the other extreme for every county just estimate the same thing which is the average for the entire data set. That would be very robust but it might also be that the different counties are very different. Uh again this is nully. Uh so this is again so there's like uh sorry I looked up how to pronounce it but I forgot. Uh so in in French this would be laho but I don't know how they say it in Minnesota because I forgot. Uh so um the idea is from just two data point in LQP as I will now call it uh you know could could could be anything. So here's an idea. We'll again go back to thinking about how the data might be generated and using that will estimate what's going on. So that's what's called a multi-level model. So the idea is kind of like this. We're saying, all right, so we have this alpha coefficient and the alpha coefficient would be the true log greater than level in county J. So the notation here, this is the usual notation. It's row number I and then J of I is the count key that corresponds to row number I in the does that make sense? So this is not like I mean J could literally be an array and then like you just look up the J at the index or you could just think about it as like the county number that corresponds to row number. Okay. And what we're saying is that for each row in the data set, there's going to be a true unknown level of uh of log grad in that county on average. We just don't know it. And then we're going to say, okay, what's the E measurement? Well, the I measurement is taking place in county number J. And we're going to say, okay, I don't know what the average is in county number J, but if I knew, then it would be like normally distributed around the mean for that county with some variance that I also don't know. Make sense?
+
+So we are then also going to say, well, I don't know what the alpha js are either. So the alpha js are actually the things that they want to figure out. Those are the true average logarithm levels in each county. And what I'm going to say is okay I don't know what they are but they are on average mu alpha. Mu alpha is some kind of average that I also don't know. And they're spread with variance sigma alphascript.
+
+How do I know all of those numbers? I don't. I try to estimate all of them from the data with something like maximum like
+
+so. So the summary is I have this data. So the data currently is just rows are houses and in each house we measure the log grad and we're saying okay there is a true average for each county which I don't know and then I'm saying if I didn't know it the way the data would look like is in each county we have a Gaussian that's centered around the mean for that particular Gaussian.
+
+So if that is what the data is like. Yeah. Can you explain the difference between sigma alpha and sigma? Uhhuh. So uh you have counties. So each county has a true mean and then within it within each county uh you have measurements for the different houses. So the sigma y measures how different are the houses in an individual county. The sigma alpha measures how different are the counties.
+
+Right?
+
+All right.
+
+So what we're saying again is this is our idea of how the data is generated, right? So there are some true means for each county and then we and then the measurements are generated. You sect random houses and those houses are distributed along the the Gaussian with a mean for that particular county. And then we're saying also the different counties are different and the overall mean for the counties is mu alpha. It's not necessarily like the arithmetic mean for the entire state. It's some kind of mean. And you might imagine that like if you are creating like a new state of Minnesota, you're going to say, okay, like I'm going to pick a mu alpha. I'm going to then pick along a Gaussian the average for each county and then I'm going to make measurements in each county according to what the average in that county is. Okay, that's of course like a wild assumption. like we don't know that any of that is true. It's a model. So then we're saying okay so we have those observations. So this is the actual levels of log that we see. Then we can ask okay what's the likelihood of that given that this is a model and the answer is well it's the likelihood of every individual measurement. So house number I that's in county J. So this is this factor just multiply all of them. And then for each county we're saying well if alpha J for county number J is close to mu alpha then the likelihood is high. If alpha j is kind of far away from alpha then it's low. Right? So that's the likelihood and then the magic is that you can just do maximum likelihood uh and out of that everything falls out. So you have the estimates for all of uh you have you can have the estimates for all of those guys for mu alpha and for sigma alpha and for every one of the alpha js the y's unit. So how do you do that? Well, there's code.
+
+Uh so uh so this is uh so this is the code that corresponds to this model. Uh so to read this code uh what you're saying is you're predicting log rayen you are pred you are predicting it from just a constant. So you're not currently looking at the floor or anything but this constant you're saying is estimated per county but it's partially vote. So one pipe county corresponds to saying sorry.
+
+The one type county corresponds to saying the county means are distributed like this with some mu alpha and sigma alpha which you also get from beta. This is as opposed to no pooling where you're still saying that the y's are distributed like that, but then you're saying just make alpha j be the average for county j.
+
+Make sense? So the partial pooling part is saying rather than just make alpha j be whatever you want and so that it's maximum likelihood which would just correspond to making alpha j be the average you're saying no I want to reward alpha j's being close together right because having this term means that if all the alpha J are stuck together then the likelihood is high five. So basically what this does is it says reward each measurement being close to the alpha J that corresponds to the county from where that measurement comes from but also make it so that all things being equal alpha J's being close to mu alpha is better. So it's a trade right? So if you have a county with a huge alquire, the tradeoff is either make it so that the yi seem like they're far away from the estimate for the county or make it so that the county seems way away from the average for the steams or kind of something in between which is what comes out. Does that make sense?
+
+So you can run this. So I I showed you the code. So one type county means that the alpha js are restricted. So like you you want them to be a gaussian rather than just anything.
+
+And what you see run it
+
+is
+
+you. So this is just like extracting these uh extracting the extracting the specific uh extracting specific coordinates. Uh so for for example LCQ the raw mean is whatever. So like complete pooling would be just like the overall mean and then partial pooling would be somewhere in between. So let me
+
+uh so this is just so this is just complete pooling. Uh so that would be like just the average for everything. You could say that's the average for that county as well. It's kind of silly, but you could uh so
+
+this so uh this would this would be no pooling. So the so the estimate for LQP would be just the average for LQP and then this is the partial pooling somewhere in between.
+
+All right. So,
+
+uh that's kind that's kind of like this. Uh so the magic is that you're kind of getting the thing that kind of makes sense for free, right? So you're saying don't trust county don't trust just the raw average for counties with very few data points but trust counties with a lot of data points that actually comes out of the map. I'm not sure to what extent it's easy to see but basically if you have a lot of y's from a particular county then this term becomes more important right just because like the more terms you have the more you care when you're doing maximum likelihood that the product is lost right on the other hand if you have very few measurements for a particular county then you prefer for the alpha j to be close to mu alpha and that just comes out of the math automatically. So you do this kind of uh estimate that's somewhere in between. Does that kind of make sense? All right.
+
+Uh so again just summary. Uh so this is the partial pooling uh model again. So this is just the usual thing. The partial pooling is saying alpha j don't just estimate the raw average constrain it so that it's better if the alpha js are around some mu alpha. Where does the mu alpha come from? It's estimated from the data as well so that everything works as well as possible. uh you can kind of think about it as sigma alpha being infinity corresponding to no pool because if you set sigma alpha to be infinity that just means that you don't care what the alpha j is right so like sigma alpha equals infinity means that like like it's not a real gaussian right that it's just like a flat thing where alpha j could be anything and that doesn't cost you Right. Uh on the other hand, saying like sigma alpha is like almost zero means that alpha j being from mu not being mu alpha is infinitely expensive. So kind of if you set sigma alpha to zero for that like in the limit that corresponds to I'm forcing all the alpha js to be equal to m. And then partial pooling is you know a compromise. Make sense?
+
+All right.
+
+Uh so here's here's how to read this. Uh so so this is saying you know so uh we are predicting log raten just from nothing except the constants are different but by county and we are doing partial pooling. Uh so the random effects uh this is another term that you would see um like that just the output. So like random effects, vex effects. I don't really like this terminology. Uh but basically random effects would be the data point would be the data points around the estimated means for the counties. The fixed effects would uh the fixed effect in this case is just nothing. It's just a constant. You could also have a fixed effect like for example like going up one floor changes something, right? So that's a fixed effect. So like it's an an effect that doesn't depend on which county you're in. Uh so uh the readout here is um this is this this is sigma alpha. So this is how counties differ from each other within the state.
+
+And then uh this uh and then this is sigma y. So this is how so this correspond so this is like county. So you can read it as county. Uh residual is the measurement error. So this is how houses differ from each other within counties. Uh and then this is just whatever new alpha make sense. All right.
+
+So uh you can also uh read all the coefficients. So if you do like of this that gets you the estimates for each county. So why are we doing all this? Well, like you might have different questions like you might have just generally a scientific question of how do counties differ between each other. You might also have a question of like what's the actual estimate for each county and I want something reasonable. I don't want a straight average of like an outlier and one other house to be the estimate for the county. So that would be like the answer for that. This is like the estimates for the balances.
+
+So again another view kind of already said it. So like no pooling doesn't share information between the data points. Uh complete pooling kind of like fully shares all the information. Uh and then partial pooling is kind of like for each county we kind of use all the data but we kind of try to focus on each particular.
+
+So uh as I mentioned draden is heavier than air. Uh so like there's more of it in the basement. Uh so one thing that you might think is well actually it kind of looks like different counties have different levels of raiden but what if it's because some counties have like lower buildings and some some have higher buildings that would do it right because there's less raven on the third floor. If the county just stops the top houses with the third floor, that will make its risom level be higher automatically regard even if everything else is make sense. Um, so here's what you can do. You can say all right so I'm going to predict the measurement for house I as the average for the corresponding county plus beta times the floor right
+
+and then this is still the same so the so the advantage here is like if the situation is that the differences in graded levels are actually driven by just architecture then you'll find that and if you're actually interested in like the geology of it then you'll get better right so the interpretation here is like you keep everything constant like the log gradient level goes like beta would be negative so like it goes down by whatever amount by beta uh if you increment x by one. So like if you go up one.
+
+So again you might say well like maybe the beta is constant but what if the beta is actually also dependent on the county? So why might that be? Well, you might imagine that some counties are like richer and they have higher ceilings. Some counties are poorer and they have lower ceilings. So for a county with buildings with higher ceilings, the beta should be greater, right? Just because like floor number three is higher up from the ground could be. Okay. So in the so in the same way that you could have a different alpha for each county. So you have a different uh uh you have a different average in each county that you estimate from the data using partial pooling. You can also estimate a different beta coefficient for each county. Again using partial not going to get into the math math here. So like it would invol so like the the the default thing is it involves a multivaried Gaussian which how many people know about those? Not many probably. That's some okay well good times. Uh so uh the point is you can write things kind of like this where the beta is going to be again different depending on which county you're in and you're estimating the beta again using partial. So the multivaried gaussian here you don't really need to know about it. What you want to know about is you can say in the same way that I can have a different alpha for each county I can have a different data for each county that I estimate from the data and again if I have not a lot of data from the particular county the maximum likelihood is automatically going to take care of it makes sense.
+
+So the way you would do it is you would say okay so uh I'm predicting the log grad using the floor. So in this particular situation, this is saying just have like a predictor based on just the floor that's constant and then also estimate the floor coefficient by county
+
+and then you can read off uh um I I this is going to be on test two but I'm going to do it like a screenshots of of this on test two just because it's like not not super reasonable to to not do it. So like you can read off all of those coefficients. Uh so again kind of going back uh going back here
+
+what we're what we're saying is we're going to have this coefficient for xi and this coefficient is going to be like a constant which you can read off from there plus a county specific coefficient.
+
+So why would you do that? Well, one, you might get a better prediction this way. So if it really is true that you know higher ceilings in some counties like got that found for that. Uh two, you might be interested in just asking okay like is it actually true kind of scientifically that there is this effect where in different counties the effect of the floor number is different and you can get this answer by reading it off the table here.
+
+So we're interested in how do the beta js differ. The beta j uh so the beta j is distributed. So this is like how the beta js differ. It's the sigma beta and we can read up the sigma beta from over here. And the answer is uh 0.34. Is it a lot or not a lot? Well, uh, the average kind of the mean is minus0.7. So quite a lot, right? So it could go up or down like up or down to almost nothing or twice as much. Yeah.
+
+Uhhuh. Predicting this time rather than uh both. Uh so uh that's a good point though. Thank you. uh so both and that's because uh the one is always included by default. So if there is a pipe county this is the same as like 1 + 4.
+
+So uh uh let's let's go back here. So then so this is the so this is kind of the full prediction, right? So I'm saying it's going to be like this. So this is predict. So this is predicting based on the county and then this is the term that that's affected by the floor. So it's it's both and if you are like if you have uh like anything here then the one is included. So like you could also say one plus one.
+
+Uh yeah, so because like the constant term is always unless you say that you don't. So like you could say that uh so so you could make it so that like uh you could make it so that like the counting coefficient is like always fixed at zero if you wanted to. But if that's the situation, then you would just like I mean you you could but that that would be odd. Yeah.
+
+Does that kind of answer your question? Yeah. All right. Uh All right. Uh questions about this? Does this make sense? All right. So that's like this.
+
+So,
+
+how do you
+
+uh So, how do you predict a new uh Okay, you know what? I'm skipping this. Uh so, uh I'll uh yeah, it's it's kind of late and I want to do the other thing. Uh and I think this is getting maybe too much into the weeds and I'm not putting this in on the homework anyways. Uh so uh the issue is if you so this if this is your model then the way you would make a new prediction is you have to actually like sample the random. So if you have so what I mean by new prediction is I'm h I have a house it's in a particular county and I'm making a measurement on a particular floor. So at this point like how do I how do I predict the measure? So one possibility is I say okay I'm going to just look up uh look up mu alpha and alpha j and I'm going to do this math. So I'll plug in x i and that's going to be kind of my mean. So that would be the prediction. Uh what the next slide is saying is all right but how do I know the uncertainty there right and the answer is well what I got to do is I got to like repeatedly simulate from this data by plugging in the axis that I know and plugging in the alpha j that I know uh and seeing how spread out the predictions are when I repeatedly just sample
+
+So, okay.
+
+Uh, so, uh, here's one practical example of this. So, this was like a long time ago. Uh, things have changed. Uh, it's it's still kind of interesting. Uh, so, uh, not many people know. So like uh red states and blue states now are like very well known as like republican democratic states. Uh it used to be that TV would switch like blue is republican, red is democrat and then like the next cycle it would be the other way. Uh Canada is not like that. So like the liberal party is always red like various iterations of the conservative party is always blue like NDP is orange. PQ is blue whatever BQ is a different I so um uh so that so that's like that so there were many claims uh that were made about kind of different like culture and economic differences between uh kind of blue states and and red states. Uh so one interesting thing that uh people noted is uh at least kind of when there was a big blue state red state discourse uh people noted that uh richer states uh generally vote democratic generally richer states uh but on the other hand rich rich voters uh uh voted Republican uh that's now kind of actually kind of great things changed. Uh so like at some point Richard Boulder depending on how you find Richard so like by by average at some point it was like democratic then it flipped whatever like it's more complicated now. Uh so kind of on its face this is kind of interesting. So what's going on? Like the blue states are richer, but the uh richer voters are more Democrat, more more Republican, right? So that that that was the situation for uh so
+
+so how so how can you do it? So this is technically basian basian with an e. Uh it's basically the same thing as before. So we're still uh uh the reason I'm mentioning it is because like this is this is the work. It's like officially basian but the model is the same. We're still saying okay like we have how uh we have how rich is the state for volter J. So this is kind of uh uh sorry uh so this is kind of the alpha uh and then sorry not how rich we have like the propensity of the state to go democratic and then we have the income for the voter and
+
+uh and the coefficient that determines how the income influences the vote and then we're predicting the vote. So technically it's not anymore maximum likelihood in that that particular paper it's basian so we have like priorities so okay so here's the spec so here's this uh I obviously kind of skipped the details there you do not need to know them uh so this this one though is going to be concrete so we have uh a poll in the poll we ask did you vote Democrat or that you that you vote Republican and we ask you for your income. We then like you know separate the income into like five buckets from minus 2 to two. Uh so x i would be the income. Uh we have asset i which is like the state where person i lives. Uh you arbitrarily uh kind of decide whether y i equals 1 is republican or democratic. So in this case you say Republican uh and you start by saying okay so like let's do a logistic regression right so we're going to predict the probability that the person votes Republican based on this the state coefficient so you know like in more than like there's like obviously like both cultural economic differences whatever so in some states people have more preventive to vote uh Republican in other states Democratic. Okay. Uh and then uh we're saying okay uh the probability is also going to be influenced bank. So it's going to be a coefficient B and we're going to try to predict you know uh how they vote and we're going to estimate. So okay
+
+so how would we do it? So sorry. So this uh this is the same as logistic I'm sorry let me change the notation. So this is the logistic function the one over 1 + x - one uh uh so all right uh uh sorry I don't have time to do this uh I'm going to do it next time. Uh the op the uh the upshot is uh the there was at least for a time I'm sorry there was at least for a time a pattern where uh what was going on is that part of the paradox was that there was a bigger change between richer and poor voters in democratic states in uh sorry republican states than democratic states. So basically in democratic states uh the p v voting patterns for richer and poor voters were kind of the same. In Republican states the poor voters actually were much more democratic than uh than uh so that kind of resolved in some sense what's going on and it got resolved with multi-level modeling but not today. Sorry spoilers. So okay
+
+we are done. So uh we have uh so uh this was working on this.
+
+So this is the sample uh I believe.
+
+Uh okay. So we have all So we have all the posts here. So we have kind of So we have kind of the classifications
+
+uh for each po for each post. So I guess they're identified by those letters. uh again ideally and for the project if that's how you want to go you would check that those make sense and you would check better than what I had done with like literally three examples but we got we got the data for uh for three for 3,000 posts so that's right so as promised what we want to do is finish up the analysis So what they uh so what they want is basically kind of the positive and the so kind of the uh the positive and the negative sentiments. So most of them are neutral which is good. I think most of them should be neutral and then I want basically like a thematic analysis for uh for the negatives. So, like what are people unhappy about? All right. So, um here's what I'm going to do. There's lots of different options. Let me just write it up in the plan. Uh so again clustering
+
+is an algorithm
+
+that uh assigns data points to group based on similarity. There's lots of clustering algorithms. Uh ordinarily clustering requires that those would be that what you're doing is averaging numerical values. You cannot say like you cannot at least not easily you could uh cl uh cluster like words. So what I'm going to do is I'm going to convert the each each of the posts into numbers. So there are multip so there are multiple ways of doing it. Uh so uh an embedding we're going to do it in more detail later on is a function from it text to
+
+and dimensional vectors. Uh so I I think have you heard of like war to back stuff like that? Has anyone not heard? Okay. So um again I'll do it in more details but there are various algorithms for converting text into numbers. So in fact in order to be able to plug in text into a language model it has to somehow be converted into numbers first. So in particular there is a way to convert every word in different ways into n dimensional vectors. What I'm going to do is I'm going to give particular embeddings for each post and just average them and then I'm going to cluster the post by the so the picture of what I'm going to do
+
+kind of this. So this is like the positive and this is the negative sentiments. Then what I'm talking
+
+is is that it's going to be something like this, right? So this is
+
+so this is like two-dimensional space. So like if I convert every word into just a two-dimensional vector then I can plot it like this. Does that make sense? Right. So that's that's what I'm going to do. There are libraries there are library functions for all of this which I'm going to use. Uh so
+
+uh well we we'll see we'll see we'll see how it works. Uh so here's my plan.
+
+So like reading the post
+
+So, okay. So, what I'm doing is I'm converting each word in each post to a vector. I'm just averaging all of that together. that is probably unintuitive to people but averaging large embeddings is fine. Again, we'll talk about it later uh in more detail and then clustering them. So, I'm applying an algorithm to identify those kinds of things and then I'm saying I had whatever probably like a thousand posts in total that I have. So for each cluster just print like five representative uh well not representative like five random examples and the idea is that that might give me a oh it's it's going glove instead of word to back that's the same.
+
+So the idea then is that what I'll get is like clusters of hopefully similar unhappy posts and hopefully similar happy posts.
+
+So yeah, again like to be clear, you don't have to do it my way. Uh so I think like like multiple people wanted to do sentiment analysis. I do think that like the people who did want to do sentiment analysis like this kind of this approach just works better. Uh and like to be clear I what I hope to what I hope to have done today is to demonstrate like a working prototype of something. To be clear this is not to be taken as example of good research. This is terrible research. Uh but you know like I I think like lots of marketing departments do a lot worse. So although I don't know we'll we'll we'll see. Uh okay it's it's it's already working. So uh we'll we'll get the results in a few minutes. So yeah. All right. Uh so uh of the people here are there people interested in office hours tomorrow?
+
+All right. I was going to ask when, but I guess the answer is no. So, I'll I'll announce something if uh anyone changes changes their minds. Uh so, again, just like do like you have the previous you have kind of the previous tests from SML 2011. Uh you have project one, project two. I I do st like obviously and like like we we're all grown-ups here. So like I think we all know that if you like outsource to chat GPD too much like it's it's going to be a problem on the test. Uh so like try as much as possible try to do uh try to do it from scratch. Uh, all right. When you have the results,
+
+I'm like too lazy.
+
+Oh, okay. Well, that's bad. So, so in this case, it ran pretty fast. It didn't matter, but it didn't actually save the results. So, it's like rewriting them. And this time, it's writing to clusters.txt,
+
+but it's it's still it's still writing. So, we can see
+
+Yeah, just just give me a second. So like what happened is it like it basically lost the uh lost the outputs. It like printed like very few representative ones
+
+All right. Uh so
+
+okay.
+
+So those are supposed to be like thematically close. Whether they are or not is like debatable. Uh so this seems like just like good vibes.
+
+Okay. So this is pretty good. So this is all kind of like academics related.
+
+What?
+
+Okay. Not not a great not not a great cluster. So the positive I would say like probably back to the drawing board like I think they're all they're all positive and you related but the clustering seems to not have really worked for the positives. Uh okay. Uh okay. Grade and course related
+
+uh lifestyle related
+
+or just general frustration.
+
+Um, general frustration.
+
+Okay. Uh, I'm not responsible for Reddit. Uh, so so uh yeah. So, so I think the cl the clustering like I would say is kind of not great. So I would go back to the drawing board like try different clustering algorithms uh or try kind of better embeddings. Uh U of themed and uh sentiment seems to have worked pretty well. Yeah. Um cool. Uh all right. Um uh we'll see you on Friday at So we'll start so we'll start not here but like whatever is the other room at uh 210 and the exam the test is going to be I said I think 1 hour 10 minutes.
+
+All right. Thank you very much.

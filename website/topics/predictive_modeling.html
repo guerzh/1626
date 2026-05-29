@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Predictive Modeling: Linear Regression and Categorical Predictors</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Predictive Modeling: Linear Regression and Categorical Predictors</h1>
+</header>
+<h2 id="setup-housing-prices">Setup: housing prices</h2>
+<p>The example everyone and their dog uses for linear regression — so we might as well. The data set is housing prices from Portland, Oregon, about 15 years ago. (If you’re looking to buy in Portland now, it’s probably more expensive.)</p>
+<p>The data: you have the size of the house in square feet and the price in thousands of dollars. The task is: given measurements about a new house (e.g. square footage), predict its price.</p>
+<h3 id="notation">Notation</h3>
+<ul>
+<li><span class="math inline">\(m\)</span> = number of training samples.</li>
+<li><span class="math inline">\(x^{(i)}\)</span> = the inputs (sometimes also called the <strong>features</strong>).</li>
+<li><span class="math inline">\(y^{(i)}\)</span> = the outputs (sometimes also called the <strong>targets</strong>).</li>
+</ul>
+<p>The simplest model: draw a straight line through the data. If you have a new house, look up the price on the line. Algebraically:</p>
+<p><span class="math display">\[\hat y = a_0 + a_1 x.\]</span></p>
+<p>You don’t know <span class="math inline">\(a_0\)</span> and <span class="math inline">\(a_1\)</span> — that is what you figure out from the data. Then for a new size you plug it in. (If you are hoping for a 2800-square-foot house in Portland for under half a million dollars — good luck.)</p>
+<h2 id="two-interpretations-of-the-squared-cost">Two interpretations of the squared cost</h2>
+<p>Here is the machine-learning way: there is a correct price for house <span class="math inline">\(i\)</span>, that’s <span class="math inline">\(y^{(i)}\)</span>. There is the prediction we make, <span class="math inline">\(a_0 + a_1 x^{(i)}\)</span>. The difference is the error. We want most of the errors to be small. The usual thing — and what we had seen in the MLE topic — is to minimize the sum of <em>squared</em> errors.</p>
+<p>It should be clear that the squared form is partly a mathematical convenience. You could say “I want to minimize the sum of absolute errors”:</p>
+<p><span class="math display">\[\sum_i |y^{(i)} - (a_0 + a_1 x^{(i)})|.\]</span></p>
+<p>That is legitimate. It is called a different cost function. You’d get a different answer in general.</p>
+<p>Which is correct?</p>
+<h3 id="view-1-business-cost">View 1: business cost</h3>
+<p>If I am a realtor and my profit is a percentage of the absolute margin between price and prediction, then arguably the absolute-value cost is what I care about. Not the square. The percentage of the absolute margin — when I sell a lot of houses, sometimes I get it right, sometimes I get it wrong; my profit is the average of “absolute distance between prediction and actual.” That is what I care about.</p>
+<h3 id="view-2-statistical-model-based">View 2: statistical / model-based</h3>
+<p>I have a notion of the way real-estate prices work: there is a linear relationship between square footage and price, except there is some kind of noise. I want to figure out <span class="math inline">\(a_0\)</span> and <span class="math inline">\(a_1\)</span> assuming the world really works like this, with Gaussian noise. From the MLE topic, under this Gaussian-noise model, the maximum likelihood estimate is the same as minimizing the <strong>squared</strong> errors.</p>
+<p>So: same answer if you start either from “the world is Gaussian-linear and I want MLE” or from “I care about a square loss for some reason.” Different answer from “I care about absolute distance.” Different answer again if you decide your loss is something to the power of 2.7.</p>
+<p>In practice, it is really neither of those — in practice it is just that squared is convenient to optimize numerically.</p>
+<h2 id="simple-vs-multiple-linear-regression">Simple vs multiple linear regression</h2>
+<p>This is basically terminology that people don’t care about, but it’s in the course description.</p>
+<ul>
+<li><strong>Simple linear regression</strong> — one predictor. <span class="math inline">\(\hat y = a_0 + a_1 x\)</span>. Picture: a line through points in 2D.</li>
+<li><strong>Multiple linear regression</strong> — several predictors. <span class="math inline">\(\hat y = a_0 + a_1 x_1 + a_2 x_2 + \cdots + a_n x_n\)</span>. Picture: a plane (or hyperplane) through points in higher-dimensional space.</li>
+</ul>
+<p>The way that people visualize multiple linear regression: think of <span class="math inline">\(x_1\)</span> on one axis, <span class="math inline">\(x_2\)</span> on another axis, <span class="math inline">\(y\)</span> on the vertical axis. For a particular pair <span class="math inline">\((x_1, x_2)\)</span> you have a plane; you predict the point on this plane; the error is the square of the distance between the prediction (on the plane) and the actual point.</p>
+<p>In both cases you minimize the sum of squared residuals.</p>
+<h2 id="when-a-straight-line-is-wrong">When a straight line is wrong</h2>
+<p>Here is the most usual way the linear model is <em>not</em> true:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(gapminder)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">ggplot</span>(gapminder, <span class="kw">aes</span>(<span class="dt">x =</span> gdpPercap, <span class="dt">y =</span> lifeExp)) <span class="op">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<figure>
+<img src="figure-predictive_modeling/unnamed-chunk-1-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-1</figcaption>
+</figure>
+<p>It is not a straight line. The regression line that you do get does a bad job of prediction.</p>
+<p>In the case of GDP per capita, it so happens that if you transform the x-axis so it is on the <strong>log scale</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">ggplot</span>(gapminder, <span class="kw">aes</span>(<span class="dt">x =</span> gdpPercap, <span class="dt">y =</span> lifeExp)) <span class="op">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_log10</span>()</span></code></pre></div>
+<figure>
+<img src="figure-predictive_modeling/unnamed-chunk-2-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-2</figcaption>
+</figure>
+<p>There actually is a linear relationship there. It just happens to be between the logarithm of the GDP and life expectancy.</p>
+<p>The lesson: if you are doing prediction, sometimes it is helpful to <strong>transform the inputs</strong> so that the relationship is actually linear. Of course, if you care about the <em>cost function</em> — for example, if what matters for your application is the low-income countries — that is a separate thing.</p>
+<p>If what you care about is figuring out how the world actually works, well — this is just not the answer. It is clear that the world does not work like a straight line in raw GDP, because in the rich countries the line is plainly wrong: the actual data is below the line.</p>
+<h2 id="categorical-variables">Categorical variables</h2>
+<p>So far we have looked at <strong>quantitative variables</strong> — numerical inputs. The counts of something, the weight of something. Quantitative variables are usually genuinely continuous (life expectancy, GDP per capita), but discrete things like counts are often treated as quantitative too. If your <code>x</code> could be 19 or 21, it could also be 20, so it is mostly continuous in spirit. (You cannot have 20.5 students in a class, but if you are modelling average grade vs class size, treating count as quantitative is fine.)</p>
+<p><strong>Categorical variables</strong> are different. In the <code>gapminder</code> data, the <code>continent</code> column has only a few possible values: Africa, Asia, Europe, Americas, Oceania. Those are not numbers. You cannot average Asia and Australia and get something meaningful.</p>
+<p>Borderline cases:</p>
+<ul>
+<li><strong>Colors.</strong> Technically colors exist on a spectrum, but light perception doesn’t work that way. Averaging red and yellow gives something close to orange, but averaging red and green just doesn’t make sense.</li>
+<li><strong>Likert scales.</strong> “Strongly disagree, disagree, neutral, agree, strongly agree” — usually converted to 1–5. People sometimes say “you can’t really average strongly agree and strongly disagree and get neutral”, so it’s a borderline case.</li>
+</ul>
+<h3 id="indicator-variables">Indicator variables</h3>
+<p>If you have a categorical variable with <span class="math inline">\(K\)</span> possible categories, you can force it into the linear-model framework using indicator variables. Suppose we are predicting <span class="math inline">\(y_i\)</span> from a category column with values in <span class="math inline">\(\{1, 2, \ldots, K\}\)</span>. Define <span class="math inline">\(I_{i,k}\)</span> to be <span class="math inline">\(1\)</span> if row <span class="math inline">\(i\)</span> belongs to category <span class="math inline">\(k\)</span>, else <span class="math inline">\(0\)</span>:</p>
+<p><span class="math display">\[\hat y_i = a_0 + a_{1,1} I_{i,1} + a_{1,2} I_{i,2} + \cdots + a_{1,K-1} I_{i,K-1}.\]</span></p>
+<p>We use <span class="math inline">\(K - 1\)</span> indicators, not <span class="math inline">\(K\)</span> — when all <span class="math inline">\(I\)</span>’s are zero, the row belongs to the “left out” category. Otherwise we would have redundancy.</p>
+<p>Concretely, suppose continent 1 is Africa, continent 2 is Asia, continent 3 is Europe, etc., and Africa is the left-out category. If row <span class="math inline">\(i\)</span> is Asia, then <span class="math inline">\(I_{i,2} = 1\)</span> and all the other <span class="math inline">\(I\)</span>’s are zero, so <span class="math inline">\(\hat y_i = a_0 + a_{1,2}\)</span>. If row <span class="math inline">\(i\)</span> is Africa, all the <span class="math inline">\(I\)</span>’s are zero and <span class="math inline">\(\hat y_i = a_0\)</span>.</p>
+<p>This is just a re-encoding so we can keep using the same linear-regression machinery to figure out the coefficients. The prediction at the end is just the sum of the intercept plus the right indicator’s coefficient.</p>
+<h3 id="continent-example-with-lm">Continent example with <code>lm</code></h3>
+<p>The R function is <code>lm</code>, which stands for “linear model”:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">lm</span>(lifeExp <span class="op">~</span><span class="st"> </span>continent, <span class="dt">data =</span> gapminder)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = lifeExp ~ continent, data = gapminder)
+## 
+## Coefficients:
+##       (Intercept)  continentAmericas      continentAsia    continentEurope  
+##             48.87              15.79              11.20              23.04  
+##  continentOceania  
+##             25.46</code></pre>
+<p>The output gives you the intercept (Africa, the dropped category) plus one coefficient per other continent. For the Americas, the prediction is <code>intercept + (Americas coefficient)</code>, etc.</p>
+<p>Why is Africa left out? Just alphabetical — it is kind of arbitrary, and the math works out the same way no matter which one is dropped.</p>
+<p>A silly thing: this example averages across all years, which makes no sense. Let’s filter:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">lm</span>(lifeExp <span class="op">~</span><span class="st"> </span>continent, <span class="dt">data =</span> gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2007</span>))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = lifeExp ~ continent, data = filter(gapminder, year == 
+##     2007))
+## 
+## Coefficients:
+##       (Intercept)  continentAmericas      continentAsia    continentEurope  
+##             54.81              18.80              15.92              22.84  
+##  continentOceania  
+##             25.91</code></pre>
+<p>Now we are predicting life expectancy for each continent in 2007. The intercept is the average across African countries; the other coefficients are the offsets.</p>
+<p>As it happens, you can prove that with a categorical-only model and squared loss, the MLE prediction for each category is <strong>the average within the category</strong>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2007</span>) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(continent) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_lifeExp =</span> <span class="kw">mean</span>(lifeExp))</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 2
+##   continent mean_lifeExp
+##   &lt;fct&gt;            &lt;dbl&gt;
+## 1 Africa            54.8
+## 2 Americas          73.6
+## 3 Asia              70.7
+## 4 Europe            77.6
+## 5 Oceania           80.7</code></pre>
+<p>The intercept + each coefficient equals this.</p>
+<h3 id="why-squared-loss-mean-absolute-value-loss-median">Why squared loss → mean; absolute-value loss → median</h3>
+<p>Interesting aside. If you change the cost function to absolute-value:</p>
+<p><span class="math display">\[\sum_i |y_i - \hat y_i|\]</span></p>
+<p>and run the prediction with a categorical variable, you can prove that the per-category prediction is <strong>the median</strong> rather than the mean. So your choice of cost function does change the answer.</p>
+<h2 id="working-with-lm-and-predict-in-r">Working with <code>lm</code> and <code>predict</code> in R</h2>
+<p>Let’s run a regression on a transformed <code>gapminder</code> subset and use <code>predict</code> to get predictions.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>gap_<span class="dv">1982</span> &lt;-<span class="st"> </span>gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1982</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">ggplot</span>(gap_<span class="dv">1982</span>, <span class="kw">aes</span>(<span class="dt">x =</span> gdpPercap, <span class="dt">y =</span> lifeExp)) <span class="op">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_log10</span>()</span></code></pre></div>
+<figure>
+<img src="figure-predictive_modeling/unnamed-chunk-6-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-6</figcaption>
+</figure>
+<p>In <code>aes</code>, anything about the <em>logic of the data</em> goes inside: what’s on the x-axis (here, <code>gdpPercap</code> — and <code>scale_x_log10</code> puts it on a log scale), what’s on the y-axis (<code>lifeExp</code>). The <code>geom_smooth(method = "lm")</code> displays a linear-regression line through the points; by default it also shows a ribbon for uncertainty around the fit.</p>
+<p>We could also have plotted <code>log(lifeExp)</code> on the y-axis. Why doesn’t taking the log of <code>lifeExp</code> make a big difference? Because life expectancy ranges over a narrow band (50–80 years). Taking the log barely changes the shape. If life expectancy ranged from 50 to 5000, the log would matter — but it doesn’t. Usually you take the log of <code>x</code> and don’t take the log of <code>y</code>, but depending on the data it could be anything.</p>
+<h3 id="fitting-and-predicting">Fitting and predicting</h3>
+<p>We know that a straight line through this on the log-log scale makes sense, so let’s actually fit the model:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap), <span class="dt">data =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>model</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(lifeExp) ~ log(gdpPercap), data = gap_1982)
+## 
+## Coefficients:
+##    (Intercept)  log(gdpPercap)  
+##         3.0527          0.1266</code></pre>
+<p>So <code>log(lifeExp) ≈ intercept + (coef) * log(gdpPercap)</code>. To get the actual life expectancy prediction for a country with GDP per capita 10,000, we compute the log, multiply by the coefficient, add the intercept, then exponentiate.</p>
+<p>You can get the individual predictions with <code>predict</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>preds &lt;-<span class="st"> </span><span class="kw">predict</span>(model, <span class="dt">newdata =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">head</span>(preds)</span></code></pre></div>
+<pre><code>##        1        2        3        4        5        6 
+## 3.924370 4.090434 4.148530 4.055575 4.205327 4.303094</code></pre>
+<p>For each row in <code>gap_1982</code>, this gives the model’s prediction of <code>log(lifeExp)</code>. (The fact that <code>gap_1982</code> already contains <code>lifeExp</code> is irrelevant — <code>predict</code> ignores the answer column.)</p>
+<p>To go back to actual life expectancy, exponentiate:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">head</span>(<span class="kw">exp</span>(preds))</span></code></pre></div>
+<pre><code>##        1        2        3        4        5        6 
+## 50.62119 59.76585 63.34079 57.71833 67.04252 73.92819</code></pre>
+<p>Row 1 was Afghanistan in 1982. The model predicts about 50.6, but the actual <code>lifeExp</code> in 1982 in Afghanistan was lower — there was a war. That kind of explains the under-prediction: the model says “this country has GDP per capita <span class="math inline">\(X\)</span>, so I predict <span class="math inline">\(Y\)</span> life expectancy”, but during war, GDP per capita can actually be higher (because the economy is busy producing weapons and soldier salaries) while life expectancy goes down. So the model misses the cause.</p>
+<h3 id="prediction-for-a-new-observation">Prediction for a new observation</h3>
+<p>You can create a new one-row data frame to score:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>new_country &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">gdpPercap =</span> <span class="dv">10000</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="kw">exp</span>(<span class="kw">predict</span>(model, <span class="dt">newdata =</span> new_country))</span></code></pre></div>
+<pre><code>##        1 
+## 67.94479</code></pre>
+<p>The column name has to match the column used in the formula.</p>
+<h3 id="manual-sum-of-squared-errors">Manual sum of squared errors</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>preds &lt;-<span class="st"> </span><span class="kw">predict</span>(model, <span class="dt">newdata =</span> gap_<span class="dv">1982</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="kw">sum</span>((preds <span class="op">-</span><span class="st"> </span><span class="kw">log</span>(gap_<span class="dv">1982</span><span class="op">$</span>lifeExp))<span class="op">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 1.484817</code></pre>
+<p>This number by itself doesn’t really tell you much — the sum of squared errors is just going to be larger if you have a larger table. Every row contributes some amount, so more rows means a larger total. You really want to compare two models on the same data.</p>
+<h3 id="multiple-linear-regression-adding-year">Multiple linear regression: adding year</h3>
+<p>Add <code>year</code> as a second predictor:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a>model1 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap), <span class="dt">data =</span> gapminder)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>model2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(lifeExp) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(gdpPercap) <span class="op">+</span><span class="st"> </span>year, <span class="dt">data =</span> gapminder)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>sse &lt;-<span class="st"> </span><span class="cf">function</span>(m, df) <span class="kw">sum</span>((<span class="kw">predict</span>(m, <span class="dt">newdata =</span> df) <span class="op">-</span><span class="st"> </span><span class="kw">log</span>(df<span class="op">$</span>lifeExp))<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a><span class="kw">sse</span>(model1, gapminder)</span></code></pre></div>
+<pre><code>## [1] 35.54009</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">sse</span>(model2, gapminder)</span></code></pre></div>
+<pre><code>## [1] 29.51551</code></pre>
+<p><code>model2</code> has the smaller sum of squared errors. The more data you put in, the better the predictions get — so a smaller SSE.</p>
+<p>You could read it off the coefficients: the year coefficient looks tiny, but years are 1950–2007 so the term <code>coef * year</code> is actually a meaningful number. For a country with $10000 in 1950 vs in 1990 the difference in predicted <code>log(lifeExp)</code> is non-trivial. On average, a country with the same GDP per capita gained about 2 years of life expectancy between 1950 and 1990 (in the model).</p>
+</div>
+</body>
+</html>

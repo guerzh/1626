@@ -1,0 +1,199 @@
+All right, we're back. Uh yeah. So uh uh recognizing that this is a little bit of a slo uh I'll do a little bit more R uh like I I I hope this is useful uh because like it sound kind of from just at least the room it sounds like not everyone has worked data frames. Uh so uh this this is good. Uh we'll also you know I'll keep going at the pace that I kind of predecided on. We'll see kind of whatever like who enrolls in the course who stay in the in the course and then kind of starting you know late this week early next week we'll try to calibrate things so that it it makes sense uh for everyone. Uh but yeah, like feel free to stop me. Uh like you don't really have an option of telling me just like hurry up uh because that will be rude but [clears throat] but uh we'll we'll we'll try to figure out feedback mechanisms. Uh so okay so we had filters uh so filter we just saw and again like there's multiple ways of doing it but this is kind of the usual way is select kind of get just the rows that correspond to this. Uh another thing that's useful is a range. So a range is basically sorting by a particular column. So for example,
+
+baby names. So baby names uh as it is it happens to be sorted by year. That's just how the data is arranged initially. uh you can just say I want a version of the data frame that's sorted by for example n right so I can say arrange n uh so this is kind of sort except one obviously only one column at a time can be sorted so here it's going to be sorted by n this is kind of boring because so the minimum here is just five and it's sorted in increasing order uh if you want to sort in descending order, which is the more interesting thing because you want the most common ones. That would look that would look like this. Uh this is again kind of boring just because uh it's kind of all like Michaels and James's and stuff like that. Uh so you can combine it with filter. So, for example, like filter and get like 2,000 or something
+
+and again range and that is now going to give you like the top the top 10 names,
+
+right? Uh so here again kind of the effect is that because male names are like somewhat more concentrated most of the t top 10 10 happen to be male. So like if you uh if you want you can also like filter by sex is f so that you get like the top 10 female names
+
+like this. And in case you're wondering, this is like this
+
+cat. Uh so that is a range.
+
+Uh so you can arrange by multiple things. So this is like sort by year and then within each year sort by name. Uh so you can rename this is sometimes useful. Uh so you can say I want a new data frame where the name of the end column is now number.
+
+So we already saw select. So you can say I want the data frame with just those columns. You can also rename as you select. So for example you do this that this gives you this kind of deal where you have year sex and number as opposed to n. This is useful because n also happens to be a function. We'll see that in a second.
+
+Uh so uh you can do uh you can do mutate. So what mutate does is it adds one more column and the column can be whatever you want. So for example
+
+you can say okay I want to compute the uh [clears throat] sorry so I want to I want to compute the total population that's in the data frame for each year. So one way of doing it is to notice that the way baby names works is you have n and then you have the proportion. So 7% of the b of the female babies I guess are named Mary. So that's what proportion means. So if you want to reconstruct the population you can just like divide n by the proportion that will give you uh so you can so that so we can verify it. So I can say like baby names
+
+and divided by baby names.
+
+Got
+
+the first 10. Uh, and what you get is that those are all the same. And the reason they're all the same is that's like the year 1880. So like the number of Marys divided by the proportion of Marys is the same as the number of chains divided by the proportion of chains. So you can also do it using mutate.
+
+So I'll say total population. So this is a new column named total population and that's going to be pro uh sorry and divided by pro
+
+and that uh and that that is this. So
+
+in the so this so this is the this is the examples here right? So that's kind of like this. So that's what it looks like. So, [clears throat]
+
+so distinct is kind of so distinct is kind of similar to unique uh except it's by except it's by row. So, this is saying get me all the rows that are different. So, if I do something like this, so I'll compute B toll. So, this is I just added toll by year. So beetle now looks like this. So all the rows here are unique because here named combinations are unique, right? But I can say okay like I actually only care about the totals that I computed. So if I drop the if I drop the name then a lot uh sorry if I drop the name and the end and the prop then a lot of the rows become the same because it's just year sex to by year. So that's what I'll do.
+
+So I'll say select
+
+So now I have a whole bunch of rows all of which are the same by design because there's lots of ways of computing the total population based on every name. And now if what I want is just the population for each year I can say distinct and that gives me just one copy of each row. So it's like unique bot for rows
+
+and this is what I get. Uh so it's a little bit messed up because those are like not quite not quite equal just because of rounding errors. But that's kind of
+
+so okay. Uh so one kind of question that you can answer is for example like how many different years do I have? Well you can just say well like distinct years. So if you say distinct and then the name of the column that does the same kind of trick with select but automatically. So that'll just tell you like this is how this is all the different years.
+
+If you are asking like how many name year combinations that's going to be like this. Um so if uh so summar so this we already saw uh you can have you know summarize with both the mean and the median.
+
+And if you group by and then you do a proportion of toll, what you get is kind of the uh uh what you uh what you get is like for each year in sex like uh was portional what's the proportion of total. So okay. So this is this.
+
+All right. Uh so um a few more a few more things. So uh you uh so there is also just an end distinct function which does the same thing that we did did before but automatically so here what I'm saying is okay so like group by sex and year so each row is going to be a particular sex a particular year so like F180 M200 and whatever, right? And then we're saying, okay, so for all the rows where the sex is F and the year is 1880, what's the number of distinct dates? And that's going to be like this. So if I did not group by
+
+Oh,
+
+so if I did not group by this would be just how many uh how many different names are there in total. in the data set if I say group by
+
+sex for example. So this is as if I'm splitting up the data set into each distinct sex and then computing the same thing but for the rows where sex is f and the rows where sex is. So that gives me this kind
+
+in the example on uh the slide it's like year and sex. So this is like how many different names are there for f and the m in each of the years.
+
+They're kind of interesting like not actually not actually that many uh with the caveat that it's so the minimum number is five if so like there's like all sorts of misspellings whatever like lots of unique names that are just like not
+
+for your previous code if you don't use like if the total is 90,000 something does that mean Like for example 1880 you have a marriage 1881 marry those two marriage will count as these students or it will count as one. Uh so I think what so I think what you're uh uh so I think what you're asking is how does the how does the group thing work? So the answer is basically what we're what we have is like all the names for all the years like everything and then we're asking if we don't group by how many unique ones are there in total there right so like forget the table it's just all the names as one column and then how many of how many unique are there and then if you group by it's like you're splitting the data frame oops you're splitting a data frame where like just sex= f just sex equals m and then compute the same answer but for the two different data frames. Does that answer your question? Yeah. 90,3 and
+
+uh married in 1980 and married in 198 Oh those those are the same. Yeah. Yeah. Those are the same. Yeah.
+
+Uh Sam. Yeah. Uh yeah. So I think it's kind of maybe you were surprised because I am a little bit surprised because this is like not very many but I think this is just because this is 1880. So if we go back so uh if we uh go back so this is group by. So let's uh let's do a range
+
+like this and as as you see like in later years it's a lot more names. I think that was your question right? So ju just in 2017 like 18,000 different female probably like 15,000 different male. Yeah. Uh so
+
+okay uh so uh you can have a which max so which max returns the location of the maximum that's the thing that we had done manually before
+
+so I can say okay select group by year in sex and then what's the most popular name well like find the location of the the most popular name and then give me the name at that location. So I think with the group by it's a little bit confusing
+
+but without the group by
+
+this is saying take the n column find the row where the n is the largest get me the name at that location. So it turns out that this is Linda and then group by just says split this data frame into whatever like different years
+
+and then just give me the answer for the different years,
+
+right? And then for 1880 it's John whatever
+
+make sense.
+
+Uh so here is like a more complicated thing.
+
+Let's say that we want to compute the number of distinct names per capita. So essentially I want the total population. Once I know the to once I know the total population I want to say okay like per number of babies born essentially how many unique names are there. Okay. Uh so here we'll do like a process. So I'm just selecting sex equals f so that we're not confused. So then I'm saying okay so this is every year. So I'm splitting it up by year. So once I'm here, I'm just within like if like the summarize automatically is going to get me different rows with different years, but I'm just working with a given year once I prove by year, right? So now I'm saying okay, I want distinct names per capita. So the way I'll do it is I'll compute the number of distinct names and I'll compute the total number of babies that year. So let's stop here and see where we are.
+
+So group by year means one row per year. Filter F just means like we are just within F. And now we computed two columns. So one is distinct names and that's the number of distinct names within the data frame and also we have the sum of the ends. So that's the total population, right? And now we're just within this guy. So within this guy, we go further. We say okay I want the number of distinct names per capita. Well this is just distinct names per capita. So this divided by this. This is a mutate thing. So I want to add another column not grouping by just adding another column.
+
+And that looks like this. So I'm saying distinct per capita is this. And then what I care about is just here and distinct per capita. So I just keep those columns. So that that's a select. So I compute the whole thing here.
+
+And looks like this. So, I'm not doing kind of plotting today, but plot is like the default thing that just plots things. And if you're curious, looks like this. So, there were like fewer names in 1950. So, like everyone had the same name. And then things got more diverse like recently and then I guess like in 2019 like you
+
+So this is just like plot. So this is like XY. We'll do like nicer blocks later on in the course. Does that make sense?
+
+Uh so let's say that they want like data for both M and F. No problem. So instead of saying filter sex equals f like I had done over here, I just group by sex as well. So now I have one row per year per sex. So the only difference is I just say like group by year sex. Everything else is the same. And that now looks like this.
+
+Right? So one kind of question that you might ask is like if your so this is like an aside but if your question is like the you know like if the data science question is like was the naming more diverse or less diverse. One kind of thing you can do is what I had just done and compute names per capita. Another thing that you can ask is just how many total different names that you have. And I guess there's arguments uh there's arguments either way. So one way to say it is like the population is irrelevant. So if you have you know five billion people or 10 billion people the number of names is going to be constant. It's a question of how people are naming, not like how many uh how many people in total there are. Um at the same time, if the population is kind of smaller, like in 1880, then yeah, like if there's like just 1,000 babies born, there cannot be more than 1,000 different names. So names per capita kind of makes sense. uh and uh you know like ar uh arguably you know what you really should do is like names per cultural group. So like you might imagine that the larger population is just going to mean more different cultural groups just because a smaller population cannot support like many different cultural groups. So maybe like if you want overall trend you actually need to like separate out by cultural groups and then say for each cultural group what's the average name per capita and then average it or something like that. Different question a difficult question. All right. Uh so that is what I have to say for today about data frames. Uh I do want to do uh a few more things that are just programming. Uh so and that is as apply. So that is the thing that was promised in the slides two and a half hours ago. Uh so that's the map. So if what you have is a function that's you know like x squared in R you can just apply it to a vector and it's fine. It's going to apply to every element. So this is going to be just the squares of each element.
+
+Uh so that's so that's kind of fine. It only works for algebraic expressions. So if you have something like this, so this is like a dumb function. So whatever special square and what it does is if x is 42, it just says 42 otherwise it computes x^2. Uh this is just going to produce an error because if x= 42 if x is a vector produces a bunch of trues and falses not one boolean value. So the if just doesn't work. So if what you want to do is apply special square to every element of vec uh you need to use s apply and the way it works is like this. So you're saying I want to apply this function. So fun not for like fun but for function. uh I want to apply the function special square to every element of pack. So let's see how that works.
+
+So so this is this. So again like nothing conceptually complicated here. It's just you know I want to apply special square to one and to two and to 42 and to five and I get this kind of output. Uh I'm guessing most I'm guessing all of you would just say well just do a for loop which is not stupid you can do it. Uh R does have four loops as well. uh it's just that in the style in which we're working today uh you you can also do s apply in R it also happens to be faster both in R and in Python this kind of thing uh is useful when we're doing data frames so that's another part of why I'm doing this but also like not complicated sorry
+
+so uh so This is this uh and we're done. Uh all right. Um questions about any of this? I'm going to switch to a new thing.
+
+All right. So, uh for the last 20 minutes, so uh this is kind of the programming part. What I'm going to do is a bit of a review of uh probability to the extent that we can do it uh in whatever amount of energy that we have left. Uh we'll then connect all of this on Friday. Uh so all right.
+
+All right. Um so uh this is uh Taiki uh the uh Greek goddess of chance by the way. Um well the just the statue not the actual goddess. Uh so okay uh so a few uh so a few definitions. Uh so a random variable is uh a quantity that you observe. So, sorry. Do I have a coin?
+
+Okay, I lost my coin. Sorry. Uh, okay. So, if if I had a coin, I would toss it. Uh, so a random variable is like a quantity. So, for example, like if I had Okay,
+
+so I have like the green chalk and the red chalk. So the color of the chalk that you would choose when you pick one of my pants is a random variable. Okay. Um an event is the observation of the value of the random variable. Uh so for example an event would be the so the number of chalk pieces that I have in my right hand would be an event two. All right. Uh so it could be like any function of the values of of the R. So you can sometimes have like the probability of these. Uh so one kind of confusing thing uh is we write the probability of event happening and sometimes we write it as like P of D. So prob so whatever like probability of heads sometimes and kind of more correctly you should write it as the probability of the random variable. So the probability of the outcome of the coin toss being equal to something. So the probability of the coin toss being equal to right. So I'll try to stick to the capital being the random variable. So for example, the outcome of a coin toss and x being the value for example hence uh sorry lowerase.
+
+So okay. So let's say that we have two random variables. So let's say that X1 is the outcome of the first coin toss. X2 is the outcome of the second coin toss. Right? So X1 could be heads or tails. X2 could be head or tail head or tails. So let's say that we want to say no coin came up heads. How would we like provide the event algebra in anyone? Yeah.
+
+Yeah.
+
+Yeah. Uh yeah. So you said P of which is the probability. We just want wanted the event but basically right uh so
+
+so basically we want to say like x1 is tail and x2 is tail or something or I think you said it the other way. Uh so like X1 is heads or X2 is heads.
+
+Oops.
+
+Uh okay. So let's say it's a fair coin. What's the probability? Uh so I think people know. So what what is the probability?
+
+I think you said one quarter. That's correct. Uh so so basically if we want to say
+
+no corn cats
+
+sorry we say no. Oh it's no. So uh okay I'll rewrite it like this so that it's correct.
+
+So this is like this. And then if they're independent, this is P X1 is not equal to tails.
+
+this focus. Uh, is everyone okay with this? All right.
+
+So, conditional probability would be the probability that event A happened. If we know that event B happened. So let's okay I I I did this at Princeton which is a U of student at random. I'll I'll I'll update my slide at some point. Uh so let's say that we have two uh let's say that we have two random variables. So one is the height and one is the favorite sports. Right? So what does conditional probability mean? So we're saying out of all the people whose favorite sport is basketball, what's the uh what's the probability that h is greater than 6 in. Or you could say like out of all the people who whose favorite sport status what's what the probability greater than uh height greater than six sanctions right uh so
+
+one way so one way of thinking about it is just again like for and for discrete variables it just works just take all the people whose favorites It's sport is tennis. Compute the proportion of people whose height is greater than 6 in. Okay.
+
+Uh so all right. Uh let's do a little bit more practice. Uh so let's say that we toss a coin and let's say that we say
+
+heads is zero and tails is one
+
+and x1 is first coin toss.
+
+X2 is second point toss
+
+and we want to know
+
+the probability that X1 + X2 is equal to 2. Um what is the answer anyone?
+
+One quarter. Yes. Uh does everyone see it? So why one quarter? Well because the only way that x1 + x2 is equal to two is if x1 is equal to 1 and x2 is equal to 1.
+
+And this is again x1 = 1, x2 = 1.
+
+This is again 20 uh 5^2
+
+and this is again
+
+uh what about this one? So x1 + x2 is equal to 2 conditioned on x1 is = 1. Yeah, that's that's one half. And that's because x1 like one way of thinking about it is we already know x1 is equal to one and now we're tossing x2. Well, either x2 is zero or one. Each has probability half. So that's that. Or you can think about it as here's the population of everyone. So you could have like 0 0, you could have 0 1, you could have 1 zero, and you could have 1 one.
+
+And this is out because x1 is zero. This is out. This is in. This is in. And out of the events that are in, half have a sum of one and half have a sum of no. That's the other way I'm going to.
+
+So,
+
+[clears throat]
+
+uh this is kind of like a famous related thing uh called the boy and girl paradox. uh kind of ties everything nicely together. Uh so this is as said as so so this is the paradox. So Mr. Jones has two children. Uh the older child is a girl. What is the probability that both children are girls is the first question. And the second uh the second is Mr. Smith has two children. At least one of them is a boy. What is the probability that both children are boys and the kind of fun playing here is that the answer here the answers here are different. Uh so
+
+so what's going on? So two ch So two children
+
+older child old older child older child is a girl. So let's list out all the possibilities. How many people have seen this? All right.
+
+So what's so what are the possibilities? So we have boy boy, we have boy girl, we have girl boy, we have girl girl
+
+and we have uh sorry boy uh boy boy girl boy girl. So the older So the older child is a girl means that this is in and this is in
+
+that uh boy or girl or girl and in half Uh so what what's the what's the so uh given that uh given that this is the given that this is the situation uh what is the probability that both children are girls? Well 1/2 it's half of them.
+
+Uh here is the second one.
+
+So two children at least one of them is a boy.
+
+What is the probability that both are that both are boys? Well, at least one is a boy is
+
+this and this. Both are boys is one of those. So that's one.
+
+Isn't Isn't that Isn't that cool?
+
+Uh so okay
+
+so there there's no conclusion uh there so you can kind of read about like the different assumptions. Uh it's it's kind of about how you read it but this is like the usual way that people read it.
+
+All right. So this is this
+
+lost my slide. Okay.
+
+Uh so okay so uh just to remind people so mathematically independence means you have two variables so you you're measuring two things and then the variables are independent if it doesn't matter what the value of x2 is the probability of x1 is the same right so information about x2 doesn't affect your beliefs about what x1 might Right. So mathematically it's like this. I'm not going to do like a lot of math in this course. This is just like the ma like the mathematical definition is just this. Uh the intuition is information about x2 doesn't affect your estimate about what x1 is. Uh so this one is actually important. Uh so uh this is uh base uh this is base rule. Uh so uh uh one way of thinking about it is this is just the mathematical definition of conditional probability.
+
+Uh and this is kind of like that's the formula.
+
+And then the low to probability is like this. I don't actually think we have the time to talk about it all that much and I think we're tired. So, we'll come back to this on Friday. Thank you for your patience. All right. I will see you in 48 45 hours.

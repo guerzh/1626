@@ -1,0 +1,123 @@
+%%  MIE 1626, Summer 2026 -- Test reference sheet
+%%  The test is open-handout (this sheet is distributed in advance), not open-book.
+%%  Listed here is the R syntax used in the course, so students don't have to memorize it.
+
+\documentclass[10pt]{article}
+\usepackage[hmargin=.5in,vmargin=.6in]{geometry}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+
+% Compact section formatting
+\titleformat{\section}{\normalsize\bfseries\scshape}{}{0pt}{}
+\titlespacing{\section}{0pt}{1.5ex}{0.5ex}
+
+% Headers / footers
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\lhead{MIE 1626}
+\chead{\scshape Test Reference Sheet}
+\rhead{Summer 2026}
+\lfoot{\small Department of Mechanical and Industrial Engineering, University of Toronto}
+\cfoot{}
+\rfoot{\small Page \thepage\ of \pageref{LastPage}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25ex}
+\setlength{\columnsep}{1.5em}
+
+% Each entry: a function signature in tt, indented description on the next line.
+\newcommand{\entry}[2]{%
+  \par\medskip\noindent\textbf{\texttt{#1}}\par%
+  \hspace*{1.5em}\parbox[t]{\dimexpr\linewidth-1.5em}{#2}\par%
+}
+
+\begin{document}
+
+\begin{center}
+  {\large\bfseries MIE 1626 --- Summer 2026 --- Test Reference Sheet}
+\end{center}
+\smallskip
+
+This sheet is distributed in advance and is the only material allowed at the test
+(the test is \emph{open handout}, not open book). It lists the R syntax used in
+the course so that you do not need to memorize it. You should still know
+\emph{what} each function does and \emph{when} to use it; the sheet only spares
+you having to remember the spelling.
+
+\begin{multicols}{2}
+
+\section*{Functions and control flow}
+\entry{f <- function(x, y) \{ ... return(...) \}}{Define a function. The body is in curly braces; the returned value comes from \texttt{return()} or, if there is no explicit \texttt{return}, the value of the last expression.}
+\entry{if (cond) \{ ... \} else \{ ... \}}{Conditional.}
+
+\section*{Vectors}
+\entry{c(1, 2, 3)}{Build a vector.}
+\entry{v[3]}{One element (R is 1-indexed).}
+\entry{v[2:5]}{A range.}
+\entry{v[v > 0]}{Boolean mask: keep the elements where the mask is TRUE.}
+\entry{\&, |, !}{Element-wise and, or, not.}
+\entry{sapply(v, f)}{Apply \texttt{f} to every element of \texttt{v}; return a vector.}
+\entry{replicate(n, expr)}{Run \texttt{expr} \texttt{n} times; return the results.}
+\entry{mean(v), sum(v), length(v)}{Standard reductions.}
+\entry{which.max(v)}{Index of the largest element.}
+
+\section*{Random sampling and simulation}
+\entry{sample(x, size, replace = FALSE)}{A random sample of \texttt{size} values drawn from \texttt{x}, with or without replacement.}
+\entry{rbinom(n, size, prob)}{\texttt{n} draws from a Binomial distribution with \texttt{size} trials and success probability \texttt{prob}. For a single Bernoulli trial, use \texttt{size = 1}.}
+\entry{rnorm(n, mean = 0, sd = 1)}{\texttt{n} draws from a Normal distribution.}
+\entry{plogis(z)}{The logistic / sigmoid function: \texttt{1 / (1 + exp(-z))}. Inverse of the logit.}
+
+\section*{Data frames}
+\entry{df\$col}{One column as a vector.}
+\entry{df[row, col]}{Subset by row and column.}
+\entry{df[df\$x > 0, ]}{Subset the rows by a boolean mask. Note the trailing comma.}
+\entry{nrow(df), ncol(df)}{Row and column counts.}
+\entry{head(df), tail(df)}{First or last rows.}
+
+\section*{The pipe and the tidyverse}
+\entry{x \%>\% f()}{The pipe: equivalent to \texttt{f(x)}. Chains compose: \texttt{x \%>\% f() \%>\% g()} is \texttt{g(f(x))}.}
+\entry{filter(df, cond)}{Keep rows where \texttt{cond} is TRUE.}
+\entry{select(df, col1, col2)}{Keep only the named columns.}
+\entry{arrange(df, col)}{Sort rows ascending. \texttt{arrange(df, desc(col))} sorts descending.}
+\entry{rename(df, new = old)}{Rename a column.}
+\entry{mutate(df, new\_col = expr)}{Add or replace a column.}
+\entry{group\_by(df, col)}{Group rows for the next \texttt{summarize} or \texttt{mutate}.}
+\entry{summarize(df, stat = f(col))}{Collapse a (possibly grouped) data frame to one row per group.}
+\entry{distinct(df, col)}{Unique rows by column.}
+\entry{n\_distinct(col)}{Count of unique values.}
+
+\section*{Linear regression}
+\entry{lm(y \textasciitilde{} x1 + x2, data = df)}{Fit a linear regression of \texttt{y} on \texttt{x1} and \texttt{x2}.}
+\entry{summary(model)}{Print the regression summary: coefficient estimates, standard errors, t-values, p-values, residual standard error, R-squared, F-statistic.}
+\entry{predict(model, newdata)}{Predicted \texttt{y} for the rows of \texttt{newdata}.}
+\entry{summary(model)\$r.squared}{Pull out R-squared directly. Look for \texttt{Multiple R-squared} near the bottom of \texttt{summary(model)}.}
+
+\section*{Logistic regression}
+\entry{glm(y \textasciitilde{} x1 + x2, family = binomial, data = df)}{Fit a logistic regression.}
+\entry{predict(model, newdata, type = "response")}{Predicted probabilities for the rows of \texttt{newdata}. Without \texttt{type = "response"} you get the linear predictor; pass it through \texttt{plogis()} to convert it to a probability.}
+
+\section*{Train / validation / test split}
+
+The index-sampling pattern:
+
+\begin{verbatim}
+n     <- nrow(df)
+idx   <- sample(1:n, size = floor(0.7 * n))
+train <- df[idx, ]
+val   <- df[-idx, ]
+\end{verbatim}
+
+For a three-way split, sample a second index from the leftover rows.
+
+\section*{Diagnostic plots}
+\entry{plot(model)}{Cycles through residuals-vs-fitted, normal Q--Q, scale--location, and residuals-vs-leverage.}
+
+\section*{Reading a regression table}
+
+In \texttt{summary(model)}, each row of the \texttt{Coefficients} block has columns \texttt{Estimate}, \texttt{Std. Error}, \texttt{t value} (or \texttt{z value} for \texttt{glm}), and \texttt{Pr(>|t|)} (or \texttt{Pr(>|z|)}). An approximate 95\% confidence interval for a coefficient is \texttt{Estimate +/- 1.96 * Std. Error}. The line beginning \texttt{Multiple R-squared} near the bottom is the R-squared.
+
+\end{multicols}
+\end{document}

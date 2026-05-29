@@ -1,0 +1,227 @@
+Uh all right. Uh so this is the point uh where I ask how it's going. So, do you guys want exercises or do you want to go forward? Who wants exercises? Who doesn't want exercises? Okay, it's a tie. Uh, okay. [clears throat] We're going to compromise and do a few exercises. Uh, so sorry. [laughter]
+
+Uh so uh so I linked some exercises over here. Uh so in R studio um uh so RMD for some reason is broken on my computer and uh we're just going to do a R. Uh so just dot R instead. So, what you got to do is install the R extension
+
+like so. So, just do this one. Uh, that should work. So, uh, the way you know it works is you print hi. There should be a run button and it prints hi over here. Uh so uh I'll give you a few minutes to install it and I'll give you uh a few minutes to uh try to do the first two problems with vectors just to make sure that we're on the same page. Um my voice is giving out a little bit. Uh I'll go get coffee and I'll be back in two minutes. Uh please work on the exercises. Try to install it. I'll then walk her out.
+
+I'll be back in 2 minutes.
+
+Okay. Uh, is anyone having trouble spelling?
+
+Probably working on this.
+
+Yeah. So, [clears throat]
+
+so to be clear, kind of uh one and two is what we're doing. Uh three I still haven't done the content. I mean, you can technically do it, but would be very annoying.
+
+All
+
+right. So I'll I'll do a few I guess. So So here the job is we have a vector. So
+
+a vector would be whatever like this. And then
+
+like we saw if you do like back at back smaller than three you get the elements that are below. Uh so here you just do the same thing substitute in. So this would be vac at vac smaller than upper bound
+
+and that's kind of it.
+
+So we can test it
+
+something like this. Let me do like a zero so that it's not just one two. and do like a six seven. I don't know. Uh so I run it
+
+that ran but it didn't print.
+
+So here it gives you two zero.
+
+Right? Does that make sense? questions. Okay. Um
+
+so uh here we want like the largest element that is smaller than uh than upper bound right. So just the one element. So one way to do it is to just say okay like this is all the elements that are smaller than upper bound. The largest one of them is just the max. Uh, so let me just say the max,
+
+right? So that that would do it.
+
+All right. So, uh, so this one is a little bit annoying. So let's say that you want the median. So if you remember, we had the trick for computing the max by taking the vector and then sorting it and looking at the last one. Here it's kind of the same thing. We want to sort the vector and then take the thing in the middle. Right? So this is my median.
+
+So we're saying okay this is like this. So again if you just wanted to sort it
+
+you can just you could just say uh you could just say sort back. That will be the sorted version. But you don't just want to sort it. You want to say take the sorted one and then take the middle element. So the middle element would be length of that
+
+divided by two. Uh so in R uh if you do something like this, this is like two and a half. So you want to round it.
+
+makes sense. Uh so again like this obviously like um part of it is just getting everyone on the same page in some programming language. Part of it is hopefully you get a little bit inspired to think about programming in this way where rather than thinking okay like I got to like go element by element just think about how do I come up with a function that transforms the input in a way that gets me the result.
+
+All right.
+
+Um, this is boring. I'm not going to do it. So, uh, so, okay.
+
+So, uh, let's talk a little bit about, uh, working with, uh, data, uh, working with data frames and composing functions. Uh, so the first thing I want to talk about is just function composition. So again, this is not the kind of thing that you're not familiar with like everyone knows how it works. Uh but we're thinking about it ju just just just for the sake of getting into the rhythm. Uh so here you have like f is x2. So you can define it like this. Uh here it's like g of y is y + 1. You can define it like this. Again this is just like algebra. uh you can this is called composition in mathematics where you say like f of g of the argument looks like this right uh so this is just math this is just f of g of five you can also do g of f of five this is like whatever this is just algebra right uh so in r there is a shortand so this is called the pipe operator So this is g of f of five. But the way you think about it is take five, plug it into f and then plug the result into g. So this is g over five. But it's going to turn out be useful to write it uh to write things this way. five, stick it in F, stick the result in G. Uh, so one downside of this is it's annoying to type. Uh, so in R Studio, uh, if you have the R extension installed, control shiftm is going to produce the pipe.
+
+Uh by the way uh the arrow is uh old minus.
+
+Okay. So and so let me just define whatever like square is
+
+square and let's say minus one. So I'll do it with y. Of course, you could equally say it with x
+
+and you can do like five minus one. So that's four and squared. that 60, right?
+
+That's right.
+
+Uh you need uh so you need tidyverse. Uh if you don't have it installed, you need to say install packages tidyiverse.
+
+The first time it's going to take a while. Sorry, this is like my non r.
+
+Okay. Uh trust me this is 16.
+
+Um so okay
+
+[clears throat] so that so that's like this. So the reason I bring this up uh is not that this is like a good way to compute 36. uh it's that this is a good way to think about data frames. So [clears throat] uh so here's kind of several functions that are useful for processing data frames. Uh so we already saw a way of selecting rows. This is another way of selecting rows. Uh so this is called filter. So what this does is it says take the data frame baby names and then only select rows where for example the year is 1880 and the sex is n. So you can do it using idx the using the indices the way we've done it before but this is like a more convenient way to do it. The usual way that people write it is with a pipe. It's the same thing. It's just that it kind of reads nicer, right? So here what you're saying is baby names pipe and then filter like this. So technically this is just calling the function filter. This is selecting the rows with those properties. It's just that it's more convenient to write this way. Okay. So you can do it with the amperand uh or you can do it with a comma. So filter can take several uh several operators.
+
+Uh so [clears throat]
+
+select produces uh a new data frame with just the particular column names. So for example from baby names you can say I want a new data frame with just the column year and the column name and it's going to do it. So in a way it's maybe like not a super useful way to think about it because columns and rows are not the same but it's kind of like filter for columns. It's saying get me those get me a new data frame with just those specific columns. And again kind of the usual way to do it is with pipe technically just calling the function select. It's just more convenient to write.
+
+So [clears throat] uh this is where things get kind of more powerful in terms of what you can do. So summarize says create a new data uh create a new data frame where there is a new column. You can have several columns and the column is a function of the columns of the function of the columns of this data frame. So what this does [clears throat] is it says
+
+take the column n and compute the mean of that column. So what this does uh and
+
+oh no
+
+So what we have here is we have the uh we have the data frame baby names
+
+looks like this and then I'm saying mean of n. So that means by default just take the column n and compute the mean of it. Mean is just a function like any other function. In R you plug in a vector you can get the mean of the vector. All right. So that by itself is not that useful. uh it does become useful uh when you are able to group by things. So what we're doing here is we're saying I'm still computing the mean of n but this says how many how many and what kind of rows I have. So this says separate the data frame out by the different sexes and then for sex f do mean of n and for sex m do mean of n. So what that results in is the mean uh for all the rows with fs and the mean for all the the rows with n. So this would be the average number of babies born that are marked F with a particular name and the same for M. So what we see and that turns out to be true in the US data set is that there's more babies per name that are male than female. So there's like basically more diversity in female names in a way. So like more it's like approximately the same number of male and female babies. It's just that like fewer male uh so fewer male names than female names. So more babies per day as it turns out. Uh so okay so that's like this. Uh let's see if I installed. Okay. Uh so tidyverse uh sometimes is annoying. Uh, so I installed this instead.
+
+Let's see if this works.
+
+Okay.
+
+I um
+
+uh sorry, I'll install a new one. Uh so I'll just go to like the the online art thing. So this is posit.cloud. Um
+
+I want the free one.
+
+That's kind of annoying. Uh, all right. Okay. Yeah.
+
+Amazing.
+
+So switch from here.
+
+Um, I'm installing Tidyverse on uh posit.cloud. That's definitely going to work. So that's fine.
+
+Uh so in the meantime uh let's now go back to uh those kinds of things. So [clears throat]
+
+I'll install gap mind.
+
+Okay. So this is the GA gap minder data set
+
+looks like this. Uh so this is basically a data set of kind of countries with life expectancy population GDP per capita for different years looks kind of like this. I displayed it with a few gap minder. Uh so the task here is uh compute how many countries in the data set there are on a given continent. So let's do that.
+
+Hold on. Let me just try to see if restarting it actually did the trick.
+
+It did actually. Okay. So, I'm I'm back to I'm back to VS Code. So,
+
+Uh so how do I do it? So this is gap minder.
+
+So I have a continent let's say Asia. So what I want to do is first of all get a data frame with just Asia.
+
+So I'll do gap minder.
+
+continentality is is let's say Asia. So that is going to look
+
+that is going to look like this.
+
+So I want to know how many countries. So one way to do it is to say okay let me just get the countries.
+
+So this is all country. So that gets me a vector with all the countries. If you remember from like 30 minutes ago, we had the unique function.
+
+So that gives you the unique countries. And given that you have this, you can say, well, what's the length of the vector with the unique countries?
+
+And the answer is 32. So if you wanted to do it that way, you could. So I developed it like this here. I'll just put it in here.
+
+Rather than say Asia, I say continent so that it's general.
+
+And that gives me the answer,
+
+right? Uh so uh this is kind of a little bit cludgy because I used like a bunch of things. So a more kind of idiomatic way of doing it. So idiomatic meaning kind of the way people might prefer to do it would be to say okay so filter
+
+so that you that that you got to do. So now what you might like to do is select
+
+So I select country. So that gives me this data frame.
+
+And I do unique
+
+and that gives me kind of the unique countries. And then I can do count and count uh counts as it happens. That's the thing
+
+kind of right. So again I'll just redo it.
+
+This is this this is like this control shift tab and that gives you this. So I'll just substitute this for country uh continent.
+
+All right.
+
+Uh okay. So here, so you want to write a function that takes in a data frame like gap minder return a country with the largest life expectancy on a given continent between the years y1 and y2. Uh so so how do we do it? So,
+
+so we first of so we want the country with the largest size. See, so given continent here's Y1 Y2. So given continent here's Y1 Y2 is just a filtering thing.
+
+So I'll just do like an example whatever a year greater than 1970
+
+just as an example 1980 something.
+
+So this is all the data for the for the relevant rows. So what I want to do uh what I want to do now is I want to find the largest uh the the largest life expectancy. Right? So
+
+one uh so one way I can do it is I can say okay so what's what's the largest life expectancy? Well
+
+this is all the life expecties.
+
+This is the largest life expectancy.
+
+And now that I have the largest life expectancy, we already know how to do it. Find the country where the life expectancy is this. So let's plug it into function.
+
+the base is like this.
+
+So this is going to be the continents. whatever greater than y1. So a lot of the time people do it on separate rows like it's like so
+
+smaller than y 2
+
+parenthesis closed.
+
+And now we want the country with the maximum life expectancy. One way of doing it is
+
+let me just get this data frame as a separate one
+
+and I'll say okay G1
+
+G1 countries. So that's all the countries and I want the location where the life expectancy is equal. So I'll say
+
+life expectancy is equal to max.
+
+Make sense?
+
+All right.
+
+So, write a function that computes the world population in a given year. So, what's the world population? That's the sum of all the populations. So, again to remind you, this is gap minder.
+
+So we have rows that are separate for each country for each year. And what we want is the world population in a given year. So one way to do it is group by summarize. So if I say
+
+gap minder group by
+
+group by year just says okay like each row is going to correspond to a year and now what I want is the sum of the populations, right?
+
+So that looks like this. So if I didn't group by, it would just give me the sum of the population columns across all the years. Group by year makes it so that for each given year, I have a separate row. And I still compute the sum of the population across each column, right? So I want it for a particular year. So that's like whatever
+
+I get this. If I want just the number rather than the table that says like the gear and this I'll say this thing
+
+and this would be the population in 1982. So just a quick check 4.3 billion sounds about right for the TV.
+
+So can check what it was in 2007.
+
+That was 6.2 billion.
+
+All right.
+
+So that's this. Um you can work on it on this in your free time. Uh all right.
+
+Uh this is a natural place to take a break. So let's take a break for 10 minutes and we'll come back with a little bit more R and then a review of probability.
+
+Uh 10 minutes.
+
+Yeah, I I used to teach a course that was like 6:00 to 9 in the evening, but that was like 10 years ago. So, like this is like my first time in a while of doing like three hours at a time. Hopefully, it's okay. And we're doing it twice a week. So,
+
+we all get July and August.

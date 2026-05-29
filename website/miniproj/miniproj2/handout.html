@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="MIE 1626" />
+  <title>Mini-Project 2</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {  background-color: #f8f8f8; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ef2929; } /* Alert */
+    code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #c4a000; } /* Attribute */
+    code span.bn { color: #0000cf; } /* BaseN */
+    code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4e9a06; } /* Char */
+    code span.cn { color: #000000; } /* Constant */
+    code span.co { color: #8f5902; font-style: italic; } /* Comment */
+    code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+    code span.dt { color: #204a87; } /* DataType */
+    code span.dv { color: #0000cf; } /* DecVal */
+    code span.er { color: #a40000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #0000cf; } /* Float */
+    code span.fu { color: #000000; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+    code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+    code span.ot { color: #8f5902; } /* Other */
+    code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+    code span.sc { color: #000000; } /* SpecialChar */
+    code span.ss { color: #4e9a06; } /* SpecialString */
+    code span.st { color: #4e9a06; } /* String */
+    code span.va { color: #000000; } /* Variable */
+    code span.vs { color: #4e9a06; } /* VerbatimString */
+    code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mini-Project 2</h1>
+<p class="author">MIE 1626</p>
+</header>
+<h1 id="submission-instructions">Submission instructions</h1>
+<p>Submit an Rmd notebook as well as the PDF generated from the notebook on Gradescope. Pages on Gradescope should be assigned to questions.</p>
+<h1 id="introduction">Introduction</h1>
+<p>In this assignment, you will build a system for predicting patient deaths in the Intensive Care Unit (ICU) using the large <a href="https://physionet.org/content/challenge-2012/1.0.0/">PhysioNet Computing in Cardiology Challenge 2012 dataset</a>. For each patient in the dataset, demographic variables and time series of physiological variables were collected during their stay in the ICU.</p>
+<p>Clinical risk prediction from physiological measurements, clinical notes, and demographic data using machine learning has seen advances in recent years. For example, see this <a href="https://www.businessinsider.com/google-patent-hints-electronic-health-record-market-plans-2019-2">article</a> about Google’s efforts in the area.</p>
+<p>The risk prediction system you will build could in principle be used to flag patients as being at risk of death so that physicians could intervene and improve their outcome. To be confident about the impact of such a system, you would need to run an experiment. In this assignment, you will use a model in order to estimate the potential impact of the system.</p>
+<p>The data you will be working with is all available from <a href="https://physionet.org/challenge/2012/">PhysioNet</a>. You will be looking at only the data in “Training set A”. The patient data files are <a href="https://physionet.org/files/challenge-2012/1.0.0/set-a.zip">here</a>, and the outcomes file is <a href="https://physionet.org/files/challenge-2012/1.0.0/Outcomes-a.txt">here</a>.</p>
+<h1 id="general-guidelines">General guidelines</h1>
+<p>Your code should be general enough that if the dataset were changed, the code would still run.</p>
+<p>You will be graded on the correctness of your code as well as on the professionalism of the presentation of your report. The text of your report should be clear; the figures should do a good job of visualizing the data, and should have appropriate labels and legends. Overall, the document you produce should be easy to read and understand.</p>
+<p>When you are asked to compute something, use code (rather than compute things outside of R and then input the answer), and include the code that you used in the report. (You may deviate from this if the computation is really trivial.)</p>
+<h3 id="grading-scheme">Grading scheme</h3>
+<ul>
+<li><strong>10 points</strong> for a professional and well-formatted report. Points will be taken off if the report is not well-formatted and is difficult to read.</li>
+</ul>
+<h2 id="part-1-reading-in-the-data-10-pts">Part 1: Reading in the Data (10 pts)</h2>
+<p>First, you should download the patient data and patient outcomes file. Download <a href="https://physionet.org/challenge/2012/set-a.zip">set-a.zip</a>, extract all the files from it to a directory, and download <a href="https://physionet.org/challenge/2012/Outcomes-a.txt">Outcomes-a.txt</a> to the same directory (i.e., in <code>set-a</code>). To extract files from a <code>zip</code> file, open the <code>zip</code> file, and then drag the files that you see in a window that opens to whatever directory you want.</p>
+<p>Read in the files as follows. Your working directory must be set to the directory that contains the text files you extracted. If your <code>filelist</code> is empty, re-check what your working directory is.</p>
+<p><strong>Note:</strong> use something like</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">setwd</span>(<span class="st">&quot;/Users/username/courses/mie1626/miniproj2/set-a/&quot;</span>)</span></code></pre></div>
+<p>to set your working directory while working on the project draft in an R file. When you are ready to put your work in an Rmd file, use both the above line and something like</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">library</span>(knitr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> <span class="st">&quot;/Users/username/courses/mie1626/miniproj2/set-a/&quot;</span>)</span></code></pre></div>
+<p>in the setup chunk for your <code>Rmd</code> file.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>filelist =<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;.*.txt&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>patient.dat =<span class="st"> </span><span class="kw">lapply</span>(filelist, <span class="cf">function</span>(x) <span class="kw">read.csv</span>(x, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))</span></code></pre></div>
+<p>We want the data to be read from text files and assembled into a dataframe. To do so, please run the following code, which will first define a function that reads in a single patient data text file, and then runs that function on all the files and assembles the outputs into a single dataframe.</p>
+<p><strong>Look at the function <code>comp.patient</code> and explain what it is doing in your report. Look at the first row of <code>allpat.dat</code> and at the first element of <code>filelist</code>, and explain precisely how the <code>Age</code> and <code>Temp</code> columns were computed. Reproduce the computation for <code>Temp</code> in your report and make sure that the numbers match.</strong> To reproduce the computation, look up the relevant numbers in the relevant txt file, and then enter them in your Rmd file and perform the computation in R.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>get.mean.attr &lt;-<span class="st"> </span><span class="cf">function</span>(attr, pat.dat){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> </span>attr], <span class="dt">na.rm =</span> T)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>}</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>comp.patient &lt;-<span class="st"> </span><span class="cf">function</span>(ind, dat){</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  pat.dat &lt;-<span class="st"> </span>dat[ind][[<span class="dv">1</span>]]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>  pat.dat[pat.dat <span class="op">==</span><span class="st"> </span><span class="fl">-1.0</span>] =<span class="st"> </span><span class="ot">NaN</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>  Urine     &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Urine&quot;</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>  HR        &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;HR&quot;</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>  Temp      &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Temp&quot;</span>])</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>  age       &lt;-<span class="st"> </span>pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Age&quot;</span>]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>  Gender    &lt;-<span class="st"> </span>pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Gender&quot;</span>]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>  ICUtype   &lt;-<span class="st"> </span>pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;ICUType&quot;</span>]</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  height    &lt;-<span class="st"> </span>pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Height&quot;</span>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>  weight    &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Weight&quot;</span>])</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>  NIDiasABP &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;NIDiasABP&quot;</span>])</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>  SysABP    &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;SysABP&quot;</span>])</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>  DiasABP   &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;DiasABP&quot;</span>])</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>  pH        &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;pH&quot;</span>])</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>  PaCO2     &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;PaCO2&quot;</span>])</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>  PaO2      &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;PaO2&quot;</span>])</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>  Platelets &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Platelets&quot;</span>])</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>  MAP       &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;MAP&quot;</span>])</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>  K         &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;K&quot;</span>])</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>  Na        &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;Na&quot;</span>])</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>  FiO2      &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;FiO2&quot;</span>])</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>  GCS       &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;GCS&quot;</span>])</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>  MechVent  &lt;-<span class="st"> </span><span class="kw">mean</span>(pat.dat<span class="op">$</span>Value[pat.dat<span class="op">$</span>Parameter <span class="op">==</span><span class="st"> &quot;MechVent&quot;</span>])</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>  ID        &lt;-<span class="st"> </span>pat.dat<span class="op">$</span>Value[<span class="dv">1</span>]</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>  <span class="kw">data.frame</span>(ID, age, Gender, height, ICUtype, weight, Urine, HR, Temp,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>             NIDiasABP, SysABP, DiasABP, pH, PaCO2, PaO2, Platelets, MAP,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a>             K, Na, FiO2, GCS, MechVent)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>}</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a><span class="co">### run comp.patient on all files</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a>numpats &lt;-<span class="st"> </span><span class="dv">4000</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span>numpats), <span class="dt">FUN =</span> comp.patient, <span class="dt">dat =</span> patient.dat)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true"></a><span class="co"># assemble into a single dataframe</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a>allpat.dat &lt;-<span class="st"> </span><span class="kw">Reduce</span>(<span class="cf">function</span>(x, y) <span class="kw">rbind</span>(x, y), df)</span></code></pre></div>
+<p>We read in an additional file — the outcome of the patients whose data was loaded above. We append these outcomes to the original dataframe and remove values that are -1, inf, -inf, or NaN, and replace them with the average value across all patients.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>outcome.dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Outcomes-a.txt&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>outcome.dat[outcome.dat <span class="op">==</span><span class="st"> </span><span class="dv">-1</span>] =<span class="st"> </span><span class="ot">NaN</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co"># Append the outcomes (different files)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>full.dat &lt;-<span class="st"> </span><span class="kw">cbind</span>(allpat.dat, outcome.dat[, <span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(outcome.dat)])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>full.dat[full.dat <span class="op">==</span><span class="st"> </span><span class="ot">Inf</span>]  =<span class="st"> </span><span class="ot">NaN</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>full.dat[full.dat <span class="op">==</span><span class="st"> </span><span class="op">-</span><span class="ot">Inf</span>] =<span class="st"> </span><span class="ot">NaN</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co"># Set everything that&#39;s NaN to the mean of that column:</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(full.dat)) {</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  full.dat[<span class="kw">is.na</span>(full.dat[, i]), i] &lt;-<span class="st"> </span><span class="kw">mean</span>(full.dat[, i], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="part-2-run-logistic-regression-10-pts">Part 2: Run logistic regression (10 pts)</h2>
+<p>Divide your data into training, validation, and test sets.</p>
+<p>Use the features <code>HR</code>, <code>Gender</code>, <code>age</code>, <code>temperature</code>, <code>weight</code>, <code>height</code>, <code>PaO2</code>, and <code>PaCO2</code>, and run a logistic regression model. Is your performance (on both the training and the validation sets) better than the base rate?</p>
+<h2 id="part-3-roc-curve-10-pts">Part 3: ROC curve (10 pts)</h2>
+<p>Write a function that, for a given threshold, calculates both the False Positive Rate (proportion of non-deaths identified as deaths) and True Positive Rate (proportion of deaths correctly identified as such) for your regression model.</p>
+<p>For 100 threshold values equally spaced from 0 to 1, plot the True Positive Rate vs. the False Positive Rate. Use the validation set.</p>
+<p>This plot is known as an ROC curve.</p>
+<h2 id="part-4-interpreting-the-roc-curve-5-pts">Part 4: Interpreting the ROC curve (5 pts)</h2>
+<p>Using the plot generated in Part 3, what is the False Positive Rate associated with correctly identifying 90% of patients at risk for death in the ICU? Why might a high false positive rate be appropriate in this setting? You can read the answer off the ROC curve plot.</p>
+<h2 id="part-5a-modelling-doctors-decision-making-15-pts">Part 5(a): Modelling Doctors’ Decision-Making (15 pts)</h2>
+<p>For this part, produce a short report that answers all the questions below. Include R code that produces the numbers that you need.</p>
+<p>At the beginning of their shift, a doctor reviews their patients’ charts, and decides what intervention is needed for each patient. In the following Parts, we will be trying to improve this process. We will consider a simplified version of what is going on. Suppose that if the doctor intervenes correctly, the patient will not die; suppose that the doctor has 60 minutes to look through 25 patient charts; and suppose that the probability of missing the correct treatment if the doctor spends <span class="math inline">\(t\)</span> minutes on reviewing a file is</p>
+<p><span class="math display">\[ P(\text{fail}) = \exp(-t^2/100). \]</span></p>
+<p>If the doctor reviews all the files, spends an equal amount of time on each chart, and there are 10 patients who will die without the correct intervention, how many patients are expected to die, if the doctor intervenes when they see that that’s needed? What is the percentage of patients who are expected to die, out of 25?</p>
+<p>Suppose now that the doctor is looking through all the patient charts in the validation set. They would have proportionately more time: <span class="math inline">\((N/25) \times 60\)</span> minutes in total (where <span class="math inline">\(N\)</span> is the total number of patients in the set). How many patients would be expected to die, if the doctor intervenes correctly when they know they should do that?</p>
+<p>Now, suppose that the doctor only reviews the files of patients for whom the model outputs a probability of greater than <span class="math inline">\(20\%\)</span>. This would give the doctor more time to look through each file, but the doctor would never be able to intervene in the cases of patients for whom the output is <span class="math inline">\(20\%\)</span> or smaller. How many patients would be expected to die?</p>
+<h2 id="part-5b-modelling-doctors-decision-making-15-pts">Part 5(b): Modelling Doctors’ Decision-Making (15 pts)</h2>
+<p>In this Part, you will explore the policy implications of using our model in an understaffed hospital.</p>
+<p>Suppose that we are considering a policy of only reviewing the files of patients whose probability of death is above a threshold <code>thr</code>. Each chart would be given an equal amount of time, and the total amount of time will be <span class="math inline">\((N/25) \times 60\)</span>.</p>
+<p>Using the model from 5(a), plot the total number of expected deaths under the policy vs. the threshold. Using the plot, what is the best threshold to use that would minimize the number of deaths?</p>
+<p>You should compute the expected number of deaths for the thresholds <code>seq(0, 1, 0.001)</code>.</p>
+<p>Use the validation set.</p>
+<h2 id="part-5c-modelling-doctors-decision-making-5-pts">Part 5(c): Modelling Doctors’ Decision-Making (5 pts)</h2>
+<p>On the test set, compare the total number of expected deaths under the best policy that was selected in 5(b) to reviewing each patient’s file. In relative terms (i.e., as a percentage), how many lives would be saved, if the assumptions underlying our simulation are accurate?</p>
+<h2 id="part-6-critiquing-the-simulation-5-pts">Part 6: Critiquing the Simulation (5 pts)</h2>
+<p>We made a number of assumptions when we tried to assess the impact of using our model. Critique those assumptions.</p>
+<h2 id="part-7-linear-regression-10-pts">Part 7: Linear Regression (10 pts)</h2>
+<p>Formulate a hypothesis about the data (in a way that makes it so that the model assumptions are satisfied). Check the model assumptions, test a null hypothesis, and state your conclusions.</p>
+</body>
+</html>

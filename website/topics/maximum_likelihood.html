@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Maximum Likelihood</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Maximum Likelihood</h1>
+</header>
+<h2 id="the-setting-coin-tosses">The setting: coin tosses</h2>
+<p>Suppose a coin is tossed <span class="math inline">\(n\)</span> times independently. Write</p>
+<p><span class="math display">\[y_i \sim \text{Bern}(\theta), \quad i = 1, \ldots, n.\]</span></p>
+<p>This is a fancy way of saying: we have a random variable <span class="math inline">\(y\)</span> which could be <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>, and the probability of <span class="math inline">\(1\)</span> is <span class="math inline">\(\theta\)</span>, the probability of <span class="math inline">\(0\)</span> is <span class="math inline">\(1-\theta\)</span>:</p>
+<p><span class="math display">\[P(y_i = 1) = \theta, \qquad P(y_i = 0) = 1 - \theta.\]</span></p>
+<p>We say the trials are <strong>iid</strong> — independently, identically distributed. <em>Independent</em> means physically we are tossing the coin separately, the outcomes between trials do not depend on each other; <em>identically distributed</em> means the same <span class="math inline">\(\theta\)</span> for every toss.</p>
+<p>In our notation, the data we will observe are <span class="math inline">\(y_1, \ldots, y_n\)</span>. The uppercase variables (<span class="math inline">\(Y_i\)</span>) are random variables — they could be anything. The lowercase variables (<span class="math inline">\(y_i\)</span>) are the specific observed values — 0 or 1.</p>
+<p>We are given that <span class="math inline">\(P(Y_i = 1) = \theta\)</span>, but we do not know <span class="math inline">\(\theta\)</span>. <strong>The task of statistical inference is: what is <span class="math inline">\(\theta\)</span>?</strong></p>
+<p>The honest answer is, of course, we don’t know what <span class="math inline">\(\theta\)</span> is. <span class="math inline">\(\theta\)</span> is a property of the coin; we just have some data, that doesn’t tell us what <span class="math inline">\(\theta\)</span> is exactly.</p>
+<h2 id="the-intuitive-estimate">The intuitive estimate</h2>
+<p>If <span class="math inline">\(\theta\)</span> is the probability of heads and we toss the coin <span class="math inline">\(n\)</span> times and get heads <span class="math inline">\(k\)</span> times, intuitively <span class="math inline">\(\theta \approx k/n\)</span>:</p>
+<p><span class="math display">\[\hat{\theta} = \frac{y_1 + y_2 + \cdots + y_n}{n}.\]</span></p>
+<p>The zeros don’t count. The ones account for the times the toss came up heads. Of course this is just an estimate — toss the same coin again, get a different estimate. That is how coins work.</p>
+<p>How do we say it is an estimate that makes sense mathematically?</p>
+<h2 id="the-likelihood-function">The likelihood function</h2>
+<p>If we know <span class="math inline">\(\theta\)</span>, we wrote down:</p>
+<ul>
+<li><span class="math inline">\(P(Y_i = 1 \mid \theta) = \theta\)</span></li>
+<li><span class="math inline">\(P(Y_i = 0 \mid \theta) = 1 - \theta\)</span></li>
+</ul>
+<p>You can write this cleverly as:</p>
+<p><span class="math display">\[P(Y_i = y_i \mid \theta) = \theta^{y_i}\, (1 - \theta)^{1 - y_i}.\]</span></p>
+<p>This is not saying any more than the two lines above, because one of the exponents is always zero, and anything to the zero is one. So either <span class="math inline">\(\theta^{y_i}\)</span> disappears or <span class="math inline">\((1-\theta)^{1-y_i}\)</span> disappears.</p>
+<p>Now, what is the probability of observing the data we actually observe (i.e., <span class="math inline">\(y_1, y_2, \ldots, y_n\)</span>) given <span class="math inline">\(\theta\)</span>? Because the trials are independent, it is the product:</p>
+<p><span class="math display">\[L(\theta) = P(y_1, y_2, \ldots, y_n \mid \theta) = \prod_{i=1}^{n} \theta^{y_i}\, (1 - \theta)^{1 - y_i}.\]</span></p>
+<p>This is called the <strong>likelihood function</strong>. It is the probability of observing the data that you observed if the parameter (in this case <span class="math inline">\(\theta\)</span>) is fixed.</p>
+<p>Note that this is not quite conditional probability — <span class="math inline">\(\theta\)</span> is a fixed parameter, not a random variable. People will write it like a conditional probability because that is how the textbooks do it.</p>
+<h2 id="maximum-likelihood">Maximum likelihood</h2>
+<p>The <strong>maximum likelihood estimate</strong> is the value of <span class="math inline">\(\theta\)</span> that makes the data we observed as likely as possible:</p>
+<p><span class="math display">\[\hat{\theta}_{\text{MLE}} = \arg\max_{\theta}\, L(\theta).\]</span></p>
+<p>This is a <em>choice</em> we make — there is no law of nature that says the right estimate is the maximum-likelihood one. We are saying: pick the parameter so that the data we actually observe is as likely as possible under that parameter.</p>
+<h3 id="derivation-calculus">Derivation (calculus)</h3>
+<p>Let’s derive the MLE on paper for the Bernoulli case. With <span class="math inline">\(n\)</span> tosses, <span class="math inline">\(y_1, \ldots, y_n\)</span>:</p>
+<p><span class="math display">\[L(\theta) = \prod_{i=1}^n \theta^{y_i}(1-\theta)^{1-y_i}.\]</span></p>
+<p>The maximum of <span class="math inline">\(L\)</span> equals the maximum of <span class="math inline">\(\log L\)</span> (the log is monotonic). Furthermore, <span class="math inline">\(\log(ab) = \log a + \log b\)</span>, so the product decomposes:</p>
+<p><span class="math display">\[\log L(\theta) = \sum_{i=1}^n \big[ y_i \log \theta + (1 - y_i) \log(1 - \theta) \big].\]</span></p>
+<p>Take the derivative and set to zero:</p>
+<p><span class="math display">\[\frac{d\,\log L}{d\theta} = \sum_{i=1}^n \left( \frac{y_i}{\theta} - \frac{1 - y_i}{1 - \theta} \right) = 0.\]</span></p>
+<p>Multiply both sides by <span class="math inline">\(\theta(1-\theta)\)</span>:</p>
+<p><span class="math display">\[\sum_{i=1}^n \left[ y_i (1 - \theta) - (1 - y_i) \theta \right] = 0\]</span></p>
+<p><span class="math display">\[\sum_{i=1}^n y_i - n\theta = 0\]</span></p>
+<p><span class="math display">\[\boxed{\hat\theta_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n y_i}.\]</span></p>
+<p>So the maximum likelihood estimator is just the sample mean — exactly the intuitive estimate. (This derivation, you can take a picture; it is on every page on the internet ever.)</p>
+<h2 id="mle-in-code-without-calculus">MLE in code (without calculus)</h2>
+<p>We want to do the same thing but with code rather than calculus. This thing you can of course do with calculus, you do not need code. The reason we are doing it in code is:</p>
+<ul>
+<li>Sometimes you want to do maximum likelihood but the model is so complex that calculus just does not work.</li>
+<li>It is going to be useful when we do Bayesian inference, where calculus rarely works.</li>
+</ul>
+<h3 id="step-1-generate-some-data">Step 1: generate some data</h3>
+<p>In R, you generate random binomial values with <code>rbinom</code>. Bernoulli is the special case <code>size = 1</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">20</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>secret_theta &lt;-<span class="st"> </span><span class="fl">0.3</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dt">n =</span> n, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> secret_theta)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>y</span></code></pre></div>
+<pre><code>##  [1] 0 0 0 1 0 1 1 0 0 0 0 0 0 0 1 0 1 1 0 1</code></pre>
+<p>We of course know that one way to estimate <span class="math inline">\(\theta\)</span> here is just to take the mean of <code>y</code>. We want to do it the complicated way.</p>
+<h3 id="step-2-define-the-bernoulli-likelihood">Step 2: define the Bernoulli likelihood</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>bernoulli_likelihood &lt;-<span class="st"> </span><span class="cf">function</span>(y, theta){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  <span class="kw">prod</span>(theta<span class="op">^</span>y <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>theta)<span class="op">^</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>y))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">bernoulli_likelihood</span>(y, <span class="fl">0.2</span>)</span></code></pre></div>
+<pre><code>## [1] 7.036874e-07</code></pre>
+<p>What happens for a single value of <span class="math inline">\(\theta\)</span>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># Returns one per data point, then we prod them:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>likes &lt;-<span class="st"> </span><span class="fl">0.2</span><span class="op">^</span>y <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.2</span>)<span class="op">^</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>y)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>likes</span></code></pre></div>
+<pre><code>##  [1] 0.8 0.8 0.8 0.2 0.8 0.2 0.2 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.2 0.8 0.2 0.2 0.8
+## [20] 0.2</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">prod</span>(likes)</span></code></pre></div>
+<pre><code>## [1] 7.036874e-07</code></pre>
+<p>If you have a larger dataset, the likelihood is going to be so tiny that you get <strong>rounding issues</strong>. So the usual way that people do it is <code>log</code> then <code>sum</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>bernoulli_log_likelihood &lt;-<span class="st"> </span><span class="cf">function</span>(y, theta){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="kw">sum</span>(y <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(theta) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>y) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>theta))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>}</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">bernoulli_log_likelihood</span>(y, <span class="fl">0.2</span>)</span></code></pre></div>
+<pre><code>## [1] -14.16693</code></pre>
+<p>Equivalently:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">exp</span>(<span class="kw">sum</span>(<span class="kw">log</span>(<span class="fl">0.2</span><span class="op">^</span>y <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.2</span>)<span class="op">^</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>y))))</span></code></pre></div>
+<pre><code>## [1] 7.036874e-07</code></pre>
+<p>This is the same number as <code>prod(...)</code> for small samples but works numerically when the underlying number is very small.</p>
+<h3 id="step-3-grid-search-over-theta">Step 3: grid search over <span class="math inline">\(\theta\)</span></h3>
+<p>The really dumb way of doing it — but the one we want to do here — is to try every possible <span class="math inline">\(\theta\)</span> and see which one produces the largest likelihood.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>thetas &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="dt">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>log_likes &lt;-<span class="st"> </span><span class="kw">sapply</span>(thetas, <span class="cf">function</span>(t) <span class="kw">bernoulli_log_likelihood</span>(y, t))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a><span class="kw">plot</span>(thetas, log_likes, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>     <span class="dt">xlab =</span> <span class="kw">expression</span>(theta), <span class="dt">ylab =</span> <span class="st">&quot;log likelihood&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-maximum_likelihood/unnamed-chunk-6-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-6</figcaption>
+</figure>
+<p>The MLE is the <span class="math inline">\(\theta\)</span> that corresponds to the maximum:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>thetas[<span class="kw">which.max</span>(log_likes)]</span></code></pre></div>
+<pre><code>## [1] 0.35</code></pre>
+<p>It is not going to be exactly the same number every time, but it is going to be close to the true <code>secret_theta = 0.3</code>. If we redo it with more data:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>n_big &lt;-<span class="st"> </span><span class="dv">2000</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>y_big &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dt">n =</span> n_big, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> secret_theta)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>log_likes_big &lt;-<span class="st"> </span><span class="kw">sapply</span>(thetas, <span class="cf">function</span>(t) <span class="kw">bernoulli_log_likelihood</span>(y_big, t))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>thetas[<span class="kw">which.max</span>(log_likes_big)]</span></code></pre></div>
+<pre><code>## [1] 0.3</code></pre>
+<p>That is close to 0.3 every time.</p>
+<p>This gives you a glimpse of what is behind confidence intervals — if you run this procedure multiple times, what is the spread of estimates? Ordinarily in introductory statistics you are taught exactly that: the spread around the maximum-likelihood estimate.</p>
+<h3 id="boundary">Boundary</h3>
+<p>A small detail: at <span class="math inline">\(\theta = 1\)</span>, the likelihood is not defined when there is any zero in <code>y</code>, because <span class="math inline">\(\log 0 = -\infty\)</span>. So set the grid to go up to 0.999 rather than literal 1:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>thetas &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.001</span>, <span class="fl">0.999</span>, <span class="dt">by =</span> <span class="fl">0.001</span>)</span></code></pre></div>
+<h2 id="maximum-likelihood-for-linear-regression">Maximum likelihood for linear regression</h2>
+<p>The standard linear regression model is:</p>
+<p><span class="math display">\[y_i = \theta^\top x_i + \varepsilon_i, \qquad \varepsilon_i \sim N(0, \sigma^2).\]</span></p>
+<p>Here, <span class="math inline">\(x_i\)</span> are fixed, <span class="math inline">\(\theta\)</span> are coefficients (we do not know them), and <span class="math inline">\(y_i\)</span> are measured. <span class="math inline">\(\theta^\top x_i\)</span> just means the dot product between <span class="math inline">\(\theta\)</span> and <span class="math inline">\(x_i\)</span>: <span class="math inline">\(\theta_0 x_0 + \theta_1 x_1 + \cdots\)</span> (the constant term is <span class="math inline">\(\theta_0\)</span> multiplied by a <span class="math inline">\(1\)</span> in the first coordinate of <span class="math inline">\(x_i\)</span>).</p>
+<p>The slack between the prediction <span class="math inline">\(\theta^\top x_i\)</span> and the measured <span class="math inline">\(y_i\)</span> is the noise <span class="math inline">\(\varepsilon_i\)</span>, which we model as normal with variance <span class="math inline">\(\sigma^2\)</span>. The way we interpret it in the maximum-likelihood framework is:</p>
+<ul>
+<li>The <span class="math inline">\(x\)</span>’s are given.</li>
+<li>The <span class="math inline">\(\theta\)</span>’s are unknown.</li>
+<li>The <span class="math inline">\(y\)</span>’s are measured.</li>
+<li>In the same way that we toss a coin and generate heads or tails, here we generate a <span class="math inline">\(y\)</span> by computing <span class="math inline">\(\theta^\top x\)</span> and adding a random <span class="math inline">\(\varepsilon\)</span>. That’s our model of how the data came about.</li>
+</ul>
+<h3 id="the-likelihood">The likelihood</h3>
+<p>The likelihood of one point is the density of the Gaussian at <span class="math inline">\(y_i - \theta^\top x_i\)</span>:</p>
+<p><span class="math display">\[p(y_i \mid \theta, x_i) = \frac{1}{\sqrt{2\pi\sigma^2}}\, \exp\!\left( - \frac{(y_i - \theta^\top x_i)^2}{2\sigma^2} \right).\]</span></p>
+<p>This is largest when the residual <span class="math inline">\(\varepsilon_i = y_i - \theta^\top x_i\)</span> is zero.</p>
+<p>The likelihood of the whole dataset is the product (by independence):</p>
+<p><span class="math display">\[L(\theta) = \prod_{i=1}^n p(y_i \mid \theta, x_i).\]</span></p>
+<h3 id="from-likelihood-to-least-squares">From likelihood to least squares</h3>
+<p>Take the log:</p>
+<p><span class="math display">\[\log L(\theta) = \text{const} - \frac{1}{2\sigma^2}\sum_{i=1}^n (y_i - \theta^\top x_i)^2.\]</span></p>
+<p>Maximizing <span class="math inline">\(\log L\)</span> over <span class="math inline">\(\theta\)</span> is the same as <strong>minimizing the sum of squared residuals</strong>:</p>
+<p><span class="math display">\[\hat\theta_{\text{MLE}} = \arg\min_\theta \sum_{i=1}^n (y_i - \theta^\top x_i)^2.\]</span></p>
+<p>So the maximum-likelihood line is the same as the <strong>ordinary least-squares (OLS) line</strong> under this Gaussian-noise model.</p>
+<h3 id="doing-it-in-code">Doing it in code</h3>
+<p>Let’s generate some data and visualize:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="dv">-2</span> <span class="op">+</span><span class="st"> </span><span class="fl">1.5</span> <span class="op">*</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">length</span>(x), <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<figure>
+<img src="figure-maximum_likelihood/unnamed-chunk-10-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-10</figcaption>
+</figure>
+<p>We want to find the maximum-likelihood line. The parameters are <span class="math inline">\(\theta_0\)</span> (intercept) and <span class="math inline">\(\theta_1\)</span> (slope). We can also estimate <span class="math inline">\(\sigma\)</span> from the data, but for maximum likelihood it does not matter what we assume <span class="math inline">\(\sigma\)</span> to be — it all comes out the same anyway.</p>
+<p>We could use the built-in <code>dnorm</code>, or use the formula directly. If we take the log, we get a constant plus <span class="math inline">\(-(y - \theta_0 - \theta_1 x)^2 / (2 \sigma^2)\)</span>, and the constant does not matter for the maximum.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a>sigma &lt;-<span class="st"> </span><span class="fl">0.5</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>point_log_likelihood &lt;-<span class="st"> </span><span class="cf">function</span>(y_obs, x_obs, theta0, theta1, sigma){</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>  <span class="op">-</span>(y_obs <span class="op">-</span><span class="st"> </span>theta0 <span class="op">-</span><span class="st"> </span>theta1 <span class="op">*</span><span class="st"> </span>x_obs)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>sigma<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>}</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>total_log_likelihood &lt;-<span class="st"> </span><span class="cf">function</span>(df, theta0, theta1, sigma){</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>  <span class="kw">sum</span>(<span class="kw">point_log_likelihood</span>(df<span class="op">$</span>y, df<span class="op">$</span>x, theta0, theta1, sigma))</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a>}</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a><span class="co"># Grid search:</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a>theta0_grid &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">-1</span>, <span class="dt">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a>theta1_grid &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dt">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true"></a>best &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="ot">NA</span>, <span class="op">-</span><span class="ot">Inf</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true"></a><span class="cf">for</span>(t0 <span class="cf">in</span> theta0_grid){</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true"></a>  <span class="cf">for</span>(t1 <span class="cf">in</span> theta1_grid){</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true"></a>    ll &lt;-<span class="st"> </span><span class="kw">total_log_likelihood</span>(df, t0, t1, sigma)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true"></a>    <span class="cf">if</span>(ll <span class="op">&gt;</span><span class="st"> </span>best[<span class="dv">3</span>]) best &lt;-<span class="st"> </span><span class="kw">c</span>(t0, t1, ll)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true"></a>  }</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true"></a>}</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true"></a>best</span></code></pre></div>
+<pre><code>## [1]  -2.00000   1.50000 -49.17282</code></pre>
+<p>The estimated <code>(theta0, theta1)</code> should be close to <code>(-2, 1.5)</code>. That is what we generated the data with. The same thing falls out from <code>lm(y ~ x)</code>, which uses the OLS formula directly.</p>
+<p>It is kind of nice that least-squares also turns out to be the maximum-likelihood estimate under the Gaussian noise model.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+---
+title: "Classifying and Clustering Text with an LLM"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+This topic is the second half of the project workflow that started in [Scraping data with a coding agent](agentic_scraping.html). Once you have a pile of scraped text, what do you actually *do* with it? We walk through a worked example: taking thousands of Reddit posts and turning them into an analysis of **what students are happy and unhappy about**.
+
+The whole thing is done as a live agentic-coding workshop, mostly in Python. You do not have to write much Python yourself — the point is to see the shape of the workflow and to know what each step is doing.
+
+## The scenario: r/UofT sentiment
+
+There is a subreddit where University of Toronto students talk about their experiences — some positive, some negative. Several project proposals this term wanted to do **sentiment analysis**.
+
+Sentiment analysis means taking a piece of text and deciding whether the sentiment it expresses is **positive, negative, or neutral**. People have done a lot of it: you have a lot of social-media text, and you want to know, say, how people feel about a particular stock. The idea is that if people on Twitter are generally talking positively about a stock, maybe it goes up tomorrow.
+
+> **Warning about the stock example.** This is *not* a good way to play the stock market by itself. You are playing against pros: every quant firm trying to predict the next *second's* prices is already ingesting all of Twitter, earnings calls, everything — running sentiment analysis included. Anything you can detect within an hour is already priced in. It can still be of *scientific* interest (e.g., does sentiment carry information over and above the price movement during the day?), just not a trading edge.
+
+### Why plain sentiment analysis is not very interesting
+
+If all you do is classify each post as happy/unhappy, the best you get is **a single number**: the percentage of posts on the subreddit that are happy vs. unhappy. And who cares? It might not even be about UofT — if someone is happy in their life, maybe they are not posting on Reddit at all. At the end you just have a number, and it tells you almost nothing.
+
+The interesting question is **why**. Why are people unhappy? Are they actually unhappy about UofT, or about life in general? That is the spin worth putting on the project. So the plan has three parts:
+
+1. **Scrape** ~3000 posts from r/UofT.
+2. **Filter and classify**: figure out which posts are actually about UofT *and* expressing a sentiment, and label that sentiment positive/negative/neutral.
+3. **Cluster** the UofT-related positive and negative posts into **topics**, so we can report the breakdown of what people are happy and unhappy about, by theme.
+
+## Classifying text: three generations of methods
+
+How do we decide which posts are UofT-related, and what sentiment they express?
+
+**The old way: keyword lookup.** Look for posts that mention "university", "UofT", etc.; for sentiment, count words associated with positive emotions ("happy", "excited") against words associated with negative emotions ("sad", "frustrating"). Add up how many of each kind you have.
+
+This has well-known problems. The biggest is **negation**: if a post says "not happy", a keyword counter picks up the "happy" and misses the "not". You might think "just invert whatever follows *not*" — but then you hit "I'm not saying that I'm unhappy", multiple negations, words that are far apart, sarcasm... it is all complicated. Negation is the classic failure case for keyword-based methods.
+
+**The middle way: fine-tuning.** Take a language model and fine-tune it for the specific task — feed it examples of positive and negative emotions and let it learn the pattern from examples. This works, but at this point it is old hat. People still do it; mostly they should not.
+
+**The modern way: just ask the model.** Hand the language model the sentence and ask it directly: *what is the sentiment being expressed here?* This actually works better than the older approaches. We will of course **verify** that it works — but the direct approach is the one to reach for first.
+
+## Doing it ad hoc vs. doing it reproducibly
+
+There are two ways to get a model to classify your posts.
+
+### The quick-and-dirty way: in the agent's chat window
+
+If you have `claude code` (or another coding agent) open in your project folder, you can just *tell it* to classify the posts:
+
+```
+Make a new file for testing: classify just-UofT-related content.
+Pick 100 posts and classify each (using yourself) as UofT-related or not.
+Dump the result into an Excel file so I can read it.
+```
+
+This works because the coding agent can call a model in the background. It is genuinely the **cheap** way if you already have a Claude/Codex subscription: you are not paying anything on top of the flat monthly fee. For a proof of concept, this is reasonable.
+
+The downside: it is **not reproducible**. You are typing instructions into a chat window; the exact prompt and model are not pinned down, and you cannot easily re-run the whole thing later or report precisely what you did.
+
+### The civilized way: call an API from a program
+
+The reproducible way is to call a model **from a Python program** through an API. Ordinarily you would use the OpenAI API: you get an API key (a string tied to your account) and you pay per request. The cost here is pennies — the number of tokens is roughly the number of bytes in your text, and text is small.
+
+So that nobody has to hand over a real (paid) OpenAI key, the course provides **`notopenai`** — a small client with the *exact same API as OpenAI*, but which routes every request through a course server that holds the real key. From your side it looks and behaves like the real OpenAI client; you just use a course-issued key with a small spending cap. (Full walkthrough, including code generation: the [vibe-coding lab](https://www.cs.toronto.edu/~guerzhoy/vibecoding/vibecoding.html).)
+
+Setup:
+
+1. Download the client, [`notopenai.zip`](https://www.cs.toronto.edu/~guerzhoy/190/notopenai.zip), unzip it, and put the `notopenai` folder next to your script.
+2. Get **your own** API key (link on the course forum) and paste it in. Do not share it with other students.
+3. The shared server is rate-limited to a few calls per second *total*, so add a pause (e.g. `time.sleep(3)`) between calls and do not hammer it.
+
+The client mirrors the OpenAI SDK — you construct a `NotOpenAI` client and call `client.chat.completions.create(...)`, then read `.choices[0].message.content`:
+
+```python
+from notopenai import NotOpenAI
+import time
+
+API_KEY = "..."                      # your own course-issued key
+CLIENT  = NotOpenAI(api_key=API_KEY)
+
+def get_response(prompt):
+    chat_completion = CLIENT.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model="gpt-3.5-turbo",       # the only model this client supports
+    )
+    return chat_completion.choices[0].message.content
+```
+
+Now sentiment classification is just a prompt built around `get_response`:
+
+```python
+def sentiment(post):
+    prompt = f"""Classify the sentiment of the Reddit post below as
+positive, negative, or neutral. Reply with one word only.
+
+Post: {post}"""
+    return get_response(prompt)
+
+print(sentiment("Finally finished my thesis defense and I'm so relieved!"))
+time.sleep(3)   # be kind to the shared server
+```
+
+Why this is better than the chat window:
+
+- **Reproducible.** It is a program. When you report results you can say exactly: *here is the prompt I used, here is the model (`gpt-3.5-turbo`), here is the process.* You can re-run it on new data.
+- **Pins the model.** The model is named in the code, rather than "whatever the chat happened to use."
+- **Scales.** You can loop it over thousands of posts and write the labels to a file, instead of pasting into a chat one batch at a time.
+
+### Zero-shot vs. few-shot (in-context learning)
+
+When you just hand the model the instruction and the text with **no examples**, that is called **zero-shot** classification. If you also include a few worked examples of the kind of labelling you want — "here are some posts and the correct labels, now do the same" — that is **few-shot**, also called **in-context learning**. Few-shot usually works better. (How do you know it works better? You check — see below.)
+
+## Verifying against ground truth
+
+The model's labels are not automatically trustworthy. The discipline is to build a small **ground-truth** set and check against it.
+
+When we ran the first pass in class, the model's `UofT_related` column started out fine ("false"/"true") and then drifted into "1"/"0" partway down — not super promising. So we looked at individual rows and disagreed with several:
+
+- *"I have some help for one of my assignments from this guy on Discord..."* — the model called it UofT-related; arguably it is general academic, not UofT-specific.
+- *"Number of people who got almost nothing done during reading week"* — labelled UofT-related, but this is a generic discussion of academics, not UofT-specific. Call it **no**.
+- *"...I just got an email from my TA saying I'm under investigation for possible plagiarism"* — UofT-related **yes**, because the TA is a UofT employee and this touches UofT-specific policies.
+
+The workflow for fixing this:
+
+1. Dump the model's labels into a spreadsheet (Excel/CSV) so it is easy to read.
+2. Add your own **ground-truth** column and a **reason** column for a handful of rows.
+3. Feed those annotated examples back to the model: *"I annotated the first few rows with ground truth and reasoning. Produce a second sample of 100 that is closer to the ground truth."* (This is exactly few-shot / in-context learning.)
+4. Re-check, and iterate — give more instructions, or, what really works, **give more examples**.
+
+For a real research paper you would label *many* rows yourself — not three — ideally with **several independent annotators**, then measure how much they agree (inter-annotator agreement) and compare the model against the consensus. For a proof of concept, eyeballing whether it "kind of makes sense" is enough to start.
+
+A note on which label is more fragile: **sentiment** turned out to be less fragile than **UofT-relatedness**, because "UofT-related" depends on a definition you made up and other people might reasonably disagree with, whereas positive/negative/neutral is more clear-cut.
+
+## Thematic analysis by clustering
+
+Now the interesting part. For the UofT-related posts with a non-neutral sentiment, we want a **thematic breakdown**: what are the recurring topics people are happy or unhappy about?
+
+**Clustering** is an algorithm that assigns data points to groups based on similarity. There are many clustering algorithms; we will see some in more detail later in the course. The catch: clustering ordinarily works on **numeric vectors** — it averages and compares numbers. You cannot directly cluster raw text.
+
+### Embeddings: turning text into vectors
+
+An **embedding** is a function from text to $n$-dimensional vectors. Algorithms like **word2vec** and **GloVe** assign each word a vector of numbers, in such a way that similar words land near each other. (In fact, *any* time you feed text to a language model, it has to be turned into numbers first — embeddings are how.)
+
+The plan:
+
+1. Embed every word in a post, then **average** the word vectors to get a single vector per post. (Averaging large embeddings is unintuitive but fine — more on why later in the course.)
+2. **Cluster** the post vectors.
+3. For each cluster, print a few representative posts and read off the theme.
+
+Picture it in two dimensions: each post becomes a point; the positive posts form one cloud, the negative posts another; within each, clustering tries to find sub-groups.
+
+```python
+# Sketch of the pipeline (library functions do the heavy lifting):
+# 1. embed each post  -> a vector per post (average of GloVe word vectors)
+# 2. cluster the post vectors
+# 3. for each cluster, print ~5 example posts
+
+import numpy as np
+from sklearn.cluster import KMeans
+
+post_vectors = np.array([embed(post) for post in posts])   # average word embeddings
+labels = KMeans(n_clusters=6).fit_predict(post_vectors)
+
+for c in sorted(set(labels)):
+    print(f"--- cluster {c} ---")
+    for post in [p for p, l in zip(posts, labels) if l == c][:5]:
+        print(post[:200])
+```
+
+### How it actually turned out
+
+Honest results from the live run:
+
+- **Sentiment and UofT-relatedness classification: worked pretty well.** Most posts came out neutral (as expected), and the positive/negative labels looked reasonable.
+- **Clustering: mixed.** Some negative clusters were coherent (grades-and-courses, lifestyle, general frustration). The *positive* posts did not cluster cleanly — they were all positive and UofT-related, but the sub-grouping was not meaningful.
+
+The fix, if you were doing this for real, is to **go back to the drawing board**: try different clustering algorithms, or better embeddings.
+
+> **This is explicitly *not* an example of good research.** It is a working prototype built in one sitting. For an actual project you would validate the labels against multiple annotators, justify the embedding and clustering choices, and check the clusters carefully. Plenty of marketing departments do worse — but hold yourself to a higher standard.
+
+## The takeaways
+
+- Pure sentiment percentages are boring; the interesting question is *why*, which means going from a single number to a **thematic breakdown**.
+- To classify text, **just ask the model** (zero-shot), and improve it with a few examples (**few-shot / in-context learning**) — this beats keyword counting and beats fine-tuning for most quick tasks.
+- Do it **reproducibly**: call the API from a program, pin the model, record the prompt — not by typing into a chat window each time.
+- Always check against **ground truth** you labelled yourself; for real work, use multiple annotators and measure agreement.
+- To cluster text, first turn it into numbers with **embeddings**, then cluster the vectors and read off representative examples.
+- Whatever the agent produces, **audit it**. Write the plan and the steps to a file so the run is reproducible; remember the model is stochastic and will give somewhat different answers each time.

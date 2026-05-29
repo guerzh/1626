@@ -1,0 +1,299 @@
+Okay, close enough. I fixed the bug uh in the graph. So, the graph is all good. I I'm not sure if I want to do a lecture about ggplot or not. So, uh it does kind of produce nice visualizations. There is a textbook that kind of guides you in terms of how to do it. Uh but we'll see if like if I if I actually do it in lecture or not, I don't know. But you could produce in principle a graph that's like as nice as this, assuming you're not like me and don't have bugs. Uh so uh so the issue here was just um uh was just like uh I was using the names of the columns as if uh I can access them everywhere which was not the case. So uh anyway so the so the graph looks kind of like this. So this is you know all the thetas and then you have the log likelihood over here. So it's negative numbers because it's like a log of a number that's very close to zero and that's kind of the picture of the maximum likelihood is you pick the likelihood that corresponds to the theta that's the highest. So in this case it's over here. Yeah. So should say uh well no because uh that was not a fair coin. Uh so I said that the probability is 0.3. Yeah.
+
+Uh so all right good question. So eight. So the next thing that I want to do.
+
+So the so the so the next thing I want to do is uh talk about the same kind of thing but in the context of regression. So this uh again kind of I have no idea who you are so I'm just asking. So how many people have seen this kind of deal? Okay so not everyone so we'll uh repeat it a little bit. So um so what we have here is the standard linear regression model right. So the data is now generated like this. The x's are fixed and the thetas are now coefficients. So theta transpose x just means like the dotproduct between theta and x. So like theta 0 x0 theta 1 x1 theta 2 x2 you want a constant term. you just have a one in the first coordinate of x, right? And then what we're saying is we're doing linear regression. So we want to draw a line through data
+
+So this is the data we want to draw a line that's like this. So we want to say okay so every y is approximately
+
+theta 0 * 1 + theta 1 * x in this case which we'll write which we write as you know theta transpose x but then we said okay it's not actually that y is equal to theta 0 plus theta 1 x it's it's equal to that plus a little bit of slack. So the slack here is the epsilon and the data model for the epsilon is that it's a nor is that it's a normal variable with a variance of sigma squar. So what that means is or at least the way we interpret it in the maximum likelihood framework is we're saying the x's are given and the thetas we don't know and the y's are measured. And then we're saying in the same way that we toss a coin and we generate heads or tails, what we do is we generate a y by computing theta x and then adding a random epsilon. So that's our model of how this graph came about. The model of the coin is we toss the coin, we measure heads and tails. The model of how this came about is we're saying the xs are actually given and then the the epsilons are the equivalent of the point of we also do the side computation of the theta x. All right. So in the same way that we could compute the likelihood of the outcomes of totting the coin we can say okay so what's the likelihood of seeing this y if the theta is fixed and the x is fixed and the answer is it's the density of it's the density of the Gaussian where you know this is the largest when the epsilon is zero and this is basically like the estimate for the epsilon right because you move this over here the epsilon is y minus beta x so that that so that's your density for the epsilon okay so in the same way as before we have this likelihood for a single data point the likelihood for all of those data points is the product of the likelihoods for each of the PS.
+
+So let's do that.
+
+So the people who uh went outside I fixed the graph. [laughter] So uh uh like the the the problem wasn't uh the problem wasn't very interesting. But let let me show you let me show you the graph again. So this is for the point tosses. So what we had done there was we said okay so for every theta for every possible theta we plot the log likelihood. So here you'll see that the log likelihood is like very negative. That's because it's the log of a number that's very close to zero. And then the maximum likelihood is the is the uh the theta such that the likelihood is the greatest. So in this case over here which corresponds to how we generated the points because we said you know the probability of the point z. So let's do the same thing with linear regression.
+
+So this is like this.
+
+Okay. I want the code over here. So I want to generate a plot that's like this. I'll do it like so. So I'll say the x
+
+let's make it range from like minus5 to five in increments of 0.1.
+
+The y is going to be whatever I'll just I'll just draw a line. So like -2 + 1.5 * x or something. So that me make it larger. So if I save it and run it
+
+then try this.
+
+Okay. So X is just this. And then Y is just this.
+
+So I also want to add some noise. So I want this kind of cloud thing.
+
+So to generate uh random normal variables, I do r norm.
+
+So how many do I want? As many as there are X's. So this is n is length x and I'll say mean is zero
+
+and we'll say so this is sd uh I'll do like 0.5. So this is like how spread out the points are around the line. I'll put all of that in my data frame.
+
+Yes. And if so if I run it like this I can get the data frame
+
+looks like this and I will now display it. So you need to say library ggplot 2.
+
+So the way you roughly do it is you say ggplot of the data frame. So that says plot the data frame. And now we're going to say how to plot it. So I'm going to say I want a scatter plot. So scatter plot is g point. And then I need to say what's on the x axis, what's on the y- axis. So the way you do it is in this case x is x, y is y. So that's just because the names of the columns in df are x and y. So I'm saying like I want x on the x axis and I want y on the y- axis.
+
+Let me run this.
+
+And you get
+
+oh come on. Yeah. Uh and like you got something like this right. So what we want to know do now just for the exercise is the maximum likelihood estimate for the line given this data. So you can there is of course a library to do it. We are just doing it kind of for for the principle of how do you get it using maximum like right uh so okay so how do we do it so what we want is
+
+the likelihood
+
+of the data
+
+So that means so we're going to say the parameters are
+
+uh theta 0 theta 1
+
+right so we want to find theta 0 theta 1 such that the likelihood is is is uh as large as possible. We in principle don't actually know what the sigma is here either. So one way to do it is to just say I'm just going to estimate it from the data which you can absolutely do. Uh in this case we'll just say you know the sigma is 0.5 maybe I happen to know as it happens for m for the maximum likelihood it doesn't matter what you assume the sigma to be it's all going to come out the same anyways. Uh so okay so what do we want to do? We want to say this is the this is the thing for every individual point. We want to find the theta such that the product of those guys is
+
+okay. So uh in uh so in R uh as it happens there is a
+
+uh there is a a built-in function that computes this formula. So uh you could use that. So that so that's the norm. You can also say this formula is not actually as scary as it looks if you take the log. So if you take the log all all this all this is is just a log of this trash minus this. This doesn't matter because we assume that the sigma is fixed. So what we really care about is this guy, right? So okay
+
+so the point likelihood
+
+so this is going to be
+
+Okay.
+
+So what is it going to be? So some kind of constant
+
+minus this. So y - theta x^ 2 / 2 sigma There
+
+Yeah.
+
+And then there is like a plus a constant over here.
+
+Does that make sense? So this is this so this is saying what is that uh normal size or you want larger? Okay. So larger.
+
+So this so this is just saying okay like the likelihood for a particular data point is this. The log likelihood is log of this doesn't matter it's a constant doesn't depend on theta plus log of this. The log over is just this guy.
+
+So okay.
+
+So that is for one point
+
+or the entire data set.
+
+We just say, okay, so we'll sum up the log likelihoods for every individual point.
+
+Uh so to get so uh if you have a data frame,
+
+right? So this is the F.
+
+So df looks like this. Uh you can get get the size of the df like this. So if you want the number of rows, one way to do it is to say this. You can also say and row df this.
+
+We'll just add this to uh the total likelihood.
+
+So this is going to be df icy
+
+y
+
+and then theta zero. Ta one.
+
+Sorry, that is too much.
+
+And the result is just going to be the to. Uh so what you would then do in the same way that you've done with the point hes is you're going to look for the theta 0 and the theta 1 such that the total log likelihood is as large as possible. So one thing that you would probably have seen is what are we actually doing here? We are saying total lo likelihood is as large as possible.
+
+No.
+
+So that means that the sum of those guys is as small as poss as large as possible.
+
+So that means that the sum of minus that. So the sum of this is as small as possible.
+
+And then the sigma is just a constant. So that means that what we want is the sum of
+
+y - theta 0 + theta 1 * x^2 is the smallest possible which you probably will have seen right. So the way to get the maximum likelihood estimate for the line through the data is to get it is the ^ squ. Yeah. So that's like a derivation of this. So okay, does that make sense at all? Okay. Sorry.
+
+So that's the same that's that's the same in algebra. So uh the likelihood is like this. If the likelihood is like this, then the log likelihood is the log of that. Maximizing the minus is the same as minimizing the positive things. So what you're doing when you're doing maximum likelihood is just minimizing the actual y minus the prediction. So the prediction meaning you know like if uh if you plug in a new x here the prediction is going to be along the line. you are minimizing the difference between the thing on the line and the actual data point.
+
+It's kind of nice that this also turns out to be the the maximum likelihood under this kind of data model. So, okay,
+
+react
+
+So the next thing that they want to do
+
+is uh kind of moving away from talking about just max just maximum likelihood because I so I don't know to what extent It's obvious I imagine that most of you have not seen basin inference. Uh so the way I try to tell the story is maximum likelihood in a way is kind of an arbitrary thing. We just say I have this formula for computing the likelihood. I want to estimate the max the maximum likelihood that's going to be my estimate. Like that's that's not a rule. That's just a thing that people do. Uh so basian inference in a way is just looking at this in more detail and generalizing this kind of thinking. So let's talk again about tossing a coin. So suppose you have this kind of this kind of situation. So you have a coin you toss it 100 times. It came up head 65 times. It came up tailed 35 times. And the question is is the coin fair? So a fair coin would be a coin where the true probability of landing tails or heads is 50%. Right? So if the actual question is is the coin fair then pretty clearly the way to answer it is not to say well the maximum likelihood here is theta equals 65% a fair coin is 50% therefore it's not fair. That's clearly silly because it's never going to be exactly 50%. Even with a fair coin, right? So here's kind of the first you know the maximum likelihood approach to this. and just saying okay like we have a model the model is the probability of heads is theta say okay so the log likelihood is whatever it's maximized theta=65 that doesn't need so here's one way to think about it
+
+you can say okay I can never actually say whether the coin is fair or not I don't know it's a physical object object. What I can say is what I believe about the probability of the coin coming up hands. One way to conceptualize it is to say okay what I want to do is I want to have this function P of theta and my function P of theta I want for this to be my belief about what the theta is. So I'll have like P of theta equals 50%, I'll have P of theta equals 65%. And so on and then I have the data and I want to get like a good way a good estimate for this P of data. So that to be clear is if you've taken an introduction to statistics, it's like highly unlikely that people talk to you about it this way. So just to be clear about what people have told you is, you know, philosophically what people meant at least is asking whether the coin is fair is just a silly question. You can never know. The only thing that you can do is to say do I have strong evidence that it's not fair. So that's like the standard statistical thing which we'll also do later. I first want to do in a way the more principled thing which is to say of course I don't know whether the coin is exactly fair or not. Philosophically it's like dubious that a coin could even be fair. It's like what what does it even means? It means that like it's such a perfect coin that you know if you toss it infinity times you'll it'll come up heads 50% of the time. What does it even mean to toss some a coin infinity times? Uh that's that's that's not a thing. And also it's going to change over time. Like as you're tossing it, you're going to like scruff it. So it's going to change. So maybe it was fair and then it's not fair. Like philosophically, it's like a little bit dicey. Uh is what I'm saying. But this is not arguably as dicey. I just want to say okay, what's P of data equals 50%, what's P of data equals 51% and so on. So how can I do it? Well, I can do it using bee rule. If I have some prior beliefs about what the coin might be like, which means I have a prior belief that P of theta= 50 is pretty high, but P of theta= 15 or 14 is kind of low. then I can just use B law in order to compute my estimate for what P of theta equals theta KN for every theta knot including 50% might be like. So this is the probability of theta having this particular value given my observations about what happened with the coin solar. So the data would be the 65 heads 35 tails. What is it? Well, you just plug it into B base rule and see what happens, right? So according to B rule, uh it's you kind of like when you work with it, you kind of just know that you you need to flip it. That's also the formula on the slides. So it's the probability of data given the data= theta kn. So this is our likelihood function times our prior probability on data= theta kn. So this is my prior belief about how likely is theta to be this exact data not and this is just p of data. a data the way to interpret it is one well that's just the base rule formula it must mean something the other is what's my probability of observing the data that I actually observed given my beliefs about what data is so the intuition here is that if my belief is that the coin is roughly fair and then it comes up like 999 times tails one times heads. The probability of the data is low. If my belief is that the coin is fair and it came up like you know 50% of the time heads, 50% of the time tails that the probability should be high using the law of total probability you can actually compute P of data. So this this this should look weird, right? This should look like how do I even compute that? Uh this however should be kind of straightforward because this is saying compute the likelihood. So what's the probability of observing the data given the particular data one and then multiply it by what they think the the probability is of data theta one and then you just sum it.
+
+All right. So okay. So what's the overall goal here? The overall goal is to say I've observed some data. So observed some coin tosses and I have some prior beliefs about what the theta might be, what the probability of hats might be. And what I'm doing is I'm getting what's called the posterior probability of theta being a particular value theta kn.
+
+Okay. Um so again I'm not going to focus on it now but there is like some trickery there because in the notation here I just said well like imagine that theta is a random variable. Uh theta is not a random variable in the sense that it's not a thing that you observe. Theta is a property of the coin that you never actually know. And furthermore, it's not a random variable in the sense that it's fixed. It's a property of the coin. So unlike the outcome of a coin toss, which is generally random, this is just a property of the coin. It's set. Whatever the coin is, it has a theta. You just don't know it. So there is uncertainty there, but it's not uncertainty about what's going to happen. It's uncertainty about what the property of the coin is that we cannot measure directly. So okay.
+
+So
+
+one way to resolve it is to say well yeah it's fixed for every every given coin but I don't know what coin you gave me. So the way I interpret it is you gave me a random coin from all the coins that you could possibly give me and that's the randomness. And then it's a random variable. What they're measuring is which point did you choose to give me? Um that's okay with points. If the theta is a parameter like the freef fall acceleration and you're saying again that's the property of the earth that you know objects accelerate at 9.8 m/s squared. uh if you try to do the same philosophical thing where you say well I don't know what the theta is exactly and the reason I don't know is I don't know on what planet I am so like you gave me a random planet uh well maybe but that seems more dedious skip the discussion
+
+so okay so one way to do inference is to say Okay, so I have some prior beliefs. I'll do a numerical example in a second. So I have some prior beliefs about what the theta might be that's encoded in P theta and then I observe some data and what I want to do is I want to get the theta such that P of the theta given the data is as large as possible. So this is data the Greek letter given the data the English word.
+
+This is this Right?
+
+And then what you're saying is okay, so I'm going to find the theta kn such that this is as large as possible and that's going to give me the theta kn that's like the likeliest one. So this is called a probability. One way to think about it is this is the update brute belief about what the theta might so okay so
+
+what so what's what's what's going on here so we started this lecture by talking about maximum likelihood so maximum likelihood is saying I don't know what the probability of tails is I have some data I'll get me the theta that makes it so that the data that they actually observe is as likely as possible. This is saying something different. This is saying I have some prior beliefs about what the theta might be. And like you saw in the first slide, you probably do have prior beliefs about most things, right? So uh you you see the coin come up head 65% out of 100 you say you know like it's probably still fair. [laughter] Uh so that indicates that you do have some prior beliefs and this is an alternative way of inferring what the most likely theta is. Right? So this is not the same as maximum likelihood. You could rig up P of theta your prior beliefs in such a way that you'll get the maximum likelihood estimate back. But that's not the usual thing that happens. Yeah. So in what cases should we use maximum likelihood of processes? Yeah. Uh so so the question is like when when should you use maximum likelihood? When should you use maximumity? Uh so that's like a live debate. Uh so uh so the kind of argument for just use maximum likelihood is it's all well and good to say that you have some kind of prior belief. It's a different issue of how do you actually specify that specify what that belief is because if you don't have P of theta actually written down which you usually do not then this is just a formula that you cannot use. uh the counter argument in the context of just inference is saying okay so you clearly would not just say well theta is 65 if what happens is you have 65 heads and 35 tails. This is in particular true about coins because as it happens people have looked into this and making a coin that's not fair is actually really difficult. [laughter] Uh so you can do like loaded dice is very easy. People do it all the time when they want to cheat a dice. Uh so kind of uh so kind of dice is like the game cubes that people use, right? Uh so uh if you want a cheated dice, you literally load them, which means you make like one side heavier than the other and it's going to be more likely that it falls on that side. So people do that all the time when they cheat at games, whatever. That's easy. Uh making a coin that's not fair. It's really hard. It only has the two sides and making one of the sides heavier is not actually going to do anything for you. As it turns out, uh like people tried. It doesn't work. So, uh, that kind of implies that if you're specifically interested in thinking about coins, yeah, like you should probably have some kind of prior. Uh, so the more substantive answer is when you're working with data like this, we'll see this maybe later in the course. So, let's say that the situation is that you have like a point that's like overs. So a property of the maximum likelihood estimate for this kind of deal is that this coin is this sorry this point is going to pull the estimate for the curve way way down. I don't know what it's going to look like exactly but it's it's going to be pulled like a lot. Now if you are actually doing [snorts] you know like what is the slope of this line the answer is very unlikely anywhere close to this the what's more likely is that this point was just like you know a typo or something right so one way of conceptualizing the argument or kind of operationalizing the argument that they just gave you which is that like the answer here is not this line is well you actually have a prior on the theta which uh like again like you can make the math work so that this gets automatic maybe more so people [clears throat] do it manually right so this is like what's called an outlier the standard advice is just throw away the outlier and run maximum likelihood you can do that as well but this is not like a mathematical model it's a procedure uh the kind of one way to do it is to do it like the basic way which is to set up a prior that's going to make it so that your model just automatically ignores the outlier. So in a way the argument is you are almost always doing basian inference. It's just that a lot of the time you're doing it kind of manually by for example throwing away outliers or just you know if the conclusion seems very implausible you just say whatever like something's wrong with the data I'm going I'm going to try something new. Uh so okay so that's like this. Uh so let's do this computationally.
+
+So I'm going to call this like base coin.
+
+All right. So, how are we going to do it? So, basically what we So, what we want is again some kind of data.
+
+So this is going to be whatever size one drop let's say 3 well.3 like point 4 42 okay so that's like a secret we don't know it so then what we want to do is we want to specify some kind of prior probability on data. So I'm going to rig it up. So I'm going to say okay. So,
+
+uh, the thetas are again like they go from like
+
+this to like this and like small intervals.
+
+Make sure it works.
+
+All right. It's like not small enough. Do like small intervals. Okay.
+
+So now I got to decide how to make kind of prior beliefs about what uh what the theta might be. So I just argued to you that coins are like not quite fair but almost fair. I can send you the blog post like all over the internet. Uh so how do I encode it? Well, I got to I got to do something. So one thing I can do is I can say okay so I have this function dorm.
+
+So, so this is just the density of the normal distribution. So, it's higher near zero. It's lower the further away you are from zero. It's like really low. It's like not that low. All right. So, I'm going to do a kind of thing that's like this.
+
+So what I was arguing is that you know it's like it's probably like more likely to be around 0.5 but like you know maybe there is unfair points nothing. Okay. So I I'll just rig like rig something random up that's going to look like this using the dorm function.
+
+So I'm going to say
+
+function
+
+status.
+
+So I'm going to say like dorm
+
+theta minus this is not like the only way to do it but I'm going to do it like this. So what this does is it just gives me the largest number when theta is the closest to 0.5 and it's give me smaller numbers elsewhere. So let me just plot it quickly.
+
+So this is so the theta is theta and then uh p theta is going to be like p theta of thetas. So I don't need the for loop or s apply here just because dorm can take a vector. So that's fine.
+
+was fine just now. Very annoying. Okay, I'll just copy and paste. Sorry about that.
+
+So that's the kind of thing that they get and it should be higher around 0.5
+
+and indeed it is just not by much. Uh so if it's like over here then it's like 0.35 around 0.5 it's more like 39 whatever so I can make it
+
+let's do like mean 0.5
+
+and I'll do like a smaller SD so that it's like a more interesting one.
+
+So now it's more so now it's more like this.
+
+So those are not probabilities because those are just those are just densities. Densities are not probabilities. So if I've decided as I did that my only possible thetas are over there to make those probabilities I got to divide them by the sum
+
+So if I run this, I don't know why my buttons don't work. Yeah, I will by the way post the code. Uh so here you get kind of the probabilities for every particular value of theta under this kind of madeup prior belief about what the theta might be. All right. So let's do a graph.
+
+going to be doing this.
+
+It's of course not going to run.
+
+Okay. Hope hopefully I can display it from over here. I don't know. It used to work just now.
+
+That's annoying.
+
+Yeah,
+
+that kind of looks like this.
+
+All right. So, okay. So, that's the prior belief. So, my goal here is to again get some data which I already had done and then compute the posterior probability for data. Right. So for every possible value of theta, I want to know my degree of belief in the theta given the heads and tails that I had actually observed. Right? So so this so this is the data. What is that going to look like? It's gonna so it's going to look like this. So basically what I need to do is I need to compute this guy for every possible value for every possible value of theta. So this is just the likelihood. The only thing is that I multiply every likelihood by this and then every one of those quantities I divide by P data in order to get this. But you'll notice that P data is actually the same because it doesn't depend on data. So that means that I can just look at the numerator and get my degree of belief in the particular data that's going to be so okay.
+
+I'm going to do it like this and I'm going to say all right so likelihood
+
+uh sorry
+
+this is going to be a function of the data and theta and The likelihood is just what what we had done before. So it's the sum.
+
+Those guys
+
+I know why it's giving me so much trouble to me.
+
+copying this
+
+and I'm going to bring back the x because I want to multiply by the posterior
+
+and I'm going to say that my y is the data
+
+And then my posterior.
+
+Oh no.
+
+I'm very sorry about that.
+
+So also going to be a function of the theta.
+
+So that's going to be the likelihood
+
+of the data times the prior
+
+Right. So, uh, how do I get the how do I get the prior? Well, I'm going to do it in a lame kind of way. So, I already computed my DF.
+
+So I so I so I have my DF. I'll find the location of the theta.
+
+Sorry, df is over here. So this is df da uh df theta
+
+is equal to theta.
+
+and I'll get my P theta from there.
+
+Right? So that's like the thing that we did on Wednesday where we looked up a parallel.
+
+So all right. So now we h So now we have now now we have the exterior and we can now do the estimation.
+
+So the so the estimation would be compute the posterior for every possible theta.
+
+So that would be for every possible theta.
+
+complete the posterior.
+
+So let's uh going to be done like in a few minutes. Uh but let's let's let's like this is going to be the last thing I do. Uh so I'm computing this
+
+Uh, so yes, unfortunately. Okay, let me actually just move this to an R file since it's like refusing to do it the nice way. Hold on. Sorry, I have no idea why. So, what I'm doing is I'll I'll just create an R file, which is not going to give me trouble.
+
+So, I'm doing this and I'm doing this
+
+and I'm going to run this
+
+Okay. So line 18 it's unhappy about DF. That's because this is df d theta like this
+
+df theta. Yeah. Yep.
+
+uh it's not happy about theta y and that's because over here I called it thetas.
+
+Oh no, that this should actually be fine. Uh so Berni likelihood I called it uh uh so I'll call called it on theta that is fine uh data.
+
+Oh okay this is datas.
+
+Okay.
+
+So now uh non numeric divide by operator uh data. Oh y okay y is date not data.
+
+Okay and I'm now fine. And my posterior estimate here is like this. So I can now plug it into the into a data frame and plot it again.
+
+So that is going to be
+
+this. And I'm going to plot it.
+
+So the x-axis is going to be the thetas and the yaxis is going to be the posterior.
+
+And let's let's show up.
+
+This is just not happy about the first line
+
+and there we are. Um so uh there is like a nice thing where it's not necessarily smooth at the end uh sorry not necessarily monotonic rather so it is maximized like around 50% and that's because the prior pulls it towards 50 but it kind of gets broken on on on the sides.
+
+Uh so that the shadow is oh sorry the the shadow is just like because of the geomet it's it's not anything sorry this this is just like the way the curve yeah so yeah sorry don't actually know how to remove so this is called the ribbon I think if you say
+
+uh just like the so this is like I mean this is like as if it's a fine. Uh as if it's an estimate, which it's not. So, uh yeah, sorry, I don't actually know how to remove this ribbon. Oh, I do know.
+
+So, uh but this is just how uh ggplot is placed. So, if you if you remove it, it's going to be removed.
+
+So, uh yeah. Uh so we should we should probably also look at what this used to what this actually is. So this is the data. So if you compute the mean of the data that's going to be like 0 41 and what you see is that it's like pulled a little bit towards the 50.
+
+So yeah. All right. So I think this is probably good enough for today. Uh so the plan uh for the class is kind of like this. So uh there is going to be like a homework that's basically doing this kind of deal. Again like honestly so this is going to be posted like around Sunday or something. So like honestly obviously you can do it with an LLM. I'm not like opposed to you doing it with an LLM. Do what you want. Uh so uh there is also going to be like instructions about this is the kind of thing that might show up on a test. So I'm not going to test you on like the details of how to remove the ribbon from the from from the plot which like I barely knew myself. Uh so it's it's going to be clear kind of okay like this could be on the test, this could not be on the test. If this kind of thing is on the test then this kind of information is going to be given to you. So that's coming but uh essentially like the test is going to be like focused around the first two assignments. Uh and essentially like you can do the assignment with LLM if you want but make sure that you know what it says.
+
+It's going to So, um, to be honest, I haven't uh I did not think about it that hard. Uh, I think it's going to be like not open book, but open handout, which is supposed to be ahead of time. Yeah. Do we have a plan for uh like a secondary website if it's still down? Uh yeah, I I mean I I will make a website. [laughter] Yeah. Yeah. Yeah. So so like for now all that's posted anyway is kind of the slides which are in which are in your email and like I just updated the slides. I I will make a website. Uh either way I don't I didn't really like workers in the first place. So it's it's fine. Yeah. Yeah. So for test include writing codes or usually we just uh it will include writing code uh yeah uh but not like not like in an unreasonable way. So uh it will involve writing code like to to the extent that if you so kind of a good example of how to think about it would be like this kind of function. So like is this really writing code? Well like not really. This is just algebra. So that would be so the syntax doesn't matter that well like honestly like there is no syntax here right? So uh the syntax that does matter will be given out ahead of time. So the syntax that does matter is apply to every element of the vector. uh so that uh so that you got to know if you got to know uh or at least you got to know how to use it. So we'll kind of negotiate what's going to be on the handout in terms of the syntax. So like the goal is not to make you memorize syntax. There's no point to that. Like it's it's a reasonable guy. I promise. Yeah. Yeah.

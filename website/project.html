@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>MIE1626: Course project (Summer 2026)</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="./style/newstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <a href="index.html">
+      <img src="./style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+    </a>
+    <a class="navbar-brand" href="index.html">MIE1626</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+        <li class="nav-item"><a class="nav-link" href="lectures.html">Lectures</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#mini-projects">Mini-projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="project.html">Project</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#overview">Overview</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#logistics">Logistics</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#grading">Grading</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#references">References</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#resources">Resources</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <br>
+    <h2>Course project</h2>
+
+    <p class="text-muted">
+      The course project is the central piece of work in MIE1626. Students work individually or in pairs on a substantial data-analysis project of their own choosing. The course provides light scaffolding; the topic, the dataset, and the analytical questions are selected by the student.
+    </p>
+
+    <section id="overview">
+      <h3>Overview</h3>
+      <p>
+        Each student, or pair of students, will complete a substantial data-science project. PhD students whose research has a data-science component are welcome to base the project on that work. Students are encouraged to pick a dataset of interest to them and to aim for one or more of the following:
+      </p>
+      <ul>
+        <li>Obtaining interesting insights from the dataset.</li>
+        <li>Applying interesting data-analysis techniques to the dataset.</li>
+        <li>Demonstrating a new data-analysis technique and applying it to the dataset.</li>
+        <li>Collecting a novel dataset.</li>
+      </ul>
+    </section>
+
+    <section id="components">
+      <h3>Components of a complete project</h3>
+      <p>A complete project includes:</p>
+      <ul>
+        <li>A description of the dataset and a summary of the relevant domain knowledge (e.g., for audio data, a summary of how sound is generated, perceived, and processed; for hospital length-of-stay data, a summary of the relevant literature).</li>
+        <li>A summary of previous work related to the analysis.</li>
+        <li>An exploratory analysis of the dataset.</li>
+        <li>A description of the method applied and a summary of related work.</li>
+        <li>A description of the outcomes of the analysis, or an evaluation of a predictive system that was built.</li>
+        <li>A <em>unique</em> dataset (e.g., scraped from Reddit, collected through a survey, or assembled from public APIs &mdash; not obtained from Kaggle, UCI, or other curated repositories).</li>
+        <li>At least one statistical-analysis technique drawn from the course.</li>
+        <li>A dashboard. Building one with <code>claude code</code> is straightforward, and a dedicated tutorial covers this.</li>
+      </ul>
+    </section>
+
+    <section id="deliverables">
+      <h3>Deliverables and deadlines</h3>
+      <table class="table table-bordered" style="max-width: 700px;">
+        <thead>
+          <tr><th>Deliverable</th><th>Worth</th><th>Due</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Preliminary Project Proposal</td><td>2%</td><td>May 19</td></tr>
+          <tr><td>Preliminary Project Presentation &amp; Document</td><td>8%</td><td>June 15</td></tr>
+          <tr><td>Final Course Project</td><td>30%</td><td>August 10</td></tr>
+        </tbody>
+      </table>
+
+      <p><b>Preliminary Proposal</b> (approximately one page, due May 19): identifies the data source, summarizes at least two related papers, and lists the team (one or two students per project). See the <a href="miniproj/proj/proposal.html">proposal handout</a> for full instructions.</p>
+
+      <p><b>Preliminary Project Presentation and Document</b> (due June 15): each student or pair submits a preliminary document containing a full project description and initial exploratory-analysis results, and gives a short presentation to the class.</p>
+
+      <p><b>Final Project</b> (due August 10): the completed analysis, with all components listed above.</p>
+    </section>
+
+    <section id="example">
+      <h3>Worked example</h3>
+      <p>
+        A representative project is the &ldquo;culture of honor&rdquo; analysis: scrape Reddit, use an LLM to flag personal attacks, geo-locate users, and test the hypothesis that users in the U.S. South retaliate more often than users elsewhere. The project illustrates the full cycle of data acquisition, preprocessing, hypothesis specification, and statistical testing. See the <a href="topics/course_intro.html#example-of-the-kind-of-project-i-have-in-mind">course-introduction notes</a> for details.
+      </p>
+    </section>
+
+    <section id="resources">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="miniproj/proj/proposal.html">Proposal handout.</a></li>
+        <li><a href="topics/course_intro.html#example-of-the-kind-of-project-i-have-in-mind">Course-introduction notes</a> (worked example).</li>
+        <li><a href="lectures.html">Lecture calendar</a> for technique references.</li>
+        <li><a href="materials/1626s26/mie1626_syllabus.pdf">Syllabus (PDF).</a></li>
+      </ul>
+    </section>
+
+  </div>
+
+</body>
+</html>

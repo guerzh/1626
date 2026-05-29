@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Logistic Regression</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Logistic Regression</h1>
+</header>
+<h2 id="case-study-the-titanic">Case study: the Titanic</h2>
+<p>The Titanic — a movie, but also an actual ship that hit an actual iceberg and sunk, unfortunately. There were a lot of people aboard; only a fraction survived. There is a dataset of all the people who bought tickets (more or less) with data about them:</p>
+<ul>
+<li>What kind of class ticket it was (first / second / third) — <code>Pclass</code>.</li>
+<li>Age.</li>
+<li>Sex.</li>
+<li>Number of siblings and spouses aboard (<code>SibSp</code>).</li>
+<li>Number of parents and children (<code>Parch</code>).</li>
+<li>The fare they paid.</li>
+<li>And actually the names.</li>
+</ul>
+<p>One thing people like to do: can we predict, based on the features, who survived and who did not.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(titanic)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>train &lt;-<span class="st"> </span>titanic_train</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">head</span>(train)</span></code></pre></div>
+<pre><code>##   PassengerId Survived Pclass
+## 1           1        0      3
+## 2           2        1      1
+## 3           3        1      3
+## 4           4        1      1
+## 5           5        0      3
+## 6           6        0      3
+##                                                  Name    Sex Age SibSp Parch
+## 1                             Braund, Mr. Owen Harris   male  22     1     0
+## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1     0
+## 3                              Heikkinen, Miss. Laina female  26     0     0
+## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1     0
+## 5                            Allen, Mr. William Henry   male  35     0     0
+## 6                                    Moran, Mr. James   male  NA     0     0
+##             Ticket    Fare Cabin Embarked
+## 1        A/5 21171  7.2500              S
+## 2         PC 17599 71.2833   C85        C
+## 3 STON/O2. 3101282  7.9250              S
+## 4           113803 53.1000  C123        S
+## 5           373450  8.0500              S
+## 6           330877  8.4583              Q</code></pre>
+<h2 id="the-setup-predicting-a-01-outcome">The setup: predicting a 0/1 outcome</h2>
+<p>We are predicting a <strong>categorical variable</strong> — did you die or did you survive. There is no “0.5 kind of survived.” We convert (arbitrarily) “died” to 0 and “survived” to 1. You can flip those around, it doesn’t matter — those are categories.</p>
+<p>If we tried to do plain linear regression here, we’d compute <span class="math inline">\(a_0 + a_1 x_1 + a_2 x_2 + \cdots\)</span>, which could be any real number. But what we want is just 0 or 1. So:</p>
+<ul>
+<li>Compute the linear combination <span class="math inline">\(y = a_0 + a_1 x_1 + \cdots\)</span>, which is some real number.</li>
+<li>Transform <span class="math inline">\(y\)</span> with a function so that it looks like a probability.</li>
+</ul>
+<h2 id="the-sigmoid-function">The sigmoid function</h2>
+<p>The usual function is:</p>
+<p><span class="math display">\[\sigma(y) = \frac{1}{1 + e^{-y}}.\]</span></p>
+<p>This squashes any real <span class="math inline">\(y\)</span> into <span class="math inline">\((0, 1)\)</span>. It is never exactly <span class="math inline">\(0\)</span> and never exactly <span class="math inline">\(1\)</span>, but it can be very close. If <span class="math inline">\(y\)</span> is very large, <span class="math inline">\(e^{-y}\)</span> is tiny, so <span class="math inline">\(\sigma(y) \approx 1\)</span>. If <span class="math inline">\(y\)</span> is very negative, <span class="math inline">\(e^{-y}\)</span> is huge, so <span class="math inline">\(\sigma(y) \approx 0\)</span>. If <span class="math inline">\(y = 0\)</span>, <span class="math inline">\(\sigma(y) = 0.5\)</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>sigma &lt;-<span class="st"> </span><span class="cf">function</span>(y){ <span class="dv">1</span> <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>y)) }</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>ys &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dt">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">plot</span>(ys, <span class="kw">sigma</span>(ys), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">sigma</span>(y)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<figure>
+<img src="figure-logistic_regression/unnamed-chunk-2-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-2</figcaption>
+</figure>
+<h2 id="logistic-regression-in-r">Logistic regression in R</h2>
+<p>The model is:</p>
+<p><span class="math display">\[P(\text{survived} = 1) = \sigma(a_0 + a_1 x_1 + a_2 x_2 + \cdots).\]</span></p>
+<p>We use <code>glm</code> (generalized linear model) with <code>family = binomial</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>fit &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Pclass, <span class="dt">data =</span> train, <span class="dt">family =</span> binomial)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>fit</span></code></pre></div>
+<pre><code>## 
+## Call:  glm(formula = Survived ~ Sex + Age + Pclass, family = binomial, 
+##     data = train)
+## 
+## Coefficients:
+## (Intercept)      Sexmale          Age       Pclass  
+##     5.05601     -2.52213     -0.03693     -1.28855  
+## 
+## Degrees of Freedom: 713 Total (i.e. Null);  710 Residual
+##   (177 observations deleted due to missingness)
+## Null Deviance:       964.5 
+## Residual Deviance: 647.3     AIC: 655.3</code></pre>
+<p>The interpretation: the probability of survival is</p>
+<p><span class="math display">\[\sigma\big(\text{intercept} + a_{\text{sex}=\text{male}}\cdot I_{\text{male}} + a_{\text{age}}\cdot \text{Age} + a_{\text{Pclass}}\cdot \text{Pclass}\big).\]</span></p>
+<p>So you subtract about 2.5 if the person is male (and don’t do anything if female); the age coefficient is about <span class="math inline">\(-0.04\)</span>; the class coefficient is about <span class="math inline">\(-1.3\)</span>.</p>
+<p>A thing people say about the Titanic — as in the movie — is that being male lowered your probability of survival. The hypothesis in general was that men let the women survive (“women and children first”). It seems to have been the case on the Titanic. If you look at the larger dataset of shipwrecks at the time, it apparently was <em>not</em> the case — it was about 50/50. But the Titanic itself does fit the headline.</p>
+<p>You can see that in the formula: subtract 2.5 if you are male. Similarly, third class is bad — subtract <span class="math inline">\(1.3 \times 3 \approx 4\)</span>. Age does not seem to matter much.</p>
+<h3 id="family-binomial"><code>family = binomial</code></h3>
+<p>This tells <code>glm</code> that we are doing logistic regression. Technically it specifies a particular cost function. You don’t have to remember the term “binomial”.</p>
+<h2 id="logistic-regression-cost-function">Logistic regression cost function</h2>
+<p>For linear regression with squared loss, you can derive it from the Gaussian noise model. For logistic regression you do something similar but the cost function works out to:</p>
+<p><span class="math display">\[J(a) = -\sum_i \Big[ y^{(i)} \log \hat y^{(i)} + (1 - y^{(i)}) \log (1 - \hat y^{(i)}) \Big]\]</span></p>
+<p>where <span class="math inline">\(\hat y^{(i)} = \sigma(a^\top x^{(i)})\)</span>. This is the <strong>negative log likelihood</strong> (sometimes called cross-entropy). Similar to the linear-regression case, there are two ways to motivate it: a likelihood story (if it is really true that the log-odds are linear in the inputs, this is the maximum-likelihood cost), or just “it’s a thing that makes sense — bigger penalty the more confidently wrong you are.”</p>
+<h2 id="predict-with-logistic-regression"><code>predict</code> with logistic regression</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>new_passenger &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Sex =</span> <span class="st">&quot;male&quot;</span>, <span class="dt">Age =</span> <span class="dv">30</span>, <span class="dt">Pclass =</span> <span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">predict</span>(fit, <span class="dt">newdata =</span> new_passenger, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</span></code></pre></div>
+<pre><code>##         1 
+## 0.5343109</code></pre>
+<p><code>type = "response"</code> gives you the probability. Without it (default), <code>predict</code> gives you the linear predictor <span class="math inline">\(a_0 + a_1 x_1 + \cdots\)</span> before the sigmoid.</p>
+<p>You can compute the same thing by hand using <code>plogis</code> (which is just the sigmoid):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">plogis</span>(<span class="kw">coef</span>(fit)[<span class="st">&quot;(Intercept)&quot;</span>] <span class="op">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="st">       </span><span class="kw">coef</span>(fit)[<span class="st">&quot;Sexmale&quot;</span>] <span class="op">*</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="st">       </span><span class="kw">coef</span>(fit)[<span class="st">&quot;Age&quot;</span>] <span class="op">*</span><span class="st"> </span><span class="dv">30</span> <span class="op">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="st">       </span><span class="kw">coef</span>(fit)[<span class="st">&quot;Pclass&quot;</span>] <span class="op">*</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## (Intercept) 
+##   0.5343109</code></pre>
+<h2 id="categorical-vs-continuous-pclass">Categorical vs continuous Pclass</h2>
+<p><code>Pclass</code> is 1, 2, or 3 — kind of categorical but kind of numeric. You can argue it either way. With logistic regression on it as-is (numeric), R treats class as one continuous variable with one coefficient.</p>
+<p>If you want to treat it as categorical, use <code>as.factor</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>fit_factor &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span><span class="kw">as.factor</span>(Pclass), <span class="dt">data =</span> train, <span class="dt">family =</span> binomial)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>fit_factor</span></code></pre></div>
+<pre><code>## 
+## Call:  glm(formula = Survived ~ Sex + Age + as.factor(Pclass), family = binomial, 
+##     data = train)
+## 
+## Coefficients:
+##        (Intercept)             Sexmale                 Age  as.factor(Pclass)2  
+##            3.77701            -2.52278            -0.03699            -1.30980  
+## as.factor(Pclass)3  
+##           -2.58063  
+## 
+## Degrees of Freedom: 713 Total (i.e. Null);  709 Residual
+##   (177 observations deleted due to missingness)
+## Null Deviance:       964.5 
+## Residual Deviance: 647.3     AIC: 657.3</code></pre>
+<p>Now there is a separate coefficient for class 2 and class 3 (class 1 is the dropped category).</p>
+<p>You can also convert to a character, which R also treats as categorical:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>train2 &lt;-<span class="st"> </span>train</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>train2<span class="op">$</span>Pclass &lt;-<span class="st"> </span><span class="kw">as.character</span>(train2<span class="op">$</span>Pclass)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Sex <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Pclass, <span class="dt">data =</span> train2, <span class="dt">family =</span> binomial)</span></code></pre></div>
+<pre><code>## 
+## Call:  glm(formula = Survived ~ Sex + Age + Pclass, family = binomial, 
+##     data = train2)
+## 
+## Coefficients:
+## (Intercept)      Sexmale          Age      Pclass2      Pclass3  
+##     3.77701     -2.52278     -0.03699     -1.30980     -2.58063  
+## 
+## Degrees of Freedom: 713 Total (i.e. Null);  709 Residual
+##   (177 observations deleted due to missingness)
+## Null Deviance:       964.5 
+## Residual Deviance: 647.3     AIC: 657.3</code></pre>
+<p>Whether you use <code>as.factor</code> or <code>as.character</code> doesn’t matter statistically — it is just that sometimes you see different things.</p>
+<p>As it turns out for this data set, the difference between class 1 and class 2 is roughly equal to the difference between class 2 and class 3 — so treating class as continuous gives basically the same predictions as treating it as categorical. (This is the kind of question that can show up on a test: when would treating something categorical-vs-continuous actually matter? Answer: when the category labels are numbered in a way that does not match the underlying effect.)</p>
+<h2 id="evaluating-classification">Evaluating classification</h2>
+<p>How do you evaluate a logistic-regression model? You are predicting probabilities. If you actually want to use the model, you probably want a hard 0/1 prediction.</p>
+<p>One way: threshold the probability at 0.5.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>train<span class="op">$</span>predicted_prob &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, <span class="dt">newdata =</span> train, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>train<span class="op">$</span>prediction &lt;-<span class="st"> </span>train<span class="op">$</span>predicted_prob <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">head</span>(train <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">select</span>(Survived, Age, Sex, Pclass, predicted_prob, prediction))</span></code></pre></div>
+<pre><code>##   Survived Age    Sex Pclass predicted_prob prediction
+## 1        0  22   male      3     0.10487462      FALSE
+## 2        1  38 female      1     0.91405306       TRUE
+## 3        1  26 female      3     0.55730127       TRUE
+## 4        1  35 female      1     0.92236664       TRUE
+## 5        0  35   male      3     0.06759234      FALSE
+## 6        0  NA   male      3             NA         NA</code></pre>
+<h3 id="classification-accuracy">Classification accuracy</h3>
+<p>How much of the time does the prediction match the actual answer?</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">mean</span>(train<span class="op">$</span>Survived <span class="op">==</span><span class="st"> </span>train<span class="op">$</span>prediction, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.7885154</code></pre>
+<p>About 78%. <strong>Is this good?</strong> You just shrugged — which is an excellent answer, because this number doesn’t tell you anything at all.</p>
+<h3 id="the-base-rate">The base rate</h3>
+<p>The number doesn’t tell you anything because it depends on what you could have done by just guessing the majority class.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">mean</span>(train<span class="op">$</span>Survived <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 0.6161616</code></pre>
+<p>If you just predict “died” every time, you’d be right about 61% of the time (because most people died). So the 78% is <strong>better</strong> than the base rate — but not by an overwhelming margin. The lesson: you should always check accuracy against the base rate. Without that, accuracy could look impressive just because the base rate is already not 50%.</p>
+<h2 id="false-positives-false-negatives">False positives, false negatives</h2>
+<p>Sometimes what you care about is not raw accuracy, but the kinds of errors.</p>
+<ul>
+<li><strong>False positive rate</strong>: out of all the times the correct answer was “no”, how many times did the model say “yes”? Formally: <span class="math inline">\(\text{FP} / (\text{actual N})\)</span>. “False positive” means the model said positive, but it was actually negative.</li>
+<li><strong>False negative rate</strong>: out of all the times the correct answer was “yes”, how many times did the model say “no”? Formally: <span class="math inline">\(\text{FN} / (\text{actual P})\)</span>.</li>
+</ul>
+<p>Compute these manually:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co"># Predict positive = predicted survived, actual positive = actually survived</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>predicted_positive &lt;-<span class="st"> </span>train<span class="op">$</span>prediction <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>actual_positive &lt;-<span class="st"> </span>train<span class="op">$</span>Survived <span class="op">==</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>predicted_positive_actual_negative &lt;-<span class="st"> </span>predicted_positive <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>actual_positive</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>predicted_negative_actual_positive &lt;-<span class="st"> </span><span class="op">!</span>predicted_positive <span class="op">&amp;</span><span class="st"> </span>actual_positive</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a><span class="co"># False positive rate: out of actual negatives, how many we said positive</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a><span class="kw">sum</span>(predicted_positive_actual_negative, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(<span class="op">!</span>actual_positive, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.1238616</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="co"># False negative rate: out of actual positives, how many we said negative</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="kw">sum</span>(predicted_negative_actual_positive, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(actual_positive, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2426901</code></pre>
+<h3 id="why-each-matters">Why each matters</h3>
+<p>Imagine you are selling insurance for people going on a cruise. A false positive is incorrectly predicting that they survived. As an insurer, that’s bad — you would have to pay out. So you care about <strong>false positives</strong>.</p>
+<p>In a hospital, predicting whether a patient is about to deteriorate: if the model says “this patient is fine” when actually they are about to die, that is a <strong>false negative</strong>, and it is the worst kind of error. So you optimize the model with a very low false negative rate, which means a high false positive rate, which means alerts going off all the time, which means doctors and nurses learn to ignore the alerts. (That is the standard situation.) The trade-off is hard.</p>
+<h2 id="positive-predictive-value-and-negative-predictive-value">Positive predictive value and negative predictive value</h2>
+<p>There are two more quantities that get used a lot. They are different from FPR/FNR because the denominator is different:</p>
+<ul>
+<li><strong>PPV (positive predictive value)</strong>: out of the times the model said “positive”, how many were correct? <span class="math inline">\(\text{TP} / (\text{TP} + \text{FP})\)</span>. Sometimes called precision.</li>
+<li><strong>NPV (negative predictive value)</strong>: out of the times the model said “negative”, how many were correct? <span class="math inline">\(\text{TN} / (\text{TN} + \text{FN})\)</span>.</li>
+</ul>
+<p>These can be completely different from FPR/FNR. If the model is highly accurate, of course they are similar. But if it is not, they could be completely different numbers, because the denominator (actual positives vs predicted positives) can be very different. For example: out of the times you predict “this patient is going to die”, how often is that correct? That is PPV, and it directly tells you how trustworthy a positive alarm is.</p>
+<p>Which is positive and which is negative is itself somewhat conventional — the same column could be <code>Survived</code> (positive = survived) or <code>Died</code> (positive = died) — and the FPR/FNR would swap. There is no actual rule, just stick with one and be consistent.</p>
+</div>
+</body>
+</html>

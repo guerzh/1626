@@ -1,0 +1,237 @@
+All right. Uh, okay. Hey everyone. Uh, so, uh, my apologies. Uh, so,
+
+so, uh, here is the, uh, actual plan now. So, I got, so I kind of thought that I would have enough for any project one, but I just didn't. Uh so uh it's going so I'm going to finish up the material that they need hopefully today definitely on Friday and then it will be out May 16th like it is like the equivalent of eight day well whatever the weekend uh so it's not it's not going to be like honorous uh it's more again kind of to remind you the structure is you are allowed and encouraged to use LLMs for the project so it shouldn't actually take a lot of time uh hopefully a little bit it's mostly to communicate to you what's on the test which is actually going to test you on whether you know uh the contents of the first mini project or not. Uh so definitely out by Friday which is actually May 15 not 16th. uh and uh hopefully earlier than that and I'm committed to this timeline like no matter what like if I don't have enough material that's okay I'll just take out uh stuff from uh from the problem set uh so this is that uh so the other thing that uh so this is Friday not Saturday uh so the other thing that I wanted to preview was the project requirements
+
+So basically uh the proposal is going to be due soon. There's going to be a formal document again on Friday. I just want to preview it if you want to start looking stuff like that. And uh there's not very many people in the class which means that if you want to propose something I am willing to consider it. So the basic shape of it is going to be like this. So uh everyone needs to uh get a unique data set. Uh so I suspect probably so for example uh scraped from uh scraped from Reddit. I will show you how to scrape data sets from Reddit. I'll show you an example of the kind of thing that they mean in a second as well. Uh you can use any other kind of source of of data. It does have to be unique in some way. Yeah. But they have this Friday. Yes. Why? Because it says it's presidential day in the university. Oh. Uh presidential day. Uh I guess I guess then no. Okay. Uh so no class on Friday. Thank you for Thank you for that. Sorry. Yeah. Uh so if if this guy is correct and it is indeed the president's day then we all need to observe the president's day. So uh I did not know that. Okay. Thank you. uh but either way so uh so you can for example scrape Reddit or you can get data from I don't know like any uh any source where the that where there is kind of enough data to do something interesting with it. So you do some kind of statistical analysis using at least one technique from the course plus anything you want. Uh you create some kind of dashboard.
+
+Uh so uh do people know what a dashboard is? Okay. Uh so uh you'll make one. Uh I suspect not very many of you have done it. However, now with clot code it's easy to do. So we'll also have like a workshop on how to do a dashboard. Um I think it's useful just to kind of do it the once it's also nice for you to have as a portfolio. So I think it's it's good in sort of in all sorts of ways. Uh and then you do kind of uh something extra. So it could be like extra analysis or testing an interesting hypothesis
+
+or anything like that. So what I want for the proposal so again there's going to be a formal document about the requirements. It's just 2%. Uh so for the proposal
+
+so it's going to be like one page. It's going to be the data source and it's going to be a summary of uh at least two related papers. All right. So something like that. Um uh so just tell me approximately what it is that you're going to do. Uh I might push back and have you resubmit. That's that's fine. So the goal here is for us to be on the same page. Uh so it can be uh uh one or two people per project,
+
+right? So if you want to work uh as a team, you you you can do that. Let's see there there is already one team so that's good. Uh so okay so uh just to give you an idea of this is the kind of stuff that I do. You don't have to do stuff in my style but just to show you kind of what would be an ideal kind of outcome for me.
+
+Uh so this is a paper that uh we published with uh one of my students uh and it's kind of you know the paradigmatics case that I'm proposing. It doesn't mean that you have to do it this way. Uh so the idea here is like that. So there is in sociology this kind of concept of a culture of honor. So the concept is kind of like this. Uh in some cultures more than others of course in all cultures to some extent. Uh people um men differently from women but both in kind of different ways uh care about their honor meaning about their kind of external reputation. Uh so in particular focusing uh on you know men in most cultures uh people sometimes really care about a reputation for kind of standing up for yourself sometimes violently. Uh so in the '9s there was like a funny in-person experiment that was done at the University of Michigan. Uh so the hypothesis there was that in the southern US uh people uh tend to be kind of more members of the culture of honor than in the north of the US. And the way they tested it is they recruited students. They told them that it's for a study. They didn't tell them what the study was. They had the student walk down the hallway. They then had a one of the experimenters intentionally bump into the students in the hallway, curse at them, and walk away. Uh they then led the student who didn't know what was going on. They thought it was just like a random person uh into a room. They measured their blood pressure. They measured their cortisol levels and stuff like that. And what they found is that indeed uh the students who at least you know in at the University of Michigan in the 1990s uh the ones who came from the south had higher blood pressure and higher cortisol level after that incident uh than students from the north. Uh so that's kind of a famous experiment in psychology. I don't think you're allowed to do that anymore. But uh yeah, so uh we kind of thought, okay, can we get the same kind of experiment without risking getting into a physical fight with anyone and without getting in trouble with the ethics review board. And our idea was well, people argue and insult each other on the internet all the time. And one might imagine that if you are a member of a culture of honor, then you would be more motivated to retaliate against verbal aggression. So like if someone insults you on the internet, you want to retaliate against them if you care about your honor because notionally you want to uphold your reputation for someone who you don't want to mess with. Uh so uh this is what we did. So, we scraped data from Reddit, the form. We then used an LLM to find which of the Reddit threads contained personal attacks and we then mined okay like who retaliated, who did not retaliate, retaliate to insults and we then geoloccated the users. uh you can't geolo geoloccate all of them but for some of them their usernames are the same usernames as what they use elsewhere in the internet so you can look their location and then our hypothesis was that users who are located in the US south would be more likely to retaliate to insults uh than users who are not geoloccated to the to the US south and amazingly it worked
+
+Uh so uh here we have uh you know somewhat higher retaliation rates uh from users in the in the south than users from the non-s south. So this is this is the retaliations. Uh so not notably uh it's not so much about the aggression. So aggression is roughly the same across users in both south and non-self but uh retaliation is actually higher for users in the south. Uh so that's that's the that that was the paper. Um like I I'm quite proud of it and it got published so you know that's a good result. Uh so obviously there's no expectation that you would necessarily get something publishable. Although if you do want to work with me on trying to publish something that would be great as well. Uh so I myself so this is like one of the papers that I've done. If you look up my web p website, we have several uh several projects published that are like that where basically you get some idea of like wouldn't it be cool to analyze this or that social trend by scraping uh data from Reddit. Uh and then sometimes the analysis works out. Uh so that is one data source. by no means the only possible data source is Reddit, but you should come up with something that's kind of unique. Uh so by default, just do you know like Reddit has multiple sub forums. You can come up with like any topic that's of interest to you. There's going to be a forum about that on Reddit. You can come up with some kind of question about it. Uh we'll do a workshop on tax mining. So you can do that. any other data set, by all means, let me know and I'll probably be okay with it. Uh so, uh that's kind of what I have to say. Uh do people have questions, comments, like proposals for how to multiply it.
+
+Yeah, just make sure that we're on the same page. So, it means that we are not allowed to select the datab.
+
+Correct. Uh so uh so uh if so uh yeah so so that that so that is specifically not allowed. So the only situation where I might consider it is if you're proposing some kind of new method. So I know that I have like several PhD students in in in ML. So like if if your kind of new thing that you want to do is not data center but centric but model ccentric then you can propose it that would count. Uh however for a course project that's like I'm not sure how that could work out. All right. Uh so uh yeah uh other questions. Okay. Um so I have a question. So uh so current so so currently the grades for this class are due on July 10th which means that the project cannot be due after early July because uh the office is going to come after me for the grades. Uh so there is a possibility of converting this from an F course to a Y course which would allow uh for kind of more flexibility. So like the classes are going to be what they are but in terms of kind of when the exam is and when the project due date is uh we might have some flexibility. This is not guaranteed. Uh for the people here like would you be interested in that or do you just want to be done in July? So, who wants to be done in July?
+
+So, okay. So, uh you didn't understand because it's not guaranteed, but I could ask to convert this course to be a full semester course. That doesn't change the schedule for anything except the final test and the project due date. So, currently officially, I cannot postpone the project due date and uh after July 1st. or July 5th, whatever it's set to, because the grades are due soon after. But if people here are saying that they're interested in having the project deadline be in August, let me know now who wants the deadline to be in August. So some people Okay, I'll I will try nor guarantee. Okay. Uh so either way the structure is in the middle of the semester we are doing kind of a preliminary presentation. That's what's on the syllabus. So the idea is you come not with the readym made project but with something that's kind of worked out. So probably you got at least a sample of the data set. You have some kind of preliminary analysis. You did you've done something. You submit a short document. You also do a presentation with me. uh I give whatever feedback there is and then you get uh assuming I cannot promise you that they'll allow me to convert the course but assuming that they can convert the course to having the due date in August we can do the due date in August and then you submit the final document then make sense yeah
+
+uh it's a paid uh so uh so both select the project is uh so kind of the paper that does this and then the dashboard. Yeah.
+
+Right. I'll I'll I promise I'll I'll write it up by President's Day on Friday. Uh so uh yeah. Okay. Is that is that correct? All right. Uh so that is what I have to say about this. Uh so uh what I want to do today is uh basically finish up statistical inference or at least like the first go at statistical inference. Uh do a little so do a little bit about causal inference as well. So, okay.
+
+So, um we're going to get uh sorry.
+
+So, I'm going to start by just looking at the data set.
+
+Uh so uh you need uh so you need to install uh uh Slooh 3. So this is just uh a uh set of data sets. Uh once you install it, I do have it installed. Uh you can do this. This code is also on the website. Uh so you can also so you do libraries loop 3 and then uh
+
+That's That's actually 2011.
+
+Okay. Uh so so this is the data set. Uh so uh the data set is for the beak depth for Darwin's finches on Galapoolagus Island pictured here. This is how you measure the depth of a beak. Uh so basically what happened there uh was uh uh there's two kind there's two kinds of finches on uh Gala uh on on Galapagus Island. Uh and um what happened in 1977 very sad uh there was a drought and there were only large tough seeds available. Uh and the hypothesis was that as a result of that uh only finches with the deep beak uh with the deep beaks survived. Uh so uh this data was uh collected uh so Darwin Darwin like discovered and named them but the data was collected by uh uh a couple of u biologists uh who were originally from the University of British Columbia. Uh so there's like some Canadian connection and basically what we want to do is like look look at look at the look look at the beaks. So okay so uh this is the data. So basically the table is you have the year in which the particular bird was caught and then the depth of the beak of that particular bird. Right? So you might imagine like a third column with the name of the bird but we don't know the bird's names. So uh so okay so uh first of all how would you generally analyze this kind of data? Well the idea is presume so the claim here is that well like maybe the depth of the beaks was different in the different years because the birds with the bad beaks have died out because of the drought. Right? So you could like say okay uh
+
+uh we'll use summarize to compute the mean beak depth uh in 1976 and the mean beak depth in 1978. Uh so we do a summarize where we group by the year
+
+and in the summary. So we have a new column. The column main would be uh whatever like average depth
+
+and that would be just the mean of this column over here. So the mean of them
+
+No.
+
+Oh, that's because I didn't load the finches. I did load the finches. Uh, group by capital year, I think. No.
+
+Yeah. So the the problem is the column name was capital gear. So that was just like a variable names. Uh and what you see is you know indeed you know in 78 the mean depth was slightly higher than in 76. Um the reason I started with this was just like a little bit of practice with R. Uh this though doesn't tell you anything obviously because you could always say well you know maybe this is just random right. Uh so usually the thing the second thing that you would do we're not running a statistical test yet uh is we'll just display the data in a way that would maybe indicate whether the data is really random or not. Uh so
+
+I'm going to plot the finches. So what I want here is basically a histogram for the a histogram for the two years. So uh ggplot has a gum histogram thing.
+
+Uh so I want to do uh so first of all if I just do that what I'll get is just the histogram for the entire thing right
+
+Yeah.
+
+So I'll say that the depth is on the x- axis.
+
+This should be inside as
+
+this looks like this looks like this. So this doesn't tell us much because it's not broken down by years. Uh I I assume does the histogram make sense to everyone? So this just says, you know, like there is one bird with a really pathetic beak over here. There's like a really deep beak over here. Most people are average. Uh so okay, so what we really want is something that's analogous to the group by. Uh so we can do it by saying I want uh the color to correspond to the year. Uh so let me show you what that looks like. First of all,
+
+uh
+
+uh okay, this is ugly. Sorry.
+
+So, I'll say fill
+
+Sorry,
+
+sorry. I'll explain the syntax in a second even though so I'm not ever going to test you on the ggplot syntax but I think it's worth kind of knowing about it. Uh so this is the kind of thing that they wanted. So I said color equals year. So it basically broke the data frame into two sub data frames. One for 1976, one for 1978. So it's now displaying two histograms. Uh I said X is depth. So X is still depth. And I said position dodge. So possession dodge is about how do the how do the bars how are the bars displayed. So by default what you saw before is they were stacked on top of each other which is kind of displaying both the unified distribution and the two separate distributions at the same time because you can ignore the color. And so so let let me do the stack for a second here.
+
+So if you do it like this,
+
+it's kind of one histogram if you ignore the color, but it's kind of two histograms if you look at the at the separate colors. So it's kind of nice, but I think also kind of unreadable. So if I do position equals dodge, then that actually
+
+displays something that kind of makes sense. We'll get back to statistical inference in a second. And here you can kind of see, okay, like it does kind of make sense that the distribution for 1976 at least looks different from the distribution for 1972. So u the way it would look if there wasn't really a difference is maybe like if you really look and compute the averages the average are difference. The averages are always a little bit different. Those are finite precision numbers, right? But here it seems pretty clear that those are actually two Gaussians. Makes sense. Uh so just going back to the code, I I I think it's kind of worth uh also seeing the code. Even though you obviously could say to an LLM, just write me this code. I think it's worth kind of knowing a little bit what it looks like. It's also worth just knowing that you can ask for different things like that. You can ask for position equal dodge, but you can also ask for position equals tax stack. So that's part of why I'm doing it. Uh so what's going on here? Again, like last time, you say I'm operating on this data frame. You are inside of the EAS, what you're specifying is what the data means, right? So here you're saying I want the xaxis to be depth. So this is specifying on the graph this column maps to this dimension. So that's what's inside the AA as in the same way you're saying the column year actually corresponds to the color. So that's about the logic of the logic of the data. Uh this is not inside AES and that's because this is not about the logic of the data. This is about how you display the columns. Right? So that's kind of the idea. So anything here specifies what do I do with this column? What do I do with that column? The bug that I had earlier was when I said fill is equal to just year and not s factor here. The issue was so fill by the way is so color in R is like the outline. fill is the color that's inside the bar. So, initially I said like color equals and it did it. It just did the outline. So, it's like uglier to my mind. Okay. So, um so yeah. So, initially here because it was a numerical type rather than you know a category uh that doesn't work because color needs to be a category. So what as factor does is it converts this uh this column into a category. Make sense? So okay. So that's that that was just about displaying what it is. So okay. So what do you usually get taught in introductory statistics? Well, you need to have a null hypothesis and then you need to see whether you can reject the null hypothesis or not. Right? So what's the null hypothesis in this case? So we're saying assume that the depths of the beaks are normally distributed. If you don't assume a distribution, there's not really very much that you can do. And then the null hypothesis ordinarily is nothing is going on. Right? So nothing is going on here is the difference between the means of distributions. So those distributions the difference between the means is zero. That's the null hypothesis. Right. Uh all right. So if someone wants okay I you have the slides open presumably but without looking. So what is the probability that we need to compute in order to assess this hypothesis
+
+just like in words
+
+okay uh first of all how many people should know the answer because you've seen this before okay uh what uh okay so not very many in which case I'll just tell you so okay so in order to assess whether this null hypothesis is seemingly false. What you need to know is what's the probability of observing the kind of difference that you actually observe or more assuming that the null hypothesis is true. Right? So let's write this down. This is also on the slides. So null hypothesis
+
+The means in 1976 and 1978 are the same. So uh sorry. So I assume sorry. So uh how many people did everyone see this kind of thing like null hypothesis before? Yeah. Okay. Sorry. So when do we reject the the null hypothesis?
+
+The answer is if the data if the probability of observing a deviation at least as large as what's in the data
+
+assuming the null hypothesis is true
+
+is by convention people say less
+
+Right? So the question that I'm asking is here's the data data that I have. Maybe nothing is going on but the data kind of looks like the distributions are different. So I need to ask what's the probability of observing a divergence between the two distributions that's at least as large as what I see here. Does that make sense? As kind of the concept. So, okay. And then
+
+the usual uh so uh and then the usual thing that you say is you reject the null hypothesis if the p value is less than 5%. So the p value is
+
+this thing.
+
+Okay. So a common thing that they tell you which I agree with is you can only reject the null hypothesis. There's no accepting the null hypothesis.
+
+So the reason for this is that basically what the p value is so this kind of thing when you can compute it it's the amount of evidence that you have against the null hypothesis being true. Right? So there's two ways in which you can have not sufficient evidence for the for the null hypothe uh in which you can have not have sufficient evidence against the null hypothesis. One is the null hypothesis is true. So it's hard to get evidence against something when it's true. But two is you don't have a lot of evidence at all. Right? So if you just catch three birds in 1976 and 1978, you just don't have any evidence like you compute the p value, it will be it will quite likely be quite large. But that doesn't mean that you should accept the null hypothesis. It just means that you don't have ev evidence against the null hypothesis. Possibly just because you don't have enough evidence for anything at all. you just don't have anything. You don't have any data. Uh so that's the that's kind of the usual framework. Make sense? So okay,
+
+so
+
+so okay. So that's the normal kind of uh framework. So usually the null hypothesis would be just zero. So why do we not usually have a null hypothesis that's like the difference between 1976 and 1978 is 0.1. So sometimes you might have something like this. The reason you usually would not is that conceptually it makes no sense, right? So conceptually the null hypothesis should conceivably be true. So if your null hypothesis is just a madeup number like 0.1, like that's got to be false anyway. So why are you looking for evidence against it? You could just say a priority that it's some kind of number, but it's definitely not exactly 0.5, right? Uh so zero is a little bit different because zero is really saying pre- drought and post drought are the same. Right. So okay.
+
+Uh so ideally again like in textbooks what you encounter is basically the null hypothesis is that something some quantity is zero. Conceptually it's more like nothing interesting is going on. So ideally if you reject hypothesis that means that you've learned something new. So for example, you've learned that the populations in 1976 and 1978 are genuinely different. So another argument for why we only ever reject the null hypothesis is that by default you would rather keep believing that nothing interesting is going on than start believing that something is going on. like you don't want to you want to be careful about believing anything that's made up right so by default you say well like the populations I don't know what the difference between them is so by default I'll just assume they're the same um so okay
+
+so all right so uh p values so the way I presented this thing informally is to say, okay, here's the data. What's the probability that we'll see a difference that's at least as large as what we have here? We got to operationalize it somehow because this is like a histogram where it kind of looks like the cyan and the red colors are different, but we want a number. So the way you usually do it is you compute what's called a test statistic. So a test statistic is a function of the observed sample. So in this case the sample would be all the measurements that were made. Uh a test statistics statistic might be compute the mean pre- drought and compute the mean post drought and compute the difference. That's now a number, right? So that's an option. This is not actually super useful because you might get a number like whatever 0.5 cm that doesn't tell you anything about whether that's like a big difference or a small difference because what you really want to know is in terms of the spread of the entire histogram, how large is the difference between the means, right? So like if the histograms were like really really tiny over here like the overlap was here then a difference of a few millimeters there would would be meaningful on the other hands if they're like that then a difference that's meaningful is something that's kind of comparable to the spread of the data. So for that reason in this case a more useful test statistic would be take the mean pre- drought take the mean post drought and divide by the standard deviation of the distribution. So that's going to tell you the difference between the distributions on the scale on which the data actually exists. Right. So let's say that we have this test statistic. This happens to be the test statistics that the test statistic that most people would compute in this case. So the test statistic
+
+would be t. So this would be mean of depths in 1978 minus mean of depths in 1976
+
+divided by the standard deviation of the ducks. Right? So the p value in this case should be something that's
+
+concept. Sorry that was too small but nobody complained. [laughter] So uh the p value it uh do you have complaints now? Right. Uh so the p val too late. So the p value in this case what would it be? So conceptually it's we observe this guy. It's a quantity. We want to know how often would you get a t a t statistic that's larger or equal to what you actually observed.
+
+So the p value
+
+would be the probability of
+
+So we're saying if the depths are equal in 78 and 76, what's the probability of observing this kind of thing that's at least as large as what we actually observe?
+
+Right. So let's make it concrete.
+
+So I'll So I'll compute the t. So the means are already here, right?
+
+So to remind you, this looks like this.
+
+So I'll save the data over here and I'll say I want the average beak depth for 1978 minus the average beak depth for 1976.
+
+Uh, I'll just do the dollar sign
+
+and I'll just do like whatever the second minus the
+
+So the t is whatever 0.667.
+
+Okay. So I now want to compute this kind of thing. So there's two ways of doing it. One is there happens to be a formula. In fact there happens to be an R function that does it for you. But two I can do it from first principles. So what do I need to do here? I need to say all right so I have this idea of this is the data set right so the data set is inches so I can imagine that I generate this data set again and again and I'm saying in this size of data sets just by chance how often would the difference between the depths in 78 and 76 be at least as large as 0.67.
+
+Right? So, how can I do it? Well, I'll just actually go through with it. I'll generate the data and I'll see how often it turns out to be the case that the difference is larger than 67.
+
+So, let me do that.
+
+So I'm doing so I'm giving it kind of how many uh how many in 78 how many in 7 how many in 76 uh I can compute that first. So here we're grouping the grouping by year and we just want the count. So to get the count uh you can just use n in the summarize that gives you the number of rows. So we have 89 uh 89 of each.
+
+So we'll do the 76 ones.
+
+So what do we need to do in order to generate a data set that looks like this? Well, looks approximately normal. So we'll say okay, approximately normal.
+
+The n is going to be n1.
+
+So the mean kind of doesn't matter because under the null hypothesis the means are the same. So we could literally say mean is equal to zero and it still would still be fine. We care about the difference between 78 and 766 anyway. But let's be nice about it
+
+and compute the mean.
+
+And this would be like the overall mean
+
+Oh, that's right.
+
+So 9.8.
+
+We also need to specify the standard deviation. So here it's a little bit tricky because if I compute the standard deviation of just the depths, this is what I get. But this is the wrong standard deviation. Uh can someone tell me why?
+
+So I'm computing here the standard deviation of this data set. Why is this not the right one to compute?
+
+So currently I'm generating data that's like big data that should look like the data from 1976. I want to know what the standard deviation is in 1976. This data is for 76 and 78 both. So the standard deviation is actually going to be larger if 78 and 76 are different in mean, right? Just because the standard deviation is, you know, if the red and the blue are really different, then the standard deviation is going to be due to 76 and 78 being different, not due to the spread of the data in 76 and 78 separately. So we can confirm it
+
+by grouping by
+
+here and summarizing here. So what you see is it's like at least sometimes it's a little bit small
+
+but not that much smaller. So we'll just say like SD equals 1 and we'll do the same for 78.
+
+And now the t statistic on which we decided not necessarily the only possible one is to say okay we'll compute the mean in 1978 and the mean in 1976
+
+and we'll divide it by.
+
+So, let's be kind of super nice about it and do the actual formula. Uh, which would be
+
+okay, let's not I'll just stick them together.
+
+So if you do this,
+
+what you do is you just stick those two together, right? So this is 89 points. This is 89 points. This is uh uh whatever 178 points. So if you
+
+can just do this, it just concatenates everything together. And then I'm taking the standard deviation. Make sense? So all right. So now that I have it, let me define it in.
+
+Uh they say barks.
+
+So
+
+you get this kind of D. So what we're trying to do here again is we're saying okay if the means are actually the same they're are 9.8 8 in both years, what would the tstistic be? And the answer is, well, I know it's going to be different different times. Every time you do a sample, you get a new, right? But that's going to be the distribution. So, if we want to be nice about it, we can collect a bunch of those. Uh, so you can do it with a for loop, but I'm going to use this opportunity to show you the replicate function.
+
+Uh, so replicate just pulls the same thing multiple times and collects the results in a vector. So I can do it for example 5,000 times
+
+and I'm calling random t 8989. So that's going to give me 5,000 data points
+
+that are the t statistics. So that's the same as a for loop 5,000 times just like in one line. Make sense? So I can now just do a histogram of this
+
+and that that looks like this. So from here we can read off whether we should reject the null hypothesis or not already because if you remember we computed the t statistic and it was like 0.67 that's a coincidence pre-in me. So wait, was it actually I think it was Yeah, it it it was 67. Uh okay. So So
+
+here what you see is that getting a value that's as far away from zero as 0.67 is actually very rare. Right? That's what this histogram says because the 67 lives over here. It never happens.
+
+Right? So that's kind of the informal way of projecting null hypothesis. You can also do it you know the formal way which is to say okay so uh replications are those guys
+
+So that's the replications. So you can do the absolute value of the replications and you can check whether this is greater or equal than 67
+
+mostly false. Uh you can get the amount of time that this was uh true. Right? So if you do a mean of truths and falses, that's going to be the proportion of the truths. And the answer is it never happens.
+
+and then the rule is
+
+so the intuition uh so the intuition here is if the t statistic that we actually got. So remember the t statistic is the difference between the samples that we actually observed. If the difference between the samples that we actually observed would be highly unlikely to be observed if the null hypothesis were true then we can reject the null hypothesis.
+
+Make sense?
+
+get uh that was the empirical thing, right? So we computed. So this is this guy.
+
+So I just rounded it because it sounded funny. Uh so so this is this is just this
+
+yeah
+
+standard deviation but
+
+Uh, so you mean like this guy? So this is the
+
+uh these this one. Oh, that that was from that was uh that was from the data.
+
+Uh so from so this was if you remember we computed uh this guy
+
+uh where is my
+
+Wait, did I did I just do it here? Hold on.
+
+So what we did was we we grouped by year
+
+and we computed the standard deviations for each group and I just kind of eyeballed it and said okay like for for the fake data simulation we have to make some kind of decision. ision about how do we make the how do make we make the fake data be kind of the data that's like what we actually observe but where the null hypothesis is also true. So what we saw here is that the standard deviations are like approximately one in both groups. So that's where we got it from.
+
+Make sense?
+
+All right. Uh 10 minute break until 3:27.

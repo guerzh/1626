@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>MIE1626: Data Science Methods (Summer 2026)</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="./style/newstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <a href="index.html">
+      <img src="./style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+    </a>
+    <a class="navbar-brand" href="index.html">MIE1626</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+        <li class="nav-item"><a class="nav-link" href="lectures.html">Lectures</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#staff">Instructor</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#overview">Overview</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#mini-projects">Mini-projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="project.html">Project</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#logistics">Logistics</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#grading">Grading</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#references">References</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#resources">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://piazza.com/utoronto.ca/summer2026/mie1626">Piazza</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-5">MIE1626: Data Science Methods</h1>
+      <h2 class="display-7">Summer 2026</h2>
+
+      <section id="staff">
+        <h3>Instructor</h3>
+        <div class="row">
+          <div class="instructor">
+            <a href="http://www.cs.toronto.edu/~guerzhoy/">
+              <img class="headshot" src="./style/imgs/mike2018sq.png" style="text-align:center;" alt="Michael Guerzhoy">
+              <div style="text-align:center;">Michael Guerzhoy</div>
+            </a>
+          </div>
+        </div>
+        <p>
+          <b>Email:</b> <a href="mailto:guerzhoy@cs.toronto.edu">guerzhoy@cs.toronto.edu</a><br>
+          <b>Office:</b> BA 2028<br>
+          <b>Office hours:</b> by appointment
+        </p>
+        <p>
+          <b>Course forum:</b> <a href="https://piazza.com/utoronto.ca/summer2026/mie1626">Piazza</a>. Students are responsible for reading all announcements posted on Piazza.
+        </p>
+      </section>
+
+      <section id="overview">
+        <h3>Course overview</h3>
+        <p>
+          MIE1626 introduces core techniques in data science through lectures, tutorials, and mini-projects. The course emphasizes statistical inference taught in a computational style, the modern data-science workflow (data acquisition, analysis, presentation, and actionable recommendations), and applied coding practice in R and Python. The lectures, tutorials, and mini-projects support students' work on a course project and prepare them for future research and professional work involving data.
+        </p>
+        <p>The three pillars of the course are:</p>
+        <ul>
+          <li><b>Statistical inference,</b> taught in a more computational style than the standard first course.</li>
+          <li><b>The modern data-science workflow:</b> agentic coding for implementation, alongside the cycle of acquiring data, analyzing it, presenting results, and proposing concrete action.</li>
+          <li><b>Coding practice in R and Python,</b> primarily through small worked examples that students are also expected to read and understand.</li>
+        </ul>
+      </section>
+
+      <div style="text-align:center; padding:30px 0px 10px 0px;">
+        <a href="lectures.html">
+          <button type="button" class="btn btn-info btn-lg">Lectures</button>
+        </a>
+        <a href="materials/1626s26/mie1626_syllabus.pdf">
+          <button type="button" class="btn btn-success btn-lg">Syllabus</button>
+        </a>
+        <a href="https://piazza.com/utoronto.ca/summer2026/mie1626">
+          <button type="button" class="btn btn-danger btn-lg">Piazza Forum</button>
+        </a>
+        <a href="https://www.gradescope.ca/courses/37942">
+          <button type="button" class="btn btn-secondary btn-lg">Gradescope</button>
+        </a>
+        <a href="project.html">
+          <button type="button" class="btn btn-primary btn-lg">Project</button>
+        </a>
+      </div>
+
+      <section id="mini-projects">
+        <h3>Mini-projects</h3>
+        <p>The course includes four mini-projects, each worth 5% of the final grade. These are coding assignments. Students may use AI tools in completing them, but they are responsible for the underlying material, which is examined in the written tests. The mini-projects are intended to be modest in scope; their primary purpose is to provide concrete content for examination.</p>
+        <ul>
+          <li><b><a href="miniproj/miniproj1/handout.html">Mini-project 1</a></b> (<a href="miniproj/miniproj1/handout.md">md</a>). Posted May 16. Topics: tidyverse, probability, maximum likelihood, and Bayesian inference.</li>
+          <li><b><a href="miniproj/miniproj2/handout.html">Mini-project 2</a></b> (<a href="miniproj/miniproj2/handout.md">md</a>). Due May 28. Predicting ICU adverse outcomes using logistic regression, ROC analysis, and the threshold-selection problem in the &ldquo;doctor with 25 charts&rdquo; scenario. (See the <a href="topics/icu_project.html">walkthrough</a>.)</li>
+          <li>Mini-projects 3 and 4 will be posted later in the term.</li>
+        </ul>
+      </section>
+
+      <section id="project">
+        <h3>Course project</h3>
+        <p>Each student, or pair of students, will complete a substantial data-science project on a dataset of their own choosing. The course provides light scaffolding; students choose the topic. The project is structured around three deliverables: a preliminary proposal (May 19, 2%), a preliminary presentation and document (June 15, 8%), and the final project (August 10, 30%).</p>
+        <p>See the <a href="project.html">course project page</a> for the full description, component requirements, deadlines, and a worked example.</p>
+      </section>
+
+      <section id="logistics">
+        <h3>Logistics</h3>
+        <ul>
+          <li>Lectures and tutorials take place Wednesdays and Fridays, 2:00pm&ndash;5:00pm. Students are expected to attend both lecture and tutorial blocks.</li>
+          <li>Test 1: Friday, May 29. Test 2: Wednesday, August 12 at 2:00pm.</li>
+          <li>Course project due: August 10.</li>
+          <li>Tests are <em>open handout</em>: the <a href="materials/1626s26/test_reference.pdf">test reference sheet</a> (R syntax for the verbs used in the course) is distributed in advance. Students are not expected to memorize syntax. See also the <a href="test_coverage.html">midterm-test coverage page</a> for what is and is not examinable.</li>
+          <li>The course has been extended to a Y-course by request, so the final test and the project due date fall in August.</li>
+          <li>All course handouts are posted on this website.</li>
+        </ul>
+      </section>
+
+      <section id="grading">
+        <h3>Grading and schedule</h3>
+        <p>The grading scheme and tentative schedule are as follows.</p>
+        <table class="table table-bordered" style="max-width: 600px;">
+          <thead>
+            <tr><th>Item</th><th>Worth</th><th>Due</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Mini-Project 1</td><td>5%</td><td>May 16</td></tr>
+            <tr><td>Preliminary Project Proposal</td><td>2%</td><td>May 19</td></tr>
+            <tr><td>Mini-Project 2</td><td>5%</td><td>May 28</td></tr>
+            <tr><td>Test 1</td><td>10%</td><td>May 29</td></tr>
+            <tr><td>Mini-Project 3</td><td>5%</td><td>May 30</td></tr>
+            <tr><td>Mini-Project 4</td><td>5%</td><td>June 6</td></tr>
+            <tr><td>Preliminary Project Presentation &amp; Document</td><td>8%</td><td>June 15</td></tr>
+            <tr><td>Test 2</td><td>30%</td><td>Wed Aug 12, 2:00pm</td></tr>
+            <tr><td>Course Project</td><td>30%</td><td>Aug 10</td></tr>
+          </tbody>
+        </table>
+
+        <p><b>Late work.</b> Each student starts the term with 7 &ldquo;grace days&rdquo; that can be used to submit late work without penalty (e.g., a submission 25 hours after the deadline uses two grace days). No more than 3 grace days may be used on any single submission. Grace days do not apply to the preliminary project presentation, the tests, or the final project.</p>
+      </section>
+
+      <section id="references">
+        <h3>References</h3>
+        <p>There is no required textbook. Lecture slides and notes are posted on this website. The following texts are recommended as references.</p>
+        <ul>
+          <li>Andrew Gelman and Jennifer Hill. <em>Data Analysis using Regression and Multilevel/Hierarchical Models.</em> Cambridge University Press, 2006.</li>
+          <li>Cosma Rohilla Shalizi. <em>Advanced Data Analysis from an Elementary Point of View.</em> Cambridge University Press (forthcoming). Preprint at <a href="https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/">stat.cmu.edu/~cshalizi/ADAfaEPoV/</a>.</li>
+          <li>Fred Ramsey and Daniel Schafer. <em>The Statistical Sleuth: A Course in Methods of Data Analysis,</em> 3rd ed. Brooks/Cole, 2013.</li>
+          <li>Kieran Healy. <em>Data Visualization: A Practical Introduction.</em> Princeton University Press, 2026.</li>
+        </ul>
+      </section>
+
+      <section id="resources">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="lectures.html">Lecture calendar and topic notes.</a></li>
+          <li><a href="materials/1626s26/mie1626_syllabus.pdf">Tentative syllabus (PDF).</a></li>
+          <li><a href="materials/1626s26/test_reference.pdf">Test reference sheet (PDF).</a></li>
+          <li><a href="test_coverage.html">Midterm Test coverage</a> &mdash; what is and is not examinable, by topic.</li>
+          <li><a href="https://piazza.com/utoronto.ca/summer2026/mie1626">Course forum (Piazza).</a></li>
+          <li>Historical course pages used as references: the original <a href="https://www.cs.toronto.edu/~guerzhoy/201s20/">SML201</a> notes from 2020 and the <a href="https://www.cs.toronto.edu/~guerzhoy/310f19/">CSC310</a> probability and inference notes from 2019.</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+</body>
+</html>

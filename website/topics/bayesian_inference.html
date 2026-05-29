@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Bayesian Inference</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Bayesian Inference</h1>
+</header>
+<h2 id="from-maximum-likelihood-to-bayesian-inference">From maximum likelihood to Bayesian inference</h2>
+<p>Maximum likelihood, in a way, is an arbitrary thing. We just say: I have this formula for computing the likelihood; I want the maximum-likelihood estimate; that is going to be my estimate. That is not a rule. That is just a thing that people do.</p>
+<p>Bayesian inference, in a way, is just looking at this in more detail and generalizing this kind of thinking.</p>
+<p>Suppose you have this kind of situation: you have a coin. You toss it 100 times. It came up heads 65 times and tails 35 times. The question is <strong>is the coin fair?</strong> A fair coin would be one whose true probability of landing heads is 50%.</p>
+<p>If the actual question is “is the coin fair?”, the way to answer it is <strong>not</strong> to compute the maximum likelihood (<span class="math inline">\(\hat\theta = 0.65\)</span>), notice that this differs from 0.5, and conclude that the coin is not fair. That is silly because the maximum likelihood is never going to be exactly 50%, even with a fair coin.</p>
+<p>Here’s one way to think about it: we can never actually say with certainty whether the coin is fair or not — it is a physical object. What we <em>can</em> say is what we <strong>believe</strong> about the probability of heads. We want to have a function <span class="math inline">\(P(\theta)\)</span> that encodes our belief about what <span class="math inline">\(\theta\)</span> is.</p>
+<p>To be clear: if you have taken an introduction to statistics, it is highly unlikely that people have talked to you about it this way. The standard thing is to ask whether you have strong evidence against the coin being fair, which is what we will do later when we look at hypothesis testing. Here we are doing the more principled thing first.</p>
+<h3 id="why-is-the-coin-fair-is-philosophically-dicey">Why “is the coin fair” is philosophically dicey</h3>
+<p>What does it even mean for a coin to be fair? It means it’s such a perfect coin that if you toss it infinity times it’ll come up heads 50% of the time. What does it mean to toss a coin infinity times? It’s not a thing. And the coin will change over time — as you toss it, you scruff it; it will change. So maybe it was fair, and then it’s not.</p>
+<p>But asking “what is <span class="math inline">\(P(\theta = 0.5)\)</span>, what is <span class="math inline">\(P(\theta = 0.51)\)</span>, …” is much less philosophically dicey.</p>
+<h2 id="bayes-rule-for-inference">Bayes’ rule for inference</h2>
+<p>We use Bayes’ rule. If we have some prior beliefs about what the coin might be like, then:</p>
+<p><span class="math display">\[P(\theta = \theta_k \mid \text{data}) = \frac{P(\text{data} \mid \theta = \theta_k)\, P(\theta = \theta_k)}{P(\text{data})}.\]</span></p>
+<ul>
+<li><span class="math inline">\(P(\text{data} \mid \theta = \theta_k)\)</span> is the <strong>likelihood</strong> function.</li>
+<li><span class="math inline">\(P(\theta = \theta_k)\)</span> is the <strong>prior</strong> — my prior belief about how likely <span class="math inline">\(\theta\)</span> is to be exactly <span class="math inline">\(\theta_k\)</span>.</li>
+<li><span class="math inline">\(P(\theta = \theta_k \mid \text{data})\)</span> is the <strong>posterior</strong> — my updated belief after seeing the data.</li>
+<li><span class="math inline">\(P(\text{data})\)</span> is the <strong>evidence</strong> / marginal likelihood.</li>
+</ul>
+<p>Using the law of total probability:</p>
+<p><span class="math display">\[P(\text{data}) = \sum_i P(\text{data} \mid \theta = \theta_i)\, P(\theta = \theta_i).\]</span></p>
+<p>So you have access to everything you need.</p>
+<p>The intuition for <span class="math inline">\(P(\text{data})\)</span>: if my belief is that the coin is roughly fair, and the coin came up 999 times tails and 1 time heads, the probability of the data is low. If my belief is that the coin is fair and it came up about 50% heads and 50% tails, that probability is high.</p>
+<h2 id="is-theta-a-random-variable">Is <span class="math inline">\(\theta\)</span> a random variable?</h2>
+<p>There is some trickery in our notation here. We just said “imagine <span class="math inline">\(\theta\)</span> is a random variable.” But <span class="math inline">\(\theta\)</span> is not really a random variable — it is not something you observe; it is a property of the coin that you never actually know. And it is <em>fixed</em>: whatever the coin is, it has a <span class="math inline">\(\theta\)</span>, you just don’t know it.</p>
+<p>So there is uncertainty there, but it’s not uncertainty about what’s going to happen — it’s uncertainty about what the property of the coin is, that we can’t measure directly.</p>
+<p>One way to resolve it is to say: it’s fixed for every given coin, but I don’t know what coin you gave me. The way I interpret it is that you gave me a random coin from all the coins you could possibly have given me, and that’s the randomness. (This is satisfying for coins; less satisfying for things like the free-fall acceleration <span class="math inline">\(g\)</span>.)</p>
+<h2 id="mle-vs-map-when-to-use-which">MLE vs MAP: when to use which?</h2>
+<p>A common question: when should you use MLE vs maximum-a-posteriori (MAP)?</p>
+<p><strong>Argument for MLE:</strong> it’s all well and good to say you have a prior belief, but actually specifying what that belief is is hard. If you don’t have <span class="math inline">\(P(\theta)\)</span> written down — which you usually do not — then the Bayesian formula is just a formula you cannot use.</p>
+<p><strong>Argument against MLE (and for Bayesian):</strong> you clearly would not just say <span class="math inline">\(\theta = 0.65\)</span> if you get 65 heads and 35 tails. This is especially true about coins because, as it happens, making a coin that is not fair is actually really difficult. (Loaded dice are easy — you make one side heavier and it falls on that side more. But a coin has only two sides, and making one side heavier doesn’t do anything. So if you are specifically interested in coins, you probably have a strong prior.)</p>
+<p><strong>A more substantive argument:</strong> suppose you have data with a clear outlier. The MLE for the line gets pulled way down by the outlier. If you have prior knowledge that the line should not be that steep, you can use a Bayesian approach to automatically downweight the outlier. The standard advice is “just throw away the outlier and run MLE” — but that’s a procedure, not a mathematical model. The Bayesian framework lets you do this principled.</p>
+<p>In a way, you are almost always doing Bayesian inference. It’s just that a lot of the time you are doing it kind of manually — for example by throwing away outliers, or by saying “if the conclusion seems implausible, I’ll try something new”.</p>
+<h2 id="bayesian-inference-for-the-coin-in-code">Bayesian inference for the coin in code</h2>
+<p>Let’s do this computationally.</p>
+<h3 id="step-1-generate-data-with-a-secret-theta">Step 1: generate data with a secret <span class="math inline">\(\theta\)</span></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>secret_theta &lt;-<span class="st"> </span><span class="fl">0.42</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dt">n =</span> n, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> secret_theta)</span></code></pre></div>
+<h3 id="step-2-prior-ptheta">Step 2: prior <span class="math inline">\(P(\theta)\)</span></h3>
+<p>We want our prior to encode “the coin is probably close to fair, but maybe not exactly.” Use <code>dnorm</code> (the normal density), centered at 0.5 with a small SD:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>thetas &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.001</span>, <span class="fl">0.999</span>, <span class="dt">by =</span> <span class="fl">0.001</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>prior_unnorm &lt;-<span class="st"> </span><span class="kw">dnorm</span>(thetas <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>, <span class="dt">sd =</span> <span class="fl">0.1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"># Normalize to a probability mass on the grid:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>prior &lt;-<span class="st"> </span>prior_unnorm <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(prior_unnorm)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">plot</span>(thetas, prior, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>     <span class="dt">xlab =</span> <span class="kw">expression</span>(theta), <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">P</span>(theta)),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>     <span class="dt">main =</span> <span class="st">&quot;Prior&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-bayesian_inference/unnamed-chunk-2-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-2</figcaption>
+</figure>
+<p>This is just the density of the normal distribution. It is higher near 0.5 and lower the further away from 0.5. The densities are not themselves probabilities — that’s why we normalize by their sum on the grid.</p>
+<h3 id="step-3-likelihood">Step 3: likelihood</h3>
+<p>This is what we had in the MLE topic:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>log_likelihood &lt;-<span class="st"> </span><span class="cf">function</span>(y, theta){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  <span class="kw">sum</span>(y <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(theta) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>y) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>theta))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>}</span></code></pre></div>
+<h3 id="step-4-posterior">Step 4: posterior</h3>
+<p>For every <span class="math inline">\(\theta\)</span> in the grid, compute the posterior:</p>
+<p><span class="math display">\[P(\theta_k \mid \text{data}) \propto P(\text{data} \mid \theta_k)\, P(\theta_k).\]</span></p>
+<p>The denominator <span class="math inline">\(P(\text{data})\)</span> does not depend on <span class="math inline">\(\theta_k\)</span>, so for plotting and finding the MAP we can ignore it.</p>
+<p>We work in log space, then exponentiate:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>log_post &lt;-<span class="st"> </span><span class="kw">sapply</span>(thetas, <span class="cf">function</span>(t) <span class="kw">log_likelihood</span>(y, t)) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(prior)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co"># Numerical safety: subtract the max so exp doesn&#39;t underflow:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>log_post &lt;-<span class="st"> </span>log_post <span class="op">-</span><span class="st"> </span><span class="kw">max</span>(log_post)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>post_unnorm &lt;-<span class="st"> </span><span class="kw">exp</span>(log_post)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>post &lt;-<span class="st"> </span>post_unnorm <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(post_unnorm)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="kw">plot</span>(thetas, post, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>     <span class="dt">xlab =</span> <span class="kw">expression</span>(theta), <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">P</span>(theta <span class="op">~</span><span class="st"> &quot;|&quot;</span> <span class="op">~</span><span class="st"> </span>data)),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>     <span class="dt">main =</span> <span class="st">&quot;Posterior&quot;</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">mean</span>(y), <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="kw">abline</span>(<span class="dt">v =</span> thetas[<span class="kw">which.max</span>(post)], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<figure>
+<img src="figure-bayesian_inference/unnamed-chunk-4-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-4</figcaption>
+</figure>
+<p>The blue dashed line is the MLE (sample mean). The red dashed line is the MAP — and you’ll see it is pulled toward 0.5 by the prior.</p>
+<p>What we get is: the posterior is maximized around 50% (because the prior pulls it that way), and then it “kind of gets broken” on the sides where the likelihood disagrees more strongly. The mean of <code>y</code> is around 0.41 and the MAP is pulled a little toward 0.50 — exactly because of the prior we chose.</p>
+<h2 id="bayesian-inference-for-the-difference-of-means-finches">Bayesian inference for the difference of means (finches)</h2>
+<p>Now let’s do the same kind of thing but for the <strong>difference between two population means</strong>, using Darwin’s finches. The frequentist treatment of this problem (p-values, hypothesis tests) is in another topic; here we treat it Bayesian-style.</p>
+<p>Let <span class="math inline">\(\mu_1\)</span> be the mean beak depth in 1976, <span class="math inline">\(\mu_2\)</span> the mean in 1978, <span class="math inline">\(D = \mu_2 - \mu_1\)</span> the difference.</p>
+<p>We want <span class="math inline">\(P(D \mid \text{data})\)</span>. By Bayes’ rule:</p>
+<p><span class="math display">\[P(D \mid \text{data}) \propto P(\text{data} \mid D)\, P(D).\]</span></p>
+<p>We need a prior <span class="math inline">\(P(D)\)</span>. One thing we can say is “I have no idea”, meaning a <strong>flat prior</strong>: assign the same probability to every possible difference between the populations.</p>
+<h3 id="the-data">The data</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">library</span>(Sleuth3)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>finches &lt;-<span class="st"> </span>case0201</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="kw">head</span>(finches)</span></code></pre></div>
+<pre><code>##   Year Depth
+## 1 1976   6.2
+## 2 1976   6.8
+## 3 1976   7.1
+## 4 1976   7.1
+## 5 1976   7.4
+## 6 1976   7.8</code></pre>
+<p>The data set has the year in which each bird was caught (1976 or 1978) and the depth of its beak. The 1977 drought left only large tough seeds available; the hypothesis is that only finches with deep beaks survived, so the 1978 birds should have deeper beaks on average.</p>
+<h3 id="the-likelihood">The likelihood</h3>
+<p>Our model is: depths in year 1 are <span class="math inline">\(N(\mu_1, \sigma^2)\)</span>, depths in year 2 are <span class="math inline">\(N(\mu_2, \sigma^2)\)</span>. So we say: assuming the two means are <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span>, what is the likelihood of the actual measurements?</p>
+<p><span class="math display">\[\log L(\mu_1, \mu_2) = \sum_{i \in \text{1976}} \log \phi(d_i; \mu_1, \sigma) + \sum_{j \in \text{1978}} \log \phi(d_j; \mu_2, \sigma),\]</span></p>
+<p>where <span class="math inline">\(\phi\)</span> is the normal density. <code>dnorm(..., log = TRUE)</code> gives us the log density directly:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>sigma &lt;-<span class="st"> </span><span class="kw">sd</span>(finches<span class="op">$</span>Depth)  <span class="co"># rough estimate</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>depths_<span class="dv">76</span> &lt;-<span class="st"> </span>finches<span class="op">$</span>Depth[finches<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1976</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>depths_<span class="dv">78</span> &lt;-<span class="st"> </span>finches<span class="op">$</span>Depth[finches<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1978</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>log_lik &lt;-<span class="st"> </span><span class="cf">function</span>(mu1, mu2){</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>  <span class="kw">sum</span>(<span class="kw">dnorm</span>(depths_<span class="dv">76</span>, <span class="dt">mean =</span> mu1, <span class="dt">sd =</span> sigma, <span class="dt">log =</span> <span class="ot">TRUE</span>)) <span class="op">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="st">    </span><span class="kw">sum</span>(<span class="kw">dnorm</span>(depths_<span class="dv">78</span>, <span class="dt">mean =</span> mu2, <span class="dt">sd =</span> sigma, <span class="dt">log =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>}</span></code></pre></div>
+<h3 id="aggregating-per-d">Aggregating per <span class="math inline">\(D\)</span></h3>
+<p>The difference <span class="math inline">\(D = \mu_2 - \mu_1\)</span> can come from many different <span class="math inline">\((\mu_1, \mu_2)\)</span> pairs. We want to accumulate evidence for each value of <span class="math inline">\(D\)</span> across the consistent pairs.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>mus  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">7</span>, <span class="dv">12</span>, <span class="dt">by =</span> <span class="fl">0.05</span>)         <span class="co"># plausible means for finch beaks</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>D_grid &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="dt">by =</span> <span class="fl">0.05</span>)   <span class="co"># plausible differences</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co"># For each D, sum likelihood contributions across all (mu1, mu2) with mu2 - mu1 = D:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>log_post_D &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="kw">length</span>(D_grid))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="cf">for</span>(mu1 <span class="cf">in</span> mus){</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>  <span class="cf">for</span>(mu2 <span class="cf">in</span> mus){</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    <span class="co"># Which D bin does this pair land in? Match on the rounded value: seq()</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>    <span class="co"># carries floating-point fuzz (e.g. -0.05 is stored as -0.04999...), so we</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>    <span class="co"># must round both sides before comparing or the bins won&#39;t line up.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>    i &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="kw">round</span>(mu2 <span class="op">-</span><span class="st"> </span>mu1, <span class="dv">2</span>), <span class="kw">round</span>(D_grid, <span class="dv">2</span>))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.na</span>(i)){</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>      ll &lt;-<span class="st"> </span><span class="kw">log_lik</span>(mu1, mu2)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>      <span class="co"># log-sum-exp accumulate (the -Inf starting value is handled correctly)</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>      m &lt;-<span class="st"> </span><span class="kw">max</span>(log_post_D[i], ll)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>      log_post_D[i] &lt;-<span class="st"> </span>m <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(<span class="kw">exp</span>(log_post_D[i] <span class="op">-</span><span class="st"> </span>m) <span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(ll <span class="op">-</span><span class="st"> </span>m))</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>    }</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>  }</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>}</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a><span class="co"># Prior is flat, so log P(D) is constant and drops out.</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a>log_post_D &lt;-<span class="st"> </span>log_post_D <span class="op">-</span><span class="st"> </span><span class="kw">max</span>(log_post_D)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a>post_D &lt;-<span class="st"> </span><span class="kw">exp</span>(log_post_D)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>post_D &lt;-<span class="st"> </span>post_D <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(post_D)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a><span class="kw">plot</span>(D_grid, post_D, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a>     <span class="dt">xlab =</span> <span class="st">&quot;D = mu(1978) - mu(1976)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Posterior&quot;</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a>     <span class="dt">main =</span> <span class="st">&quot;Posterior over difference in mean beak depth&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-bayesian_inference/unnamed-chunk-7-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-7</figcaption>
+</figure>
+<p>The posterior on <span class="math inline">\(D\)</span> is concentrated around the empirical difference between the two sample means.</p>
+<h3 id="what-a-tighter-prior-does">What a tighter prior does</h3>
+<p>In a way, this whole thing is a complicated way of getting at maximum likelihood, because with a flat prior the <span class="math inline">\(D\)</span> at which the posterior is maximized is the <span class="math inline">\(D\)</span> with the highest likelihood (the prior contributes <span class="math inline">\(\log 1 = 0\)</span> everywhere).</p>
+<p>If we had a <strong>more specific prior</strong> — for instance, if we believe from biology that beaks can only change so much over the years — we would bias the estimate for <span class="math inline">\(D\)</span> towards zero. Concretely, replace <code>log P(D) = 0</code> with something that is larger for small <span class="math inline">\(D\)</span> and smaller for large <span class="math inline">\(D\)</span> (e.g. <span class="math inline">\(\log \text{dnorm}(D, \text{sd} = 0.2)\)</span>). That pulls the posterior toward small <span class="math inline">\(D\)</span>.</p>
+<p>This is the essence of Bayesian thinking: prior beliefs about plausible values get combined with the likelihood from data to give a posterior. With weak priors, you basically recover MLE; with strong priors, the prior shapes the answer.</p>
+</div>
+</body>
+</html>

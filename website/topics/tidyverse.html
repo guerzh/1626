@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Wrangling Data with the Pipe and `tidyverse` / `dplyr`</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Wrangling Data with the Pipe and `tidyverse` / `dplyr`</h1>
+</header>
+<h2 id="function-composition">Function composition</h2>
+<p>Before we get to <code>tidyverse</code>, we just want to think about function composition for a moment. This is the kind of thing that everyone knows already, but we are thinking about it just for the sake of getting into the rhythm.</p>
+<p>If <code>f(x) = x^2</code> and <code>g(y) = y + 1</code>, then in math:</p>
+<p><span class="math display">\[f(g(5)) = (5+1)^2 = 36\]</span></p>
+<p>In R:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>f &lt;-<span class="st"> </span><span class="cf">function</span>(x){ x <span class="op">**</span><span class="st"> </span><span class="dv">2</span> }</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="cf">function</span>(y){ y <span class="op">+</span><span class="st"> </span><span class="dv">1</span> }</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">f</span>(<span class="kw">g</span>(<span class="dv">5</span>))</span></code></pre></div>
+<pre><code>## [1] 36</code></pre>
+<h2 id="the-pipe-operator">The pipe operator</h2>
+<p>In R there is a shorthand for function composition called the <strong>pipe operator</strong> <code>%&gt;%</code>. The expression <code>5 %&gt;% g() %&gt;% f()</code> means “take 5, plug it into <code>g</code>, then plug the result into <code>f</code>”:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dv">5</span> <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">g</span>() <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">f</span>()</span></code></pre></div>
+<pre><code>## [1] 36</code></pre>
+<p>One downside is that the pipe is annoying to type. In RStudio (with the R extension installed), <strong>Ctrl+Shift+M</strong> produces the pipe. The arrow <code>&lt;-</code> is <strong>Alt+-</strong>.</p>
+<p>The reason this is useful is that it is a good way to think about data frames.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>square &lt;-<span class="st"> </span><span class="cf">function</span>(y){ y <span class="op">**</span><span class="st"> </span><span class="dv">2</span> }</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="dv">5</span> <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">g</span>() <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">square</span>()</span></code></pre></div>
+<pre><code>## [1] 36</code></pre>
+<h2 id="tidyverse-and-dplyr-verbs"><code>tidyverse</code> and <code>dplyr</code> verbs</h2>
+<p>Let’s load <code>tidyverse</code> and the <code>babynames</code> data set:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="kw">library</span>(tidyr)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="kw">library</span>(babynames)</span></code></pre></div>
+<h3 id="filter-for-rows"><code>filter</code> for rows</h3>
+<p><code>filter</code> selects rows. The following are all equivalent — different ways of selecting rows for which the year is 1880 and the sex is <code>"F"</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">filter</span>(babynames, year <span class="op">==</span><span class="st"> </span><span class="dv">1880</span>, sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>idx &lt;-<span class="st"> </span>(babynames<span class="op">$</span>year <span class="op">==</span><span class="st"> </span><span class="dv">1880</span>) <span class="op">&amp;</span><span class="st"> </span>(babynames<span class="op">$</span>sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>babynames[idx, ]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1880</span> <span class="op">&amp;</span><span class="st"> </span>sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1880</span>, sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>)</span></code></pre></div>
+<p>The pipe form reads nicest. Technically it is just calling the function <code>filter</code>; it is just more convenient to write this way. <code>filter</code> can take several conditions joined with commas (equivalent to <code>&amp;</code>).</p>
+<h3 id="select-for-columns"><code>select</code> for columns</h3>
+<p><code>select</code> produces a new data frame with the specified columns (in the order you specify):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">select</span>(year, name) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##    year name     
+##   &lt;dbl&gt; &lt;chr&gt;    
+## 1  1880 Mary     
+## 2  1880 Anna     
+## 3  1880 Emma     
+## 4  1880 Elizabeth
+## 5  1880 Minnie   
+## 6  1880 Margaret</code></pre>
+<p>It is kind of “filter for columns” — get a new data frame with just those specific columns.</p>
+<h3 id="arrange-for-sorting"><code>arrange</code> for sorting</h3>
+<p><code>arrange</code> produces a data frame sorted by the column(s) you specify. <code>babynames</code> happens to be sorted by year already:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">arrange</span>(n) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##    year sex   name          n      prop
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;     &lt;dbl&gt;
+## 1  1880 F     Adelle        5 0.0000512
+## 2  1880 F     Adina         5 0.0000512
+## 3  1880 F     Adrienne      5 0.0000512
+## 4  1880 F     Albertine     5 0.0000512
+## 5  1880 F     Alys          5 0.0000512
+## 6  1880 F     Ana           5 0.0000512</code></pre>
+<p>This is sorted in increasing order, so it shows the rarest entries. To sort in descending order, which is the more interesting thing because you want the most common ones:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(n)) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##    year sex   name        n   prop
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt;
+## 1  1947 F     Linda   99686 0.0548
+## 2  1948 F     Linda   96209 0.0552
+## 3  1947 M     James   94756 0.0510
+## 4  1957 M     Michael 92695 0.0424
+## 5  1947 M     Robert  91642 0.0493
+## 6  1949 F     Linda   91016 0.0518</code></pre>
+<p>You can combine with <code>filter</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(n)) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 5
+##     year sex   name            n   prop
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;  &lt;dbl&gt;
+##  1  2000 M     Jacob       34471 0.0165
+##  2  2000 M     Michael     32035 0.0153
+##  3  2000 M     Matthew     28572 0.0137
+##  4  2000 M     Joshua      27538 0.0132
+##  5  2000 F     Emily       25953 0.0130
+##  6  2000 M     Christopher 24931 0.0119
+##  7  2000 M     Nicholas    24652 0.0118
+##  8  2000 M     Andrew      23639 0.0113
+##  9  2000 F     Hannah      23080 0.0116
+## 10  2000 M     Joseph      22825 0.0109</code></pre>
+<p>If you want the top 10 female names in 2000:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>, sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(n)) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 5
+##     year sex   name          n    prop
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;
+##  1  2000 F     Emily     25953 0.0130 
+##  2  2000 F     Hannah    23080 0.0116 
+##  3  2000 F     Madison   19967 0.0100 
+##  4  2000 F     Ashley    17997 0.00902
+##  5  2000 F     Sarah     17697 0.00887
+##  6  2000 F     Alexis    17629 0.00884
+##  7  2000 F     Samantha  17266 0.00866
+##  8  2000 F     Jessica   15709 0.00787
+##  9  2000 F     Elizabeth 15094 0.00757
+## 10  2000 F     Taylor    15078 0.00756</code></pre>
+<p>You can arrange by multiple columns: <code>arrange(year, name)</code> sorts by year, then within each year by name.</p>
+<h3 id="rename"><code>rename</code></h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">number =</span> n) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##    year sex   name      number   prop
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;      &lt;int&gt;  &lt;dbl&gt;
+## 1  1880 F     Mary        7065 0.0724
+## 2  1880 F     Anna        2604 0.0267
+## 3  1880 F     Emma        2003 0.0205
+## 4  1880 F     Elizabeth   1939 0.0199
+## 5  1880 F     Minnie      1746 0.0179
+## 6  1880 F     Margaret    1578 0.0162</code></pre>
+<p>This is sometimes useful because <code>n</code> is also a function (we will see that in a second).</p>
+<h3 id="select-with-renaming"><code>select</code> with renaming</h3>
+<p>You can rename as you select. This gives you a data frame with <code>year</code>, <code>sex</code>, and <code>number</code> instead of <code>n</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">select</span>(year, sex, <span class="dt">number =</span> n) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##    year sex   number
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;
+## 1  1880 F       7065
+## 2  1880 F       2604
+## 3  1880 F       2003
+## 4  1880 F       1939
+## 5  1880 F       1746
+## 6  1880 F       1578</code></pre>
+<p>This is equivalent to:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">number =</span> n) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">select</span>(year, sex, number)</span></code></pre></div>
+<h3 id="mutate-for-adding-a-column"><code>mutate</code> for adding a column</h3>
+<p><code>mutate</code> adds one more column; the column can be whatever you want.</p>
+<p>The way <code>babynames</code> works, you have <code>n</code> (count) and <code>prop</code> (proportion). So 7% of female babies, say, are named Mary. If you want to reconstruct the population, you can divide <code>n</code> by <code>prop</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">total_by_year =</span> <span class="kw">round</span>(n <span class="op">/</span><span class="st"> </span>prop)) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 6
+##    year sex   name          n   prop total_by_year
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+## 1  1880 F     Mary       7065 0.0724         97605
+## 2  1880 F     Anna       2604 0.0267         97605
+## 3  1880 F     Emma       2003 0.0205         97605
+## 4  1880 F     Elizabeth  1939 0.0199         97605
+## 5  1880 F     Minnie     1746 0.0179         97605
+## 6  1880 F     Margaret   1578 0.0162         97605</code></pre>
+<p>In the first 10 rows, <code>total_by_year</code> is all the same — that’s because they are all 1880, and the number of Marys divided by the proportion of Marys equals the number of Janes divided by the proportion of Janes, etc.</p>
+<h3 id="summarize"><code>summarize</code></h3>
+<p><code>summarize</code> creates a new data frame where there is a new column (you can have several), and the column is a function of the columns of the original data frame:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">mean_n =</span> <span class="kw">mean</span>(n))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   mean_n
+##    &lt;dbl&gt;
+## 1   181.</code></pre>
+<p>So this took the column <code>n</code> and computed the mean of it. <code>mean</code> is just a function like any other; you plug in a vector and get the mean.</p>
+<p>By itself this is not that useful, but it becomes useful when you can <strong>group</strong>:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">group_by</span>(sex) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">mean_n =</span> <span class="kw">mean</span>(n))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 2
+##   sex   mean_n
+##   &lt;chr&gt;  &lt;dbl&gt;
+## 1 F       151.
+## 2 M       223.</code></pre>
+<p>This separates the data frame out by the different sexes and computes the mean of <code>n</code> for each. So this is the mean number of babies born per name, by sex. As it happens, in the US data set, there are more babies per name that are male than female — there is basically more diversity in female names. It’s approximately the same number of male and female babies; it’s just that there are fewer male names. So more babies per name as it turns out.</p>
+<h3 id="distinct"><code>distinct</code></h3>
+<p><code>distinct</code> is kind of similar to <code>unique</code> except it operates by row. It says: get me all the rows that are different.</p>
+<p>Let’s reconstruct the per-year total population:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a>b_tot &lt;-<span class="st"> </span>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">total =</span> <span class="kw">round</span>(n <span class="op">/</span><span class="st"> </span>prop))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a>b_tot <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 6
+##    year sex   name          n   prop total
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1  1880 F     Mary       7065 0.0724 97605
+## 2  1880 F     Anna       2604 0.0267 97605
+## 3  1880 F     Emma       2003 0.0205 97605
+## 4  1880 F     Elizabeth  1939 0.0199 97605
+## 5  1880 F     Minnie     1746 0.0179 97605
+## 6  1880 F     Margaret   1578 0.0162 97605</code></pre>
+<p>All the rows here are unique because the (year, name) combinations are unique. But if we drop the <code>name</code>, <code>n</code>, and <code>prop</code> columns, lots of rows become the same — because it’s just (year, sex, total).</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a>b_tot <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">select</span>(year, sex, total) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">distinct</span>() <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##    year sex   total
+##   &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1  1880 F     97605
+## 2  1880 F     97604
+## 3  1880 F     97606
+## 4  1880 F     97603
+## 5  1880 F     97607
+## 6  1880 F     97602</code></pre>
+<p>So <code>distinct</code> is like <code>unique</code> but for rows. (The numbers are not quite equal across names within a year, just because of rounding.)</p>
+<p>You can also do <code>distinct(year)</code> to get all the different years:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">distinct</span>(year) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 1
+##    year
+##   &lt;dbl&gt;
+## 1  1880
+## 2  1881
+## 3  1882
+## 4  1883
+## 5  1884
+## 6  1885</code></pre>
+<p><code>distinct(year, name)</code> gets all distinct (year, name) combinations.</p>
+<h3 id="summarize-with-multiple-columns"><code>summarize</code> with multiple columns</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">mean_n =</span> <span class="kw">mean</span>(n), <span class="dt">median_n =</span> <span class="kw">median</span>(n))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##   mean_n median_n
+##    &lt;dbl&gt;    &lt;int&gt;
+## 1   181.       12</code></pre>
+<p><code>group_by</code> followed by <code>mutate</code> lets you do per-group proportions:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">group_by</span>(year, sex) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">total =</span> <span class="kw">sum</span>(n)) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   year [3]
+##    year sex    total
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;
+## 1  1880 F      90993
+## 2  1880 M     110491
+## 3  1881 F      91953
+## 4  1881 M     100743
+## 5  1882 F     107847
+## 6  1882 M     113686</code></pre>
+<h3 id="n_distinct-and-the-n-function"><code>n_distinct</code> and the <code>n</code> function</h3>
+<p><code>n_distinct(...)</code> is the number of distinct rows in a data frame (recall that for vectors we could use <code>length(unique(v))</code>).</p>
+<p>Here we count the number of distinct names for each sex × year:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">group_by</span>(sex, year) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">distinct_names =</span> <span class="kw">n_distinct</span>(name)) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   sex [1]
+##   sex    year distinct_names
+##   &lt;chr&gt; &lt;dbl&gt;          &lt;int&gt;
+## 1 F      1880            942
+## 2 F      1881            938
+## 3 F      1882           1028
+## 4 F      1883           1054
+## 5 F      1884           1172
+## 6 F      1885           1197</code></pre>
+<p>The <code>n()</code> function can be used inside <code>summarize</code>, <code>mutate</code>, and <code>filter</code>. Its job is to count the number of rows in each group:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">num =</span> n) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">total_entries =</span> <span class="kw">n</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   total_entries
+##           &lt;int&gt;
+## 1       1924665</code></pre>
+<p>(Not quite the same as all the name-year combinations: <code>babynames %&gt;% summarize(name_year_count = n_distinct(year, name))</code>.)</p>
+<h3 id="which.max"><code>which.max</code></h3>
+<p><code>which.max(c(10, 20, 3, 10))</code> returns the <strong>location</strong> (index) of the maximum.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true"></a><span class="kw">which.max</span>(<span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">3</span>, <span class="dv">10</span>))</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>What is the most popular name every year, by sex?</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true"></a>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">group_by</span>(year, sex) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">most_popular_name =</span> name[<span class="kw">which.max</span>(n)]) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   year [3]
+##    year sex   most_popular_name
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;            
+## 1  1880 F     Mary             
+## 2  1880 M     John             
+## 3  1881 F     Mary             
+## 4  1881 M     John             
+## 5  1882 F     Mary             
+## 6  1882 M     John</code></pre>
+<p>It is John in 1880 for M; over the years it changes. With <code>group_by</code>, the table gets split per year × sex, and we ask <code>name[which.max(n)]</code> for each group.</p>
+<h3 id="worked-example-distinct-names-per-capita">Worked example: distinct names per capita</h3>
+<p>We compute the number of distinct names per capita, every year, for <code>sex == "F"</code>:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true"></a>name_per_cap &lt;-<span class="st"> </span>babynames <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">distinct_names =</span> <span class="kw">n_distinct</span>(name),</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true"></a>            <span class="dt">total_by_year =</span> <span class="kw">sum</span>(n)) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distinct_per_capita =</span> distinct_names <span class="op">/</span><span class="st"> </span>total_by_year) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">select</span>(year, distinct_per_capita)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true"></a><span class="kw">plot</span>(name_per_cap<span class="op">$</span>year, name_per_cap<span class="op">$</span>distinct_per_capita)</span></code></pre></div>
+<figure>
+<img src="figure-tidyverse/unnamed-chunk-26-1.png" alt="" /><figcaption>plot of chunk unnamed-chunk-26</figcaption>
+</figure>
+<p>Let’s read this together. <code>group_by(year)</code> means one row per year. <code>filter(sex == "F")</code> means we are just within F rows. We compute two columns: <code>distinct_names</code> is the number of distinct names within the (year) data frame, and <code>total_by_year</code> is the sum of <code>n</code>. Now we are inside this guy: we want <code>distinct_per_capita</code>, which is <code>distinct_names / total_by_year</code>. This is a <code>mutate</code> because we are adding another column, not grouping. Then we just keep <code>year</code> and <code>distinct_per_capita</code>.</p>
+<p>There were fewer names in 1950 — everyone had the same name. Things got more diverse recently.</p>
+<p>To do it for both M and F at the same time, just add <code>sex</code> to the group:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true"></a>name_per_cap_<span class="dv">2</span> &lt;-<span class="st"> </span>babynames <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(year, sex) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">distinct_names =</span> <span class="kw">n_distinct</span>(name),</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true"></a>            <span class="dt">total_by_year =</span> <span class="kw">sum</span>(n)) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distinct_per_capita =</span> distinct_names <span class="op">/</span><span class="st"> </span>total_by_year) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">select</span>(year, sex, distinct_per_capita)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true"></a><span class="kw">head</span>(name_per_cap_<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   year [3]
+##    year sex   distinct_per_capita
+##   &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;
+## 1  1880 F                 0.0104 
+## 2  1880 M                 0.00958
+## 3  1881 F                 0.0102 
+## 4  1881 M                 0.00990
+## 5  1882 F                 0.00953
+## 6  1882 M                 0.00967</code></pre>
+<h3 id="should-we-compute-names-per-capita-or-total-names">Should we compute names per capita or total names?</h3>
+<p>There are arguments either way.</p>
+<ul>
+<li><strong>Why compute the total number of names?</strong> We are interested in how diverse the names are in the US. In some sense the population is irrelevant — if there are 50,000 names available to choose from, that’s interesting regardless of the fact that the population is very large. It is a question of how people are naming, not how many people there are.</li>
+<li><strong>Why compute the number of names per capita?</strong> If there are only 1,000 babies born, there cannot be more than 1,000 unique names. If there are 1,000 newborns and each of them has a unique name, that indicates that the names are very diverse.</li>
+<li><strong>Maybe we should do neither?</strong> Perhaps a compromise would be to compute the number of unique names per cultural or linguistic group — but that is difficult to define. If the population is larger you would expect more cultural groups just because a smaller population cannot support many distinct cultural groups; if you want an overall trend you’d actually need to separate out by cultural groups, average per cultural group, then aggregate.</li>
+</ul>
+<h2 id="gapminder-mini-tour"><code>gapminder</code> mini-tour</h2>
+<p>The <code>gapminder</code> data set is a dataset of countries with life expectancy, population, GDP per capita for different years:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true"></a><span class="kw">library</span>(gapminder)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true"></a><span class="kw">head</span>(gapminder)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8  8425333      779.
+## 2 Afghanistan Asia       1957    30.3  9240934      821.
+## 3 Afghanistan Asia       1962    32.0 10267083      853.
+## 4 Afghanistan Asia       1967    34.0 11537966      836.
+## 5 Afghanistan Asia       1972    36.1 13079460      740.
+## 6 Afghanistan Asia       1977    38.4 14880372      786.</code></pre>
+<h3 id="how-many-countries-on-a-given-continent">How many countries on a given continent</h3>
+<p>One way: filter, get the countries, unique them, take the length.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true"></a>asia &lt;-<span class="st"> </span>gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(continent <span class="op">==</span><span class="st"> &quot;Asia&quot;</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true"></a><span class="kw">length</span>(<span class="kw">unique</span>(asia<span class="op">$</span>country))</span></code></pre></div>
+<pre><code>## [1] 33</code></pre>
+<p>A more idiomatic way:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true"></a>gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(continent <span class="op">==</span><span class="st"> &quot;Asia&quot;</span>) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">select</span>(country) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">distinct</span>() <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">count</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##       n
+##   &lt;int&gt;
+## 1    33</code></pre>
+<h3 id="country-with-largest-life-expectancy-on-a-continent-between-years-y1-and-y2">Country with largest life expectancy on a continent between years <code>y1</code> and <code>y2</code></h3>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true"></a>top_country &lt;-<span class="st"> </span><span class="cf">function</span>(continent_name, y1, y2){</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true"></a>  g1 &lt;-<span class="st"> </span>gapminder <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">filter</span>(continent <span class="op">==</span><span class="st"> </span>continent_name,</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true"></a>           year <span class="op">&gt;=</span><span class="st"> </span>y1,</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true"></a>           year <span class="op">&lt;=</span><span class="st"> </span>y2)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true"></a>  g1<span class="op">$</span>country[g1<span class="op">$</span>lifeExp <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(g1<span class="op">$</span>lifeExp)]</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true"></a>}</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true"></a><span class="kw">top_country</span>(<span class="st">&quot;Asia&quot;</span>, <span class="dv">1970</span>, <span class="dv">1980</span>)</span></code></pre></div>
+<pre><code>## [1] Japan
+## 142 Levels: Afghanistan Albania Algeria Angola Argentina Australia ... Zimbabwe</code></pre>
+<p>Note the <code>&gt;=</code> and <code>&lt;=</code>: gapminder samples years every five years (1952, 1957, …, 2007), so strict inequalities <code>year &gt; 1970</code> and <code>year &lt; 1980</code> would catch <em>no</em> rows at all (nothing in the data is strictly between 1970 and 1980). It’s a common gotcha with this dataset.</p>
+<h3 id="world-population-in-a-given-year">World population in a given year</h3>
+<p>We want the sum of all populations, by year. With <code>group_by(year)</code> and <code>summarize(sum(pop))</code>:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true"></a>world_pop &lt;-<span class="st"> </span>gapminder <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">group_by</span>(year) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">total =</span> <span class="kw">sum</span>(pop))</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true"></a>world_pop <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1982</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##    year      total
+##   &lt;int&gt;      &lt;dbl&gt;
+## 1  1982 4289436840</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true"></a>world_pop <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2007</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##    year      total
+##   &lt;int&gt;      &lt;dbl&gt;
+## 1  2007 6251013179</code></pre>
+<p>4.3 billion in 1982 and 6.2 billion in 2007 — that sounds about right.</p>
+<h2 id="sapply-and-vector-safe-functions"><code>sapply</code> and vector-safe functions</h2>
+<p>If what you have is a function that is just <code>x^2</code>, you can apply it to a vector directly — it just works:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true"></a>square &lt;-<span class="st"> </span><span class="cf">function</span>(x){ x <span class="op">**</span><span class="st"> </span><span class="dv">2</span> }</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true"></a>vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true"></a><span class="kw">square</span>(vec)</span></code></pre></div>
+<pre><code>## [1]  1  4 16 25</code></pre>
+<p>This only works for algebraic expressions. If you have something like:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true"></a>special.square &lt;-<span class="st"> </span><span class="cf">function</span>(x){</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true"></a>  <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">42</span>){</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true"></a>    <span class="dv">42</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true"></a>    x <span class="op">**</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true"></a>  }</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true"></a>}</span></code></pre></div>
+<p>then <code>special.square(vec)</code> produces an error, because <code>if(c(F, F, F, F))</code> does not make sense — there has to be one logical value inside the <code>if</code>.</p>
+<p>If what you want is to apply <code>special.square</code> to every element of <code>vec</code>, use <code>sapply</code>:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true"></a>vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">42</span>, <span class="dv">5</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true"></a><span class="kw">sapply</span>(<span class="dt">X =</span> vec, <span class="dt">FUN =</span> special.square)</span></code></pre></div>
+<pre><code>## [1]  1  4 42 25</code></pre>
+<p><code>sapply</code> applies the function specified by <code>FUN</code> to every element of the vector after <code>X</code>. (<code>FUN</code> is short for “function”, not “fun”; though it kind of is fun.)</p>
+<p>You can also call without named arguments — <code>sapply(vec, special.square)</code> — but using named arguments makes things clear.</p>
+<p>Nothing conceptually complicated here. It is just <code>for</code>-loop logic re-expressed as a function call. R does have <code>for</code> loops as well; it is just that in the style we are working in, you can also do <code>sapply</code>. R also happens to run <code>sapply</code> faster than the equivalent <code>for</code> loop.</p>
+<h3 id="sapply-with-extra-arguments"><code>sapply</code> with extra arguments</h3>
+<p>Suppose we want to compute <code>elem - 2</code> for every element <code>elem</code> in a vector using the function <code>minus</code>:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true"></a>minus &lt;-<span class="st"> </span><span class="cf">function</span>(a, b){ a <span class="op">-</span><span class="st"> </span>b }</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true"></a>vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">-6</span>, <span class="dv">7</span>, <span class="dv">-8</span>)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true"></a><span class="kw">sapply</span>(<span class="dt">X =</span> vec, <span class="dt">FUN =</span> minus, <span class="dt">b =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1]   3  -8   5 -10</code></pre>
+<p>We can specify that the <code>2</code> is sent into <code>b</code>. Note that <code>X = vec</code> is special: that will be the first argument given to <code>minus</code>, i.e. every element of <code>X = vec</code> will be sent to <code>a</code>.</p>
+</div>
+</body>
+</html>

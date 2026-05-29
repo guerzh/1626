@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Classifying and Clustering Text with an LLM</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Classifying and Clustering Text with an LLM</h1>
+</header>
+<p>This topic is the second half of the project workflow that started in <a href="agentic_scraping.html">Scraping data with a coding agent</a>. Once you have a pile of scraped text, what do you actually <em>do</em> with it? We walk through a worked example: taking thousands of Reddit posts and turning them into an analysis of <strong>what students are happy and unhappy about</strong>.</p>
+<p>The whole thing is done as a live agentic-coding workshop, mostly in Python. You do not have to write much Python yourself — the point is to see the shape of the workflow and to know what each step is doing.</p>
+<h2 id="the-scenario-ruoft-sentiment">The scenario: r/UofT sentiment</h2>
+<p>There is a subreddit where University of Toronto students talk about their experiences — some positive, some negative. Several project proposals this term wanted to do <strong>sentiment analysis</strong>.</p>
+<p>Sentiment analysis means taking a piece of text and deciding whether the sentiment it expresses is <strong>positive, negative, or neutral</strong>. People have done a lot of it: you have a lot of social-media text, and you want to know, say, how people feel about a particular stock. The idea is that if people on Twitter are generally talking positively about a stock, maybe it goes up tomorrow.</p>
+<blockquote>
+<p><strong>Warning about the stock example.</strong> This is <em>not</em> a good way to play the stock market by itself. You are playing against pros: every quant firm trying to predict the next <em>second’s</em> prices is already ingesting all of Twitter, earnings calls, everything — running sentiment analysis included. Anything you can detect within an hour is already priced in. It can still be of <em>scientific</em> interest (e.g., does sentiment carry information over and above the price movement during the day?), just not a trading edge.</p>
+</blockquote>
+<h3 id="why-plain-sentiment-analysis-is-not-very-interesting">Why plain sentiment analysis is not very interesting</h3>
+<p>If all you do is classify each post as happy/unhappy, the best you get is <strong>a single number</strong>: the percentage of posts on the subreddit that are happy vs. unhappy. And who cares? It might not even be about UofT — if someone is happy in their life, maybe they are not posting on Reddit at all. At the end you just have a number, and it tells you almost nothing.</p>
+<p>The interesting question is <strong>why</strong>. Why are people unhappy? Are they actually unhappy about UofT, or about life in general? That is the spin worth putting on the project. So the plan has three parts:</p>
+<ol type="1">
+<li><strong>Scrape</strong> ~3000 posts from r/UofT.</li>
+<li><strong>Filter and classify</strong>: figure out which posts are actually about UofT <em>and</em> expressing a sentiment, and label that sentiment positive/negative/neutral.</li>
+<li><strong>Cluster</strong> the UofT-related positive and negative posts into <strong>topics</strong>, so we can report the breakdown of what people are happy and unhappy about, by theme.</li>
+</ol>
+<h2 id="classifying-text-three-generations-of-methods">Classifying text: three generations of methods</h2>
+<p>How do we decide which posts are UofT-related, and what sentiment they express?</p>
+<p><strong>The old way: keyword lookup.</strong> Look for posts that mention “university”, “UofT”, etc.; for sentiment, count words associated with positive emotions (“happy”, “excited”) against words associated with negative emotions (“sad”, “frustrating”). Add up how many of each kind you have.</p>
+<p>This has well-known problems. The biggest is <strong>negation</strong>: if a post says “not happy”, a keyword counter picks up the “happy” and misses the “not”. You might think “just invert whatever follows <em>not</em>” — but then you hit “I’m not saying that I’m unhappy”, multiple negations, words that are far apart, sarcasm… it is all complicated. Negation is the classic failure case for keyword-based methods.</p>
+<p><strong>The middle way: fine-tuning.</strong> Take a language model and fine-tune it for the specific task — feed it examples of positive and negative emotions and let it learn the pattern from examples. This works, but at this point it is old hat. People still do it; mostly they should not.</p>
+<p><strong>The modern way: just ask the model.</strong> Hand the language model the sentence and ask it directly: <em>what is the sentiment being expressed here?</em> This actually works better than the older approaches. We will of course <strong>verify</strong> that it works — but the direct approach is the one to reach for first.</p>
+<h2 id="doing-it-ad-hoc-vs.-doing-it-reproducibly">Doing it ad hoc vs. doing it reproducibly</h2>
+<p>There are two ways to get a model to classify your posts.</p>
+<h3 id="the-quick-and-dirty-way-in-the-agents-chat-window">The quick-and-dirty way: in the agent’s chat window</h3>
+<p>If you have <code>claude code</code> (or another coding agent) open in your project folder, you can just <em>tell it</em> to classify the posts:</p>
+<pre><code>Make a new file for testing: classify just-UofT-related content.
+Pick 100 posts and classify each (using yourself) as UofT-related or not.
+Dump the result into an Excel file so I can read it.</code></pre>
+<p>This works because the coding agent can call a model in the background. It is genuinely the <strong>cheap</strong> way if you already have a Claude/Codex subscription: you are not paying anything on top of the flat monthly fee. For a proof of concept, this is reasonable.</p>
+<p>The downside: it is <strong>not reproducible</strong>. You are typing instructions into a chat window; the exact prompt and model are not pinned down, and you cannot easily re-run the whole thing later or report precisely what you did.</p>
+<h3 id="the-civilized-way-call-an-api-from-a-program">The civilized way: call an API from a program</h3>
+<p>The reproducible way is to call a model <strong>from a Python program</strong> through an API. Ordinarily you would use the OpenAI API: you get an API key (a string tied to your account) and you pay per request. The cost here is pennies — the number of tokens is roughly the number of bytes in your text, and text is small.</p>
+<p>So that nobody has to hand over a real (paid) OpenAI key, the course provides <strong><code>notopenai</code></strong> — a small client with the <em>exact same API as OpenAI</em>, but which routes every request through a course server that holds the real key. From your side it looks and behaves like the real OpenAI client; you just use a course-issued key with a small spending cap. (Full walkthrough, including code generation: the <a href="https://www.cs.toronto.edu/~guerzhoy/vibecoding/vibecoding.html">vibe-coding lab</a>.)</p>
+<p>Setup:</p>
+<ol type="1">
+<li>Download the client, <a href="https://www.cs.toronto.edu/~guerzhoy/190/notopenai.zip"><code>notopenai.zip</code></a>, unzip it, and put the <code>notopenai</code> folder next to your script.</li>
+<li>Get <strong>your own</strong> API key (link on the course forum) and paste it in. Do not share it with other students.</li>
+<li>The shared server is rate-limited to a few calls per second <em>total</em>, so add a pause (e.g. <code>time.sleep(3)</code>) between calls and do not hammer it.</li>
+</ol>
+<p>The client mirrors the OpenAI SDK — you construct a <code>NotOpenAI</code> client and call <code>client.chat.completions.create(...)</code>, then read <code>.choices[0].message.content</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="im">from</span> notopenai <span class="im">import</span> NotOpenAI</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="im">import</span> time</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>API_KEY <span class="op">=</span> <span class="st">&quot;...&quot;</span>                      <span class="co"># your own course-issued key</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>CLIENT  <span class="op">=</span> NotOpenAI(api_key<span class="op">=</span>API_KEY)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="kw">def</span> get_response(prompt):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    chat_completion <span class="op">=</span> CLIENT.chat.completions.create(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>        messages<span class="op">=</span>[{<span class="st">&quot;role&quot;</span>: <span class="st">&quot;user&quot;</span>, <span class="st">&quot;content&quot;</span>: prompt}],</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>        model<span class="op">=</span><span class="st">&quot;gpt-3.5-turbo&quot;</span>,       <span class="co"># the only model this client supports</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    )</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>    <span class="cf">return</span> chat_completion.choices[<span class="dv">0</span>].message.content</span></code></pre></div>
+<p>Now sentiment classification is just a prompt built around <code>get_response</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">def</span> sentiment(post):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    prompt <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;Classify the sentiment of the Reddit post below as</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ss">positive, negative, or neutral. Reply with one word only.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="ss">Post: </span><span class="sc">{</span>post<span class="sc">}</span><span class="ss">&quot;&quot;&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    <span class="cf">return</span> get_response(prompt)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="bu">print</span>(sentiment(<span class="st">&quot;Finally finished my thesis defense and I&#39;m so relieved!&quot;</span>))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>time.sleep(<span class="dv">3</span>)   <span class="co"># be kind to the shared server</span></span></code></pre></div>
+<p>Why this is better than the chat window:</p>
+<ul>
+<li><strong>Reproducible.</strong> It is a program. When you report results you can say exactly: <em>here is the prompt I used, here is the model (<code>gpt-3.5-turbo</code>), here is the process.</em> You can re-run it on new data.</li>
+<li><strong>Pins the model.</strong> The model is named in the code, rather than “whatever the chat happened to use.”</li>
+<li><strong>Scales.</strong> You can loop it over thousands of posts and write the labels to a file, instead of pasting into a chat one batch at a time.</li>
+</ul>
+<h3 id="zero-shot-vs.-few-shot-in-context-learning">Zero-shot vs. few-shot (in-context learning)</h3>
+<p>When you just hand the model the instruction and the text with <strong>no examples</strong>, that is called <strong>zero-shot</strong> classification. If you also include a few worked examples of the kind of labelling you want — “here are some posts and the correct labels, now do the same” — that is <strong>few-shot</strong>, also called <strong>in-context learning</strong>. Few-shot usually works better. (How do you know it works better? You check — see below.)</p>
+<h2 id="verifying-against-ground-truth">Verifying against ground truth</h2>
+<p>The model’s labels are not automatically trustworthy. The discipline is to build a small <strong>ground-truth</strong> set and check against it.</p>
+<p>When we ran the first pass in class, the model’s <code>UofT_related</code> column started out fine (“false”/“true”) and then drifted into “1”/“0” partway down — not super promising. So we looked at individual rows and disagreed with several:</p>
+<ul>
+<li><em>“I have some help for one of my assignments from this guy on Discord…”</em> — the model called it UofT-related; arguably it is general academic, not UofT-specific.</li>
+<li><em>“Number of people who got almost nothing done during reading week”</em> — labelled UofT-related, but this is a generic discussion of academics, not UofT-specific. Call it <strong>no</strong>.</li>
+<li><em>“…I just got an email from my TA saying I’m under investigation for possible plagiarism”</em> — UofT-related <strong>yes</strong>, because the TA is a UofT employee and this touches UofT-specific policies.</li>
+</ul>
+<p>The workflow for fixing this:</p>
+<ol type="1">
+<li>Dump the model’s labels into a spreadsheet (Excel/CSV) so it is easy to read.</li>
+<li>Add your own <strong>ground-truth</strong> column and a <strong>reason</strong> column for a handful of rows.</li>
+<li>Feed those annotated examples back to the model: <em>“I annotated the first few rows with ground truth and reasoning. Produce a second sample of 100 that is closer to the ground truth.”</em> (This is exactly few-shot / in-context learning.)</li>
+<li>Re-check, and iterate — give more instructions, or, what really works, <strong>give more examples</strong>.</li>
+</ol>
+<p>For a real research paper you would label <em>many</em> rows yourself — not three — ideally with <strong>several independent annotators</strong>, then measure how much they agree (inter-annotator agreement) and compare the model against the consensus. For a proof of concept, eyeballing whether it “kind of makes sense” is enough to start.</p>
+<p>A note on which label is more fragile: <strong>sentiment</strong> turned out to be less fragile than <strong>UofT-relatedness</strong>, because “UofT-related” depends on a definition you made up and other people might reasonably disagree with, whereas positive/negative/neutral is more clear-cut.</p>
+<h2 id="thematic-analysis-by-clustering">Thematic analysis by clustering</h2>
+<p>Now the interesting part. For the UofT-related posts with a non-neutral sentiment, we want a <strong>thematic breakdown</strong>: what are the recurring topics people are happy or unhappy about?</p>
+<p><strong>Clustering</strong> is an algorithm that assigns data points to groups based on similarity. There are many clustering algorithms; we will see some in more detail later in the course. The catch: clustering ordinarily works on <strong>numeric vectors</strong> — it averages and compares numbers. You cannot directly cluster raw text.</p>
+<h3 id="embeddings-turning-text-into-vectors">Embeddings: turning text into vectors</h3>
+<p>An <strong>embedding</strong> is a function from text to <span class="math inline">\(n\)</span>-dimensional vectors. Algorithms like <strong>word2vec</strong> and <strong>GloVe</strong> assign each word a vector of numbers, in such a way that similar words land near each other. (In fact, <em>any</em> time you feed text to a language model, it has to be turned into numbers first — embeddings are how.)</p>
+<p>The plan:</p>
+<ol type="1">
+<li>Embed every word in a post, then <strong>average</strong> the word vectors to get a single vector per post. (Averaging large embeddings is unintuitive but fine — more on why later in the course.)</li>
+<li><strong>Cluster</strong> the post vectors.</li>
+<li>For each cluster, print a few representative posts and read off the theme.</li>
+</ol>
+<p>Picture it in two dimensions: each post becomes a point; the positive posts form one cloud, the negative posts another; within each, clustering tries to find sub-groups.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Sketch of the pipeline (library functions do the heavy lifting):</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co"># 1. embed each post  -&gt; a vector per post (average of GloVe word vectors)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co"># 2. cluster the post vectors</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co"># 3. for each cluster, print ~5 example posts</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>post_vectors <span class="op">=</span> np.array([embed(post) <span class="cf">for</span> post <span class="kw">in</span> posts])   <span class="co"># average word embeddings</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>labels <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">6</span>).fit_predict(post_vectors)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">sorted</span>(<span class="bu">set</span>(labels)):</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="bu">print</span>(<span class="ss">f&quot;--- cluster </span><span class="sc">{c}</span><span class="ss"> ---&quot;</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>    <span class="cf">for</span> post <span class="kw">in</span> [p <span class="cf">for</span> p, l <span class="kw">in</span> <span class="bu">zip</span>(posts, labels) <span class="cf">if</span> l <span class="op">==</span> c][:<span class="dv">5</span>]:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>        <span class="bu">print</span>(post[:<span class="dv">200</span>])</span></code></pre></div>
+<h3 id="how-it-actually-turned-out">How it actually turned out</h3>
+<p>Honest results from the live run:</p>
+<ul>
+<li><strong>Sentiment and UofT-relatedness classification: worked pretty well.</strong> Most posts came out neutral (as expected), and the positive/negative labels looked reasonable.</li>
+<li><strong>Clustering: mixed.</strong> Some negative clusters were coherent (grades-and-courses, lifestyle, general frustration). The <em>positive</em> posts did not cluster cleanly — they were all positive and UofT-related, but the sub-grouping was not meaningful.</li>
+</ul>
+<p>The fix, if you were doing this for real, is to <strong>go back to the drawing board</strong>: try different clustering algorithms, or better embeddings.</p>
+<blockquote>
+<p><strong>This is explicitly <em>not</em> an example of good research.</strong> It is a working prototype built in one sitting. For an actual project you would validate the labels against multiple annotators, justify the embedding and clustering choices, and check the clusters carefully. Plenty of marketing departments do worse — but hold yourself to a higher standard.</p>
+</blockquote>
+<h2 id="the-takeaways">The takeaways</h2>
+<ul>
+<li>Pure sentiment percentages are boring; the interesting question is <em>why</em>, which means going from a single number to a <strong>thematic breakdown</strong>.</li>
+<li>To classify text, <strong>just ask the model</strong> (zero-shot), and improve it with a few examples (<strong>few-shot / in-context learning</strong>) — this beats keyword counting and beats fine-tuning for most quick tasks.</li>
+<li>Do it <strong>reproducibly</strong>: call the API from a program, pin the model, record the prompt — not by typing into a chat window each time.</li>
+<li>Always check against <strong>ground truth</strong> you labelled yourself; for real work, use multiple annotators and measure agreement.</li>
+<li>To cluster text, first turn it into numbers with <strong>embeddings</strong>, then cluster the vectors and read off representative examples.</li>
+<li>Whatever the agent produces, <strong>audit it</strong>. Write the plan and the steps to a file so the run is reproducible; remember the model is stochastic and will give somewhat different answers each time.</li>
+</ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="MIE 1626" />
+  <title>Mini-Project 1</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mini-Project 1</h1>
+<p class="author">MIE 1626</p>
+</header>
+<h1 id="submission-instructions">Submission instructions</h1>
+<p>Submit an Rmd notebook as well as the PDF generated from the notebook on Gradescope.</p>
+<h2 id="part-1-operating-on-dataframes-33-pts">Part 1: Operating on Dataframes (33 pts)</h2>
+<p>Install the <code>babynames</code> package using <code>install.packages("babynames")</code> and load it using <code>library(babynames)</code>. <code>install.packages('dplyr')</code> and <code>library(dplyr)</code> to load the <code>dplyr</code> package. You should use the <code>summarize</code>, <code>group_by</code>, <code>mutate</code>, and <code>filter</code> functions from the <code>dplyr</code> package to complete the following tasks. Use the <code>ggplot2</code> package to create the required plots. You can install and load <code>ggplot2</code> using <code>install.packages("ggplot2")</code> and <code>library(ggplot2)</code>.</p>
+<ol type="a">
+<li><p>Write code to compute the total number of babies born in each year. Plot the total number of babies born per year as a line plot.</p></li>
+<li><p>Write code to compute the proportion of babies born with the name “Emma” in each year. Plot the proportion of babies named “Emma” per year as a line plot.</p></li>
+<li><p>Write code to compute the proportion of male and female babies in the dataset born in each year.</p></li>
+<li><p>Write code to compute the top 5 most popular names for each year. Plot the number of babies born with each of these names per year as a line plot, with one line per name.</p></li>
+</ol>
+<h2 id="part-2-bayesian-inference-33-pts">Part 2: Bayesian Inference (33 pts)</h2>
+<p>For this part, you will demonstrate that both the prior distribution you choose and the sample size affect the posterior distribution of the parameter of interest.</p>
+<p>Consider a situation where you flip a coin with <span class="math inline">\(P(\text{heads}) = p\)</span>, <span class="math inline">\(n\)</span> times. You want to estimate <span class="math inline">\(p\)</span>, the probability of getting heads.</p>
+<p>For <span class="math inline">\(n = 100\)</span>, <span class="math inline">\(p = 0.4\)</span>, and a uniform prior distribution on <span class="math inline">\(p\)</span>, simulate 1000 datasets, and plot the histogram of the maximum a posteriori (MAP) estimates of <span class="math inline">\(p\)</span> across the 1000 datasets. Repeat the same for <span class="math inline">\(n = 500\)</span> and <span class="math inline">\(n = 2000\)</span>. Comment on what you observe from the plots.</p>
+<p>Now, vary the shape of the prior distribution. Demonstrate how that affects the posterior distribution of <span class="math inline">\(p\)</span> (rather than just the MAP estimate). Display at least 3 different situations with different shapes of the posterior distribution.</p>
+<h2 id="part-3-low-p-values-34-pts">Part 3: Low P-values (34 pts)</h2>
+<p>For this part, you should demonstrate that low p-values do not necessarily imply an important association between two variables.</p>
+<p>Write a function to generate a dataset <span class="math inline">\((X, Y)\)</span> containing <span class="math inline">\(n\)</span> data points, such that</p>
+<p><span class="math display">\[ Y^{(i)} = a_0 + a_1 X^{(i)} + \epsilon_i, \qquad \epsilon_i \sim \mathcal{N}(0, \sigma). \]</span></p>
+<p>Set the parameters to be such that the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is very weak. State what the parameters are, and plot <span class="math inline">\(Y\)</span> vs. <span class="math inline">\(X\)</span>.</p>
+<p>Now, show that for larger <span class="math inline">\(n\)</span>, you will nearly always reject the hypothesis that <span class="math inline">\(a_1 = 0\)</span>, even if <span class="math inline">\(a_1\)</span> is very close to <span class="math inline">\(0\)</span>. Make an appropriate figure to demonstrate this fact. Think of a way to make the figure convincing.</p>
+</body>
+</html>

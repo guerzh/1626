@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>R Basics and Functional Programming</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">R Basics and Functional Programming</h1>
+</header>
+<h2 id="functional-programming-the-basic-idea">Functional programming: the basic idea</h2>
+<p>Suppose you have a list <code>L = [5, 6, 7]</code> and you want to make a list with the squares of the numbers in it.</p>
+<p>First, define the operation “square”: <code>square(x) = x*x</code>.</p>
+<p>One way to do it — the way all of you have done it — is to start with an empty list and write a <code>for</code> loop that adds <code>square(5)</code> to the list, then <code>square(6)</code>, then <code>square(7)</code>.</p>
+<p>Another way is to say: what I actually want to do is apply the function <code>square</code> to every element of this list. The general concept for doing this is called <strong>map</strong>:</p>
+<pre><code>map(square, L)</code></pre>
+<p><code>map</code> is itself a function. It takes the function <code>square</code> and the list <code>L</code> and applies <code>square</code> to each of the elements. This is of course equivalent to writing a <code>for</code> loop, but that is the functional style:</p>
+<ul>
+<li>In imperative style, think about modifying variables as you go.</li>
+<li>In functional style, write everything as if it were math. The computer will figure out how to actually run the code for you.</li>
+</ul>
+<h3 id="why-functional-programming-in-r">Why functional programming in R?</h3>
+<ul>
+<li>It runs faster in R.</li>
+<li>It is kind of the “correct” way to write in R.</li>
+<li>It is how most people use Pandas in Python.</li>
+<li>It works with the statistical inference material later in the course.</li>
+<li>It is a way to do something interesting now while making sure everyone is caught up.</li>
+</ul>
+<h2 id="evaluating-r-expressions">Evaluating R expressions</h2>
+<p>In R, like in Python, you can enter literals. The simplest expressions are numerics and strings:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dv">42</span></span></code></pre></div>
+<pre><code>## [1] 42</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="st">&quot;Hello&quot;</span></span></code></pre></div>
+<pre><code>## [1] &quot;Hello&quot;</code></pre>
+<p>R simply repeats these values back at us.</p>
+<p>You can use R as a calculator:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dv">42</span> <span class="op">+</span><span class="st"> </span><span class="dv">43</span></span></code></pre></div>
+<pre><code>## [1] 85</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>(<span class="dv">45</span> <span class="op">-</span><span class="st"> </span><span class="dv">43</span>) <span class="op">**</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<p>You can evaluate logical values:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dv">5</span> <span class="op">==</span><span class="st"> </span>(<span class="dv">4</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dv">7</span> <span class="op">&gt;</span><span class="st"> </span>(<span class="dv">5</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Note that to compare two values we use two equal signs <code>==</code>. The resultant value is <code>TRUE</code> or <code>FALSE</code> (in R, you can also use <code>T</code> and <code>F</code>). It is a value, just like numeric values and character values are values; it is called a <strong>logical</strong> value.</p>
+<h2 id="printing-to-the-console">Printing to the console</h2>
+<p>The usual way to print is through <code>cat</code>. You can also use <code>print</code>; they are kind of the same.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">cat</span>(<span class="dv">42</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## 43</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">cat</span>(<span class="st">&quot;Hello&quot;</span>)</span></code></pre></div>
+<pre><code>## Hello</code></pre>
+<p>Note that <code>Hello</code> was printed without quotes — that’s because we are not printing the value of <code>"Hello"</code> back, we are just printing Hello.</p>
+<p>You can print several values:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">cat</span>(<span class="st">&quot;Hello&quot;</span>, <span class="dv">123</span>, <span class="st">&quot;hi&quot;</span>, <span class="dv">5</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## Hello 123 hi 6</code></pre>
+<h2 id="variables">Variables</h2>
+<p>The standard way of variable assignment in R is the arrow:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a>exam &lt;-<span class="st"> </span><span class="dv">80</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a><span class="kw">cat</span>(exam)</span></code></pre></div>
+<pre><code>## 80</code></pre>
+<p>You can also use <code>=</code>; it is almost the same. We will use the arrow. One nice thing about the arrow is that you can also use it the other way: <code>5 -&gt; a</code> works. Do not do that unless you know what you are doing — it is confusing, but you can do it.</p>
+<p>Note how R variables are different from variables in math: in math you cannot say <code>x = x + y</code> (or rather, you can, but this will just mean that <code>y = 0</code>). In R, the expression <code>exam &lt;- exam + harvard.adj</code> means: compute <code>exam + harvard.adj</code>, then store the resultant value back in the variable <code>exam</code>.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a>exam &lt;-<span class="st"> </span><span class="dv">80</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>harvard.adj &lt;-<span class="st"> </span><span class="dv">10</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>exam &lt;-<span class="st"> </span>exam <span class="op">+</span><span class="st"> </span>harvard.adj</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a><span class="kw">cat</span>(<span class="st">&quot;Your exam grade is&quot;</span>, exam)</span></code></pre></div>
+<pre><code>## Your exam grade is 90</code></pre>
+<h2 id="conditionals">Conditionals</h2>
+<p><code>if</code> statements work like this. <strong>The parentheses around the condition are mandatory</strong> (unlike in Python). Braces are <em>not</em> mandatory if the body is a single expression — but you almost always use them anyway because they make multi-line bodies and <code>else</code> chains read better.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a>grade &lt;-<span class="st"> </span><span class="dv">98</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a><span class="cf">if</span>(grade <span class="op">&gt;=</span><span class="st"> </span><span class="dv">95</span>){</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>  <span class="kw">cat</span>(<span class="st">&quot;I&#39;m reasonably happy&quot;</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>}</span></code></pre></div>
+<pre><code>## I&#39;m reasonably happy</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="co"># Single-expression form, no braces:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a><span class="cf">if</span>(grade <span class="op">&gt;=</span><span class="st"> </span><span class="dv">95</span>) <span class="kw">cat</span>(<span class="st">&quot;I&#39;m reasonably happy&quot;</span>)</span></code></pre></div>
+<pre><code>## I&#39;m reasonably happy</code></pre>
+<p><code>else if</code> and <code>else</code> work like this:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a>grade &lt;-<span class="st"> </span><span class="dv">88</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true"></a><span class="cf">if</span>(grade <span class="op">&gt;=</span><span class="st"> </span><span class="dv">98</span>){</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true"></a>  <span class="kw">cat</span>(<span class="st">&quot;Hooray&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true"></a>} <span class="cf">else</span> <span class="cf">if</span>(grade <span class="op">&gt;=</span><span class="st"> </span><span class="dv">95</span>){</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true"></a>  <span class="kw">cat</span>(<span class="st">&quot;OK&quot;</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true"></a>} <span class="cf">else</span> {</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true"></a>  <span class="kw">cat</span>(<span class="st">&quot;Alas&quot;</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true"></a>}</span></code></pre></div>
+<pre><code>## Alas</code></pre>
+<p>One thing to watch out for when omitting braces: if you put <code>else</code> on its own line, the parser thinks the <code>if</code> is finished and gives a syntax error. So <code>} else {</code> always has to be on the same line, or you have to use braces around both arms.</p>
+<h2 id="functions">Functions</h2>
+<p>A function works the usual way. For example, the absolute value:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a>my.abs &lt;-<span class="st"> </span><span class="cf">function</span>(x){</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true"></a>  <span class="cf">if</span>(x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>){</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true"></a>    x</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true"></a>  } <span class="cf">else</span>{</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true"></a>    <span class="op">-</span>x</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true"></a>  }</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true"></a>}</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true"></a><span class="kw">my.abs</span>(<span class="op">-</span><span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>This is the R style of writing a function. Notice that there is <strong>no <code>return</code></strong> here.</p>
+<p>Braces are not mandatory in function definitions either — if the body is a single expression, you can write the function on one line. These are all equivalent ways to define <code>square</code>:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a>square_a &lt;-<span class="st"> </span><span class="cf">function</span>(x){</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true"></a>  x <span class="op">**</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true"></a>}</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true"></a>square_b &lt;-<span class="st"> </span><span class="cf">function</span>(x) x <span class="op">**</span><span class="st"> </span><span class="dv">2</span>          <span class="co"># no braces, body is one expression</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true"></a>square_c &lt;-<span class="st"> </span><span class="cf">function</span>(x) {<span class="kw">return</span>(x <span class="op">**</span><span class="st"> </span><span class="dv">2</span>)} <span class="co"># explicit `return`</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true"></a><span class="kw">square_a</span>(<span class="dv">5</span>); <span class="kw">square_b</span>(<span class="dv">5</span>); <span class="kw">square_c</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 25</code></pre>
+<pre><code>## [1] 25</code></pre>
+<pre><code>## [1] 25</code></pre>
+<p>The single-line form is idiomatic for short functions. What is going on is we are saying: the value of this expression is either <code>x</code> or <code>-x</code> depending on whether <code>x &gt;= 0</code> or not. The value of the expression — if you plug in <code>x</code> — is just whatever the appropriate branch evaluates to.</p>
+<p>So you don’t think about it as “when I hit <code>return</code>, that’s what I return”. You think about it as substituting into a formula. In math, you are kind of familiar with this kind of thing:</p>
+<p><span class="math display">\[f(x) = \begin{cases} x &amp; \text{if } x \geq 0 \\ -x &amp; \text{otherwise} \end{cases}\]</span></p>
+<p>When you plug <code>x</code> in, this is what you get — it is not a <code>return</code>, it is substituting.</p>
+<p>One way to think about this is that you are defining the function in the same way you would in any other programming language; the syntax is just the function name, then the arrow, then the word <code>function</code>, then the usual thing. Another way of thinking about it is that the right-hand side <code>function(x){...}</code> is itself an object — the function — and <code>my.abs</code> is just the variable that stores it.</p>
+<p>This implies that you can define the function and just call it directly without ever assigning it to a name:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a>(<span class="cf">function</span>(x){</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true"></a>  <span class="cf">if</span>(x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>){</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true"></a>    x</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true"></a>  } <span class="cf">else</span>{</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true"></a>    <span class="op">-</span>x</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true"></a>  }</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true"></a>})(<span class="op">-</span><span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>This works the same way in Python: <code>abs</code> is really a variable; you can say <code>abs = 10</code> and now <code>abs</code> is <code>10</code>.</p>
+<p>In R you can write <code>return</code> if you want to, but really the last thing that has a value — that’s the value of the function. One way to think about this is that local variables are just shorthand:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true"></a>h &lt;-<span class="st"> </span><span class="cf">function</span>(x){</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true"></a>  y &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>x</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true"></a>  y <span class="op">**</span><span class="st"> </span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>x</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true"></a>}</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true"></a><span class="kw">h</span>(<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 14</code></pre>
+<p>Here we defined a local variable <code>y</code> to help with the computation. The process we use is: substitute <code>x &lt;- 2</code>; evaluate and substitute <code>y &lt;- 2 * 2</code> (i.e. <code>4</code>); the value the function computes is <span class="math inline">\(4^2 - 2 = 14\)</span>. The value of <code>h(2)</code> was evaluated to 14. Note that we cannot access <code>y</code> outside of the function <code>h</code>.</p>
+<h2 id="printing-vs-returning-values">Printing vs returning values</h2>
+<p>It is important to distinguish between printing and returning values. Consider these two functions:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true"></a>emo.state &lt;-<span class="st"> </span><span class="cf">function</span>(score){</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true"></a>  <span class="cf">if</span>(score <span class="op">&gt;=</span><span class="st"> </span><span class="dv">98</span>){</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true"></a>    <span class="st">&quot;Hooray&quot;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true"></a>  } <span class="cf">else</span> <span class="cf">if</span>(score <span class="op">&gt;=</span><span class="st"> </span><span class="dv">95</span>){</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true"></a>    <span class="st">&quot;OK&quot;</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true"></a>    <span class="st">&quot;Alas&quot;</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true"></a>  }</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true"></a>}</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true"></a>emo.state<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(score){</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true"></a>  <span class="cf">if</span>(score <span class="op">&gt;=</span><span class="st"> </span><span class="dv">98</span>){</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true"></a>    <span class="kw">cat</span>(<span class="st">&quot;Hooray&quot;</span>)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true"></a>  } <span class="cf">else</span> <span class="cf">if</span>(score <span class="op">&gt;=</span><span class="st"> </span><span class="dv">95</span>){</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true"></a>    <span class="kw">cat</span>(<span class="st">&quot;OK&quot;</span>)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true"></a>    <span class="kw">cat</span>(<span class="st">&quot;Alas&quot;</span>)</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true"></a>  }</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true"></a>}</span></code></pre></div>
+<p>The function <code>emo.state</code> <em>computes</em> a value; it does not print anything. For example, <code>emo.state(99)</code> evaluates to <code>"Hooray"</code>:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true"></a>a &lt;-<span class="st"> </span><span class="kw">emo.state</span>(<span class="dv">99</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true"></a><span class="kw">cat</span>(a)</span></code></pre></div>
+<pre><code>## Hooray</code></pre>
+<p>On the other hand:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true"></a>res &lt;-<span class="st"> </span><span class="kw">emo.state.2</span>(<span class="dv">98</span>)</span></code></pre></div>
+<pre><code>## Hooray</code></pre>
+<p>This already had the effect of printing an output to the screen. That’s because when R sees <code>cat("Hooray")</code>, it outputs <code>Hooray</code>. But the value that the function computes is <code>NULL</code>:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true"></a><span class="kw">print</span>(res)</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<h2 id="comments">Comments</h2>
+<p>Comments work with <code>#</code>:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true"></a><span class="co"># This is a comment.</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">5</span> <span class="co"># inline comment</span></span></code></pre></div>
+<h2 id="workflow">Workflow</h2>
+<p>The workflow that we use and suggest is to always open a folder in VS Code (File → Open Folder). To work in a new programming language, install the appropriate extension. For R, look up <code>R</code> and <code>R Markdown</code> in the extensions panel.</p>
+<p>Files come in two flavours:</p>
+<ul>
+<li><strong><code>.R</code> files</strong> — plain R scripts.</li>
+<li><strong><code>.Rmd</code> (R Markdown) files</strong> — literate-programming format where code goes in code chunks and the rest of the file is text. Similar to Python notebooks. Inside an Rmd file, code chunks look like:</li>
+</ul>
+<pre><code>
+``` r
+print(&quot;Hello&quot;)
+```
+
+```
+## [1] &quot;Hello&quot;
+```</code></pre>
+</div>
+</body>
+</html>

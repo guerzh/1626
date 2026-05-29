@@ -1,0 +1,169 @@
+So, this is 20% of the people who are registered. And that's definitely not my fault because I didn't start yet.
+
+All
+
+right, I'll I'll wait for 60 more seconds.
+
+Hey. Uh, okay. Hi. Uh, it's 211, so uh, we'll start. Uh, so, uh, right off the bat, I need to say this is the first time that this course is offered in the summer. Uh, there were a lot more people registered than showed up. So I will try to especially if this is the amount of people who are here you know there is an opportunity to adjust to what you guys want as well. With that said I have something that's prepared for today. So the the plan for today is set. I'll talk a little bit about the course and I'll tell you a few hopefully interesting things. Uh and uh we'll see we'll see how it goes. Uh so so here's how I think about the course. Uh so the official description is basically very focused on statistical inference. Uh almost all of you have done statistical inference in the past at least for the one course according to the survey. uh I'll try to give a somewhat different spin on it uh from what you usually see in the first course uh in particular we'll try to do something that's more computational rather than kind of algebra centric you'll see what I mean uh today and on Friday especially uh there's also an opportunity to just kind of you know put everything together that you may be seeing in other courses is I try to look at kind of what you get at data scientist job interviews and try to make sure that you are able to answer the common job interview questions. Uh the second thing that I'm going to try to do is to the extent that that exists at all uh to have you work with the modern data science workflow. So that means agent coding uh in terms of implementation and that means uh kind of the cycle of
+
+acquiring the data, analyzing the data both presenting the results and suggesting something actionable about that. Uh the third pillar is uh just coding. So from the survey uh some people here have extensive experience uh in coding. I cannot probably offer you much more than just having you work with the the latest agent coding tools which nobody really has experience with. But most people have experience with coding uh mostly from university. Uh so you know more of an opportunity to consolidate some skills in R and Python just in terms of practice also in terms of being able to read data science code. Uh it kind of is hopefully going to work together with talking about statistical inference. So many of the examples especially in the beginning of the course are going to have to do not so much with processing data although we'll have that as well but with doing inference. So this is the tentative structure uh of the course. So again I'm flying kind of blind here. I just showed up. I did not know how many people are going to be in the class. I have the results of the survey which you know not everyone answered. So this is kind of the default plan. I'll try to interact with you especially on Friday because today I kind of have the plan and see what works, what doesn't. With that said, here's the basic idea of how I want the thing to work. So approximately four assignments. Basically, I told them many projects. Those are just going to be coding assignments. You can use AI uh but you will be tested on the content of the assignments uh in uh you know the midterm tests which we call test one and basically the exam which is test two. So it's a compressed course. We're having two three-hour sessions a week. So it kind of seems like a lot but that's just because it's kind of two courses, right? Uh so the idea is those are not supposed to be kind of extremely honorous. Uh they're probably going to be pretty easy to do with AI if you choose to work with AI, but you have to understand all the code because you're tested on that in the written test. Uh so and the tests are going to be basically you know focused around what's in the lecture and especially what's in the project because you know you submit the project you're supposed to know what's going on there is the idea. Uh so I think you know it's a second course in data science for almost all of you. I think there is only so much you can do with a theory course. uh it's really basically about trying to get your hands dirty. Uh so I'm trying to make it course project based as much as possible. So the course project uh we are going to scaffold it a little bit but basically you get to choose what you work on. If you are especially a PhD student and you have something data science related in your research uh you're welcome to kind of uh work on whatever stuff you want. Uh there's going to be a light kind of a preliminary uh a light kind of proposal. So this is just going to be you know this is what I'm going to do. You can change your mind later just to make sure that you're doing something. And then on June 15th uh there's going to be a light presentation which is supposed to be not necessarily the final thing. Uh, I'm going to talk to every team in person just to see that they're on track. Suggest whatever I have to suggest. Again, like you got to put some points on that. But basically, the idea is for you to get feedback and then to have the equivalent of four more weeks except it's more like two and a half to actually do the final thing. Uh, so uh that's uh kind of how it is. And uh I'm I'm going to schedule uh a test as well. Uh so there's like a race day mechanism whatever. Uh so the course project essentially again I'm flexible. If you suggest something else that's reasonable I'm going to be open to it as long as it's reasonable. But basically you decide on some kind of domain of interest. you probably obtain the data set for that. So you probably don't want to just download a data set from Kaggle. That's probably not not of interest. You then apply some kind of technique and you then demonstrate uh what's going on. So when I used to do this kind of thing before a lot of it was just implementation. Uh obviously now with AI implementation has kind of gotten easier. So what we're going to do is we're going to require some kind of artifact. So you're going to build a dashboard or something. Uh and it's easy to do with a a coding. We're going to have a tutorial on how to do it. And the goal here is both for you to do kind of some kind of substantive project and also for you to have an artifact if you're looking for internship or job uh just saying obviously I did this assignment and this grad course is not going to do anything. If you have some kind of novel project that nobody's done before then that's much better. So we're try going to try to differentiate. Uh so that is kind of like that. Again this is tentative. I'll try to interact with you more on Friday. I'll try to see who shows up, who stayed in the course, who enrolled in the course to make sure that we are roughly on the same page. All right. Uh so that is the organization. Uh so yeah, so my name is Mike. Uh this is what I used to look like uh 10 years ago. Uh so uh so I work in uh kind of actually a bunch of things. So about half of my work is kind of applied data science in the sense of we take you know medical data sets of of patient events stuff like that try to either predict for example adverse outcomes this is something that I've done uh at at St. Mike's Hospital here downtown or more recently what they try to do is get social media data with people talking about their symptoms and try to infer trends in both how di diagnosis happens in medical settings and also try to uncover insights about diseases through looking at people talking about their symptoms. Uh, another kind of uh, data science flavored thing that uh, I'm excited about is looking at people talking about playing games on the internet. So, one project that I'm really proud of is we took people talking about chess games and then we took the actual games and we tried to predict perception of chess move brilliance based on the chess games. So uh you can read about it in new scientist orchest.com. So yeah uh the other kind of thing that's not probably going to come up that much in this course is I do what's called representation learning in machine learning. So this is basically looking at large scale machine learning models and one trying to find some kind of latent representations of the data that are useful and two understanding how those latent representations work. So the stuff there that's done. All right. So this is that
+
+uh so today what I want to do is uh talk about functional programming uh in the R programming language and uh if there is time start talking about statistical inference uh using the kind of tools uh from programming and R that we are about to learn Um so uh how many people know what functional programming is before looking at the slides? Okay. Uh so essentially uh functional programming is not quite a well- definfined term. Uh people sometimes just use it to mean programming where you're defining functions which is like all of programming. uh but basically it's kind of like using functions where you would use some other construct. So in particular I'm going to teach you today to program everything without writing for loops and stuff like that. Uh so this is kind of the example. So let's say that you have you know an operation. So that's kind of defining a function like square of x is x * x. So if what you want to do is compute you know 5^ 2 6 2 7^ squar one way to do it which all of you have done is to write for loop. Another way of doing it is to say okay like what I actually want to do is apply the function square to every element of this list. So uh the general concept for doing this is called map. I'll show this in more detail later. And what this means is I'm saying okay map is itself a function and it takes the function square and the list l and it applies square to each of the elements of n. Okay. So this is of course equivalent to writing a for loop, but that's kind of the functional stuff. Oh, so why am I doing this? Uh well, in R as well as in Python, it just runs faster. And this is what people usually use. This is what uh an LLM would generate by default when you're processing data sets. So got to be able to read it. uh it kind of works with the statistical inference material that I want to introduce and it's also honestly just a way to entertain you while making sure that everyone is kind of on the same. So that's what I'm doing here. Uh all right. So what I'm going to do now is just a tutorial in R up to functional programming and we'll then do some exercises. Uh so how many people have VS Code installed? All right. Uh so if you don't and if you have a laptop please get on it. Uh so this would be the syllabus.
+
+Uh so uh so the the workflow that I use and that I suggest is to always open a folder. So I'll create a folder on my desktop
+
+lecture one. and I'll open the folder.
+
+Uh so um if you don't know uh so in order to uh work in a new programming language, you got to install the appropriate extension. Uh so what you want to do here is just uh so uh push this button and
+
+uh and just find the uh uh find the R tools and our markdown.
+
+So you want all of those things. So if you if you type arc markdown, uh that's uh going to show.
+
+Uh so I'm going to start a new file and I'm going to save it as our markdown.
+
+Uh so the extension is r.md
+
+this
+
+uh so markdown files uh looks like look like this. I imagine all of you are kind of familiar uh with that from Python notebooks as well. Uh so this is what's called uh literate programming format where you have code and then you have text if you want the text uh in RMD the way you do it is the code goes in here. So if I say something like
+
+this so I'll just do print. So cat and prince are kind of the same.
+
+Uh so that's going to be this
+
+We need to reinstall
+
+No idea why it doesn't work. It used to work.
+
+All right, that sounds better.
+
+Sorry, this is like a different [clears throat] This is a different laptop from what I usually use and it's messed up. Okay, so I'm just going to write R here for now.
+
+Uh so okay. [clears throat] Uh so so in R like in Python uh you can enter literals. So you can do something like whatever 42 the value of 42 is 42. You can also print yeah that looks like this.
+
+Uh so you can use it as a calculator that looks like this. Uh this is the same as Python. I'm going kind of sorry. So I'm going kind of fast here. Uh if you want me to stop at any point, let me know. Uh so uh the usual way to print is through cat. Uh you can also do print that's kind of the same. You can print multiple things that looks like this. So uh the standard for variable assignment in R is using this kind of arrow thing. Uh you can also use equals it's almost the same. Uh I will use the arrow. Uh one nice thing about the arrow is so you can do something like this. So AS5 uh you can also use arrow the other way.
+
+So that works. Uh don't do that unless you know what you're doing. It's confusing, but you can do it. So the equals uh also works. That's that's also fine.
+
+So variables work the usual way. You can print them.
+
+So [clears throat] uh if statements uh work like this. So uh the parentheses are mandatory unlike in Python. Uh uh the uh braces are also mandatory. If else works like this.
+
+So here's an example of an if statement. So here we're just outputting whatever. Like if your grade is 98 you say like I'm reasonably happy else if works like this uh you have else as the default.
+
+Uh so okay so a function works the usual way that you would see. So for example the absolute value would look like this. So uh here is kind of the R style of a function. This is something that you maybe would not be used to. Uh and this is kind of the functional style. So if you have extensive programming experience, you haven't seen this. This is what you get out of me today is this style of writing. Uh so what you'll notice is that there's no return here. So what's going on is we're just saying okay the value of this guy is either x or minus x depending on whether x is greater or equal to zero or not right. So the value of this expression if you plug x in is just going to be whatever either x or minus x and then similarly the value of this expression is going to be I'm plugging in x and then I'm substituting the x in this formula and then the value of this whole thing is going to be whatever values. So you don't think about it as when I hit the return that's what I return. You kind of think about it as substituting into a formula. Right? So in math you
+
+so you kind of are familiar with this kind of thing probably right? So if you say something like
+
+this this
+
+this is this right and it's not like a return it's like you're substituting x and then this is what you get. So this is kind of how you think about it. So one way to think about this kind of thing is you're just defining the function in the same way that you would define a function in any other programming language. And this is just the syntax. So like the name of the function and then the arrow and then the word function and then the usual thing. Another way of thinking about it is this is the function and you're putting it in the variable my apps. So in R the dot is the standard thing right. So this the right hand side is itself the object the function and then my apps is just the variable that stores it. Make sense? So that kind of implies.
+
+So first of all you can call the function and then whatever like minus 5 gets substituted and this is it. But this also implies that you can do it directly, right? So you can say okay this is the function thing
+
+and then okay so I define this function instead of putting it in my abs I can just say this thing of minus5 that is also allowed and if I try to execute
+
+that also works right uh so by the way uh if you don't know this works the same way in Python right so in Python uh do people who knew that so uh so in Python similarly kind of under the hood
+
+Uh so I can say whatever like
+
+right uh so I have you know abs minus 5 abs is really a variable right so I can say abs is equal to well that doesn't count so I can say like abs is 10 and abs is now 10 So really this is also kind of the same thing where we're saying we're defining a function and then abs is a variable that happens to be a function. So if I redo this
+
+and they say what is abs? It says well like it's function. So okay this was more kind of just a for fun thing. So okay so that's like this. So obviously [clears throat] you can still do and not complete the algebraic things. So this is where this kind of analogy breaks down where you can compute y and then you compute this. So in R you can by the way write return if you want to. Uh but really kind of the last thing that has a value that's the value of the function. So one way to think about this y is just shortand right. So we're computing 2x and then we're substituting y into this expression. So okay so that's like this.
+
+Uh so [clears throat] uh those slides by the way I'll I'll make a dedicated homepage. Sorry I did not get to it today. Uh so so uh the def so this is kind of just an introductory thing. Do not be insulted if you knew about this already. It's important to distinguish between uh printing and returning values. So this is a function that computes a value does not print anything right. So if I include this
+
+um
+
+oh because it's Python
+
+So if I say whatever like result is
+
+emo state of whatever 50 the value of result is als but it did not print anything. So this is as compared to something like this where I do print something.
+
+I'll say cat array.
+
+So here if I say you know result is emo state 98
+
+it printed hurray it also happened that this was the value. So if I print res by itself it's null and that's because the value was whatever this computed this computed nothing it just printed.
+
+So okay
+
+uh so comments work like this. So this is the overall thing. Uh so [clears throat] so in R you usually operate on vectors. So this is similar to numpy arrays if you are more familiar with numpy. So vectors are defined using the C operator which also stands for concatenate similarly to cat just different histories. Uh so this looks like this
+
+and this is a vector so you can uh access elements of it using for example offer one. So R unlike Python is one based. So this is going to be 241.
+
+This is going to be 590. Uh you can do something like this. Uh so this is from index 2 up to index five. So that's like this. Uh you can have a length. So technically everything is a vector. So a if you define it like this, this is the same as saying c of 42. It's just a vector of length one. Uh you can sort you can do something like unique for example. So that's going to drop uh any repetition. You can do something like min, max, whatever. Uh [clears throat] so here is a way to do max. That's kind of weird. So you can say get me the length. So if you sort and then you get the element at the length of offer that that would be the max. Uh you can do a boolean operator. So this is going to be which so is the element greater than 5 33. If yes then true. If not then false. So that looks like this.
+
+So you have no something this sorry this is confusing because this is offer. So offer greater than 533 looks like this. So this applies to every element of the vector and that gets you a vector of falses and truths.
+
+So [clears throat] in R uh as well as in pandas a lot of the time what you do is something like this. So you can index using a vector of falses and trs. In R you can just say f and t. What this does is it just selects the elements that correspond to true. So here if offer had been this and you just say select the ones that corresponds to true. Uh so that would look like this. So that means that and very often you will see people doing that. You can do something like offer at offer greater than 533 and that will just select the elements that are greater than 533. In this case, it's just a one. So if we do something like 400, that's something else.
+
+All right. So that's that's this uh so [clears throat] you can combine. So in R you use a single percent for and uh a pipe for or an and uh an exclamation point for not. Uh so this is kind of the classic example that they want to use uh just to amuse people. Uh so let's say that you want to say
+
+uh for dessert I'll have pie or ice cream. Um, and in English what we usually mean is that they'll have either pie or ice cream, but not both. In R and in Python, the or does not work like that, right? So let's say uh let's say that I have the variable pi
+
+and I have the variable ice cream. And I want an expression that's true if I'll have pie or ice cream.
+
+It's true.
+
+So in English,
+
+a pie or ice cream does not work. Correct. And it does not work because this will be true when both pie is true and ice cream is true as well. So that would be unfortunate. Uh does that make sense to people? Uh all right. Uh, how would you write an expression?
+
+Okay, I'm not I'm not going to do the co-pilot thing because it's probably going to solve it. Uh, what how do you say it in R or in Python?
+
+ideas. So it's it's kind of an annoying thing because there is a very simple answer uh which is you do it like this. Uh so pi or ice cream means one is true, one is false. If they're both true or false, then you know the way to make it true is to say pie is not equal to ice cream. that would make it so that one of them is true, one is false. Okay. Uh so okay uh you can also do kind of a complicated expression. So like something like this would also do it, right? So you would say [clears throat] this is true but also it's not true that they're both true. That's one way of saying it. Or you can expand it and say like either pi is true ice cream is false or pi is false ice cream is true. Or you can say something like this. Or like I said you could just do this. Make sense? All right. [clears throat]
+
+So this is that
+
+uh [clears throat] yeah so the those notes are like from when I was teaching like a class that half where half of them were premeds. So I like pulled like salaries for different specialties for for doctors in the US. This is in 2018. They probably make a lot more now. Uh so
+
+uh so this is kind of just [clears throat] getting used to this kind of thing. So let's say that we have salaries that looks like this. Uh and we have like the specialties that correspond to it, right? So let's say that we want the specialty that has the highest salary. So if this is set up like this, one way of doing it is to say, okay, I need to find the location of the maximum, right? So how do you do the location of the maximum? Well, we just saw, right? So you can say offer is equal to max offer. So if I go back here
+
+that looks like this. So remember offer is this. So offer is equal to max offer is going to be like all falses except true at the location where you have the max offer. So now that you have it, remember you can use a vector of uh of booleans in order to pick something up. So you can say okay I have this expression and I'll just say offer at this
+
+and that gets the m and that gets the uh uh that gets the maximum offer. If I want the actual specialty, I can just say okay, so those are the specialties
+
+and then instead of saying offer at max offer, which is just the max again, I'll say spec pick out the spec that corresponds to the maximum that gets you the card.
+
+Make sense?
+
+All right. So [clears throat] that works like this. Uh so there's like various ways that you can play with it, right? So I can say okay like let's say I want the location. So one way of getting a sequence whatever from 1 to five in R is like this. So if you say something like 1 to 10, you get this. If you get something like this, you get this. So what I'm doing here is I'm saying, okay, so I'll just get like 1 2 3 4 5 and then I'll pick the index that corresponds to the location of the maximum. So that'll give you the maximum.
+
+Um, again, like if I have this index, this is like not the way to do it. This is just for fun. Well, this is the two. So, that again gets you the special,
+
+right? [clears throat] So, okay. So, that is the way you sometimes do it. And like again, these days I think those things are changing because you're just doing it with LLMs. LLMs would generally definitely not give you something like that. But sometimes you still work with vectors and you got to read code. Uh the usual way that you work with data is data frames. Uh so how many people uh by the way uh so how many people have worked with pandas? Okay. So you you all know data frames. How many people work with R? Uh so okay. So a data frame is basically a table. So uh what you want is something like this, right? Uh so this is basically a way of avoiding uh having to manually keep track of what corresponds to it because if you have a table then you just have rows. So you so you know whatever 241 to family doc that's just a table. So a lot of the time you just read it from a file. So you don't have to define it manually. But if you do define it manually in R it works like this. So you say data frame and then the name of the column the name of the column and then the concept the contents of the column as a vector. Okay. So if I define it like this
+
+is uh this this is like this and this is now a table.
+
+So okay. So uh uh if uh so here we have uh kind of so this is just like a manual one. Uh this is uh just a thing that you can load. So uh if you are in R uh you would need to say install packages baby names the first time that you do it like this. So this is to install it. Once it's installed,
+
+[clears throat]
+
+hopefully it works on your computer. Luckily, we have a break in 3 minutes, so it's going to be fine. Uh, so once it's installed, you can use it. So, um, it's technically, uh, what's called a table rather than a data frame. A table is just like a variation of the word t on the word table that's like specific to R. Uh, it's basically a special kind of data frame. Uh, you can display it like this. So uh the data set is basically the most common names in the US. So in 1880 there were 7,65 Marys registered as being born in the US. The Mary's app there like a lot of the time for the more common names uh uh there's also the M version. So you can access something like row number two the column here by doing this. So this is row number two column here and that gets you 1880. See if this is okay works now.
+
+So this is baby names. it's uh cut off. So if you say head that just displays uh the uh first several rows. So I can get whatever like row 500
+
+and the name
+
+and that is a parakeet. I can not specify the name of the column and that's going to be like this.
+
+This is like this whatever
+
+makes sense. Uh I can also do something like this. Uh that is also allowed. So you can access the column names both by name and by index. So this is just column number three. Uh column number three also has a name which is uh you know name as it happens.
+
+All right. So you can also use something like this. So this gives you kind of a range of row two up to row six. Uh you can give several names of columns like this. So this uh you can also access uh just the data from a particular column using the dollar. So if I say
+
+baby names dollar name, that's just going to give me the column.
+
+Uh so [clears throat] you'll notice uh that so the dollar is subtly different from this kind of thing. So the dollar gives you a vector. The column name gives you a data frame that's just that column. So that's just a diff different.
+
+So you can subset like this. So for example, if I want the data from the year 1999, I can say just uh make me a a vector of booleans where it's only true if the year is 99 and the sex is F. And that's going to select just the just the F babies from 1999. So that's going to look like this. Right.
+
+So, they're all just 1999 and they're all just FS. And the way it worked is this is a bunch of FS and T's. This is a bunch of FS of T's. I combined them so that there are only T's when the year is 99. The S is F. Uh, and I just selected those rows. And then here I said all of the columns.
+
+So [clears throat] I can get the maximum count from babies 99 uh and that's going to give me uh you know like the uh the largest one. And in the same way that we did with the salaries, I can say give me a t only when the count is equal to the maximum. So that it's going to give me the name that corresponds to the max. So as it happens uh like it's usually am uh not not all the years but most of them. So [clears throat] finally so here's like an example of function. So let's say that I want the most common name for a particular year for a particular sex. So one way to do it is to say okay I'll get uh I'll I'll get the data frame with just that here just the sex. So I do it like this. This is the same as here. And then I'll say same trick as here. find me a t where the count corresponds to the maximum and just get me the name. So that's the value that you get. All right. Uh we are doing a 10-minute break.
+
+Yeah. By the way, so I'm broadcasting on YouTube, so it is going to be recorded. Uh, it's also just live on YouTube. So, if you search my name and go to live, it's there.
