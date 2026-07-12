@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Neural Networks</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Neural Networks</h1>
+</header>
+<p>Artificial neural networks are the models behind most of what people mean by “AI” today. They are particularly useful on large, high-dimensional data — images, video, audio, text. We’ll build them up as a <strong>statistical model</strong> (something in the same family as linear and logistic regression) and also gesture at the <strong>biological inspiration</strong> that gives them their name.</p>
+<p>The plan: start from the simplest possible classifier (nearest neighbour), see that logistic regression is already a tiny neural network, and then add a <em>hidden layer</em> to get a real one. Face recognition is the running example.</p>
+<h2 id="supervised-learning-one-more-time">Supervised learning, one more time</h2>
+<p>Everything in this course that predicts a label has had the same shape. You have a <strong>training set</strong> of input–output pairs</p>
+<p><span class="math display">\[(x^{(1)}, y^{(1)}), \; (x^{(2)}, y^{(2)}), \; \ldots\]</span></p>
+<p>and a function <span class="math inline">\(f_\theta\)</span> with some coefficients <span class="math inline">\(\theta\)</span>. You choose <span class="math inline">\(\theta\)</span> so that <span class="math inline">\(f_\theta(x^{(i)}) \approx y^{(i)}\)</span> on the training set, and you <em>hope</em> that the same <span class="math inline">\(\theta\)</span> predicts well on new, unseen data (the test set).</p>
+<p>This is worth pausing on, because it is genuinely strange that it works. In an intro programming course, “write some code, see that it’s a bit wrong, tweak it, see if it’s better” is a terrible way to write a program — you usually just break it in a new way. In machine learning that loop is exactly the method: guess <span class="math inline">\(\theta\)</span>, measure the error on the training set, nudge <span class="math inline">\(\theta\)</span> in a direction that lowers the error, repeat. Eventually you land on a good <span class="math inline">\(\theta\)</span>. So far we have found coefficients with <code>lm</code> and <code>glm</code>; neural networks are fit with an algorithm called <strong>gradient descent</strong>, which we won’t cover — the point is only that finding good coefficients is possible.</p>
+<h2 id="the-running-example-recognising-faces">The running example: recognising faces</h2>
+<p>Say you have photographs, each labelled with whose face it is, and you want to identify new photos. How does a computer “see” a photo?</p>
+<p>A grayscale image is a grid of pixels, each with a <strong>brightness</strong> — often an integer from 0 (black) to 255 (white). Stack the rows end to end and you get a <strong>vector</strong>: a <span class="math inline">\(64 \times 64\)</span> image becomes a vector of <span class="math inline">\(64 \times 64 = 4096\)</span> numbers. A colour image is the same idea with three numbers (red, green, blue) per pixel; think grayscale for now.</p>
+<p>So an image <em>is</em> a point in a high-dimensional space, and “these two photos look alike” should mean “these two vectors are close.” That single idea carries us all the way to neural networks.</p>
+<h2 id="one-nearest-neighbour">One-nearest-neighbour</h2>
+<p>The simplest classifier there is. Keep the whole training set around. To label a new image, find the <em>single</em> training image it looks most like, and copy that image’s label.</p>
+<p>That’s it. If the new photo is closest to a training photo of Paul, you guess Paul.</p>
+<p>To make “looks most like” precise we need a way to compare two vectors.</p>
+<h3 id="comparing-vectors-distance-vs.-angle">Comparing vectors: distance vs. angle</h3>
+<p>The obvious measure is <strong>Euclidean distance</strong> — the straight-line distance between the two endpoints:</p>
+<p><span class="math display">\[d(a, b) = \sqrt{\sum_j (a_j - b_j)^2}.\]</span></p>
+<p>For images this has a nasty flaw. Take an image, multiply every pixel by 0.5. It is the <em>same picture</em>, just darker — visually the same face — but every coordinate has moved halfway toward the origin (all-black), so the Euclidean distance from the original can be large. Distance is polluted by overall brightness.</p>
+<p><strong>Cosine similarity</strong> fixes this by looking at the <em>angle</em> between the vectors instead of their endpoints. Two vectors that point the same way have angle 0 regardless of length:</p>
+<p><span class="math display">\[\cos\theta = \frac{a \cdot b}{\lVert a \rVert \, \lVert b \rVert},
+\qquad a \cdot b = \sum_j a_j b_j.\]</span></p>
+<p>The numerator <span class="math inline">\(a \cdot b\)</span> is the <strong>dot product</strong>. The denominator divides out the magnitudes, so scaling an image up or down (changing its overall brightness) doesn’t change the cosine. If all your images happen to have roughly the same average brightness — the same magnitude — you can even skip the denominator and just rank by the dot product: <strong>large dot product = similar.</strong></p>
+<p>Let’s see the brightness problem directly. Two little “images” as vectors:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">200</span>, <span class="dv">50</span>, <span class="dv">180</span>)   <span class="co"># some image</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>b &lt;-<span class="st"> </span>a <span class="op">*</span><span class="st"> </span><span class="fl">0.5</span>               <span class="co"># the SAME image, half as bright</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>euclidean &lt;-<span class="st"> </span><span class="cf">function</span>(u, v) <span class="kw">sqrt</span>(<span class="kw">sum</span>((u <span class="op">-</span><span class="st"> </span>v)<span class="op">^</span><span class="dv">2</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>cosine    &lt;-<span class="st"> </span><span class="cf">function</span>(u, v) <span class="kw">sum</span>(u <span class="op">*</span><span class="st"> </span>v) <span class="op">/</span><span class="st"> </span>(<span class="kw">sqrt</span>(<span class="kw">sum</span>(u<span class="op">^</span><span class="dv">2</span>)) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(v<span class="op">^</span><span class="dv">2</span>)))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">euclidean</span>(a, b)   <span class="co"># large, even though it&#39;s the same picture</span></span></code></pre></div>
+<pre><code>## [1] 136.9306</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">cosine</span>(a, b)      <span class="co"># exactly 1: same direction, angle 0</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Euclidean distance calls the darker copy “far”; cosine similarity correctly calls it identical.</p>
+<h3 id="nn-in-code">1-NN in code</h3>
+<p>A tiny, honest version of the whole algorithm. Four 3×3 “images” (flattened to length-9 vectors) as the training set, one new image to classify:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># Training &quot;images&quot;: each row is a flattened 3x3 grayscale grid.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>train_imgs &lt;-<span class="st"> </span><span class="kw">rbind</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="dt">vertical  =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">9</span>,<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">9</span>,<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">9</span>,<span class="dv">0</span>),   <span class="co"># a vertical stroke</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>  <span class="dt">horizontal=</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="dv">9</span>,<span class="dv">9</span>,<span class="dv">9</span>, <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),   <span class="co"># a horizontal stroke</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>  <span class="dt">diagonal  =</span> <span class="kw">c</span>(<span class="dv">9</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">9</span>,<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">9</span>)    <span class="co"># a diagonal stroke</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>labels &lt;-<span class="st"> </span><span class="kw">rownames</span>(train_imgs)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>new_img &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">8</span>,<span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">7</span>,<span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">9</span>,<span class="dv">0</span>)       <span class="co"># looks like a vertical stroke</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co"># Score the new image against each training image by cosine similarity,</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="co"># then copy the label of the best match.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>sims &lt;-<span class="st"> </span><span class="kw">apply</span>(train_imgs, <span class="dv">1</span>, <span class="cf">function</span>(row) <span class="kw">cosine</span>(row, new_img))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>sims</span></code></pre></div>
+<pre><code>##   vertical horizontal   diagonal 
+##  0.9922779  0.2894144  0.2894144</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>labels[<span class="kw">which.max</span>(sims)]</span></code></pre></div>
+<pre><code>## [1] &quot;vertical&quot;</code></pre>
+<p>The new image matches the vertical template best, so 1-NN calls it <code>vertical</code>. Nearest-neighbour is dead simple and surprisingly hard to beat, but it has to store and search the entire training set, and raw pixel similarity is a crude notion of “looks alike.” Neural networks <em>learn</em> a better notion.</p>
+<h2 id="logistic-regression-is-a-one-layer-network">Logistic regression is a one-layer network</h2>
+<p>Now suppose there are six people to recognise. Here is the simplest network — it is exactly <strong>multinomial logistic regression</strong> (logistic regression with more than two classes).</p>
+<p>Plug in the image <span class="math inline">\(x = (x_1, \ldots, x_{4096})\)</span>. For each person <span class="math inline">\(k\)</span> compute a score</p>
+<p><span class="math display">\[z_k = \sigma\!\Big(\sum_j w_{kj}\, x_j + b_k\Big),\]</span></p>
+<p>one weight <span class="math inline">\(w_{kj}\)</span> per pixel per person, squashed by the sigmoid <span class="math inline">\(\sigma\)</span> from the <a href="logistic_regression.html">logistic regression</a> notes. You get one <span class="math inline">\(z_k\)</span> per possible name. In a picture:</p>
+<pre><code> x1 ─┐
+ x2 ─┼─► z1   (score for person 1)
+  .  ├─► z2   (score for person 2)
+  .  │   ...
+x4096┴─► z6   (score for person 6)</code></pre>
+<p>Each arrow is a weight <span class="math inline">\(w_{kj}\)</span>. We choose all the weights <span class="math inline">\(W\)</span> and biases <span class="math inline">\(b\)</span> so that, on the training set, plugging in a photo of person 1 makes <span class="math inline">\(z_1\)</span> high and the other scores low; plugging in person 6 makes <span class="math inline">\(z_6\)</span> high; and so on — just like <code>glm</code> finds coefficients, only there are a lot more of them. To classify a new photo, compute all six scores and report <strong>whichever <span class="math inline">\(z_k\)</span> is largest.</strong></p>
+<h3 id="the-weights-are-templates">The weights are templates</h3>
+<p>Here’s the interpretation that makes the rest of the lecture click. The score for person <span class="math inline">\(k\)</span> is <span class="math inline">\(\sigma(w_k \cdot x + b_k)\)</span> — it is large exactly when the dot product <span class="math inline">\(w_k \cdot x\)</span> is large, i.e. when the image <span class="math inline">\(x\)</span> points in the same direction as the weight vector <span class="math inline">\(w_k\)</span>. So <span class="math inline">\(w_k\)</span> acts as a <strong>template</strong> for person <span class="math inline">\(k\)</span>: the network says “person <span class="math inline">\(k\)</span>” when the input looks like person <span class="math inline">\(k\)</span>’s template, measured by the same dot product we used for nearest-neighbour.</p>
+<p>If that story is right, we should be able to <em>see</em> it. Take a trained network, pull out the weights <span class="math inline">\(w_k\)</span> that compute each person’s score, reshape that length- 4096 vector back into a <span class="math inline">\(64 \times 64\)</span> grid, and look at it. What you get are ghostly, blurry faces — you can squint and see a face-like blob, but no individual is sharp. One template per person is simply too few: a single template can’t cover you facing left, facing right, smiling, in shadow. It “kind of works but kind of not.”</p>
+<p>(Our eyes over-cooperate here — humans see faces in clouds and burnt toast — so be a little skeptical of how face-like the blobs look.)</p>
+<h2 id="adding-a-hidden-layer-a-real-neural-network">Adding a hidden layer: a real neural network</h2>
+<p>The fix: allow <strong>many</strong> templates, not just one per person. That’s a hidden layer.</p>
+<p>Before computing the six output scores, compute an intermediate layer of <span class="math inline">\(K\)</span> values <span class="math inline">\(h_1, \ldots, h_K\)</span> — the <strong>hidden layer</strong> — each one its own template match:</p>
+<p><span class="math display">\[h_m = \sigma\!\Big(\sum_j w^{(1)}_{mj}\, x_j + b^{(1)}_m\Big),
+\qquad
+z_k = \sigma\!\Big(\sum_m w^{(2)}_{km}\, h_m + b^{(2)}_k\Big).\]</span></p>
+<p>In a picture, with the hidden layer in the middle:</p>
+<pre><code> x1 ─┐        ┌─► h1 ─┐
+ x2 ─┼──────► ┤   h2  ├──────► z1
+  .  │        │   ..  │        z2
+  .  │        └─► hK ─┘        ...
+x4096┘                        z6
+    inputs     hidden          outputs
+   (pixels)  (templates)      (names)</code></pre>
+<p>Read it the same way. Each hidden unit <span class="math inline">\(h_m\)</span> is a template compared against the raw image; the outputs <span class="math inline">\(z_k\)</span> are then computed from <em>how well the image matched each of the <span class="math inline">\(K\)</span> templates</em>, rather than directly from the pixels. With, say, <span class="math inline">\(K = 200\)</span> hidden units you have 200 templates to spread across all the poses and lighting conditions of all six people.</p>
+<p>Visualise the hidden templates — reshape each <span class="math inline">\(w^{(1)}_m\)</span> back into an image — and now they look strikingly like faces. Some are generic face-parts; some look like one <em>specific</em> training photo. That second kind is the network <strong>memorising</strong>: it sets a template equal to a hard training image so that <span class="math inline">\(h_m\)</span> lights up only for that exact image, then reads the answer off that. Memorising training images makes training accuracy excellent and says nothing about new photos — this is <a href="cross_validation.html">overfitting</a>, and it is why we always judge a model on a held-out set.</p>
+<p>Everything is still “just a formula with coefficients we fit on the training set.” The template story is only an <em>interpretation</em> — but it’s a good one, and it holds up when you look at the learned weights.</p>
+<h2 id="going-deeper-features-of-features">Going deeper: features of features</h2>
+<p>The one-hidden-layer picture — global templates, one comparison, done — is true but simplified. Real <strong>deep</strong> networks stack many hidden layers:</p>
+<p><span class="math display">\[x \to h^{(1)} \to h^{(2)} \to \cdots \to h^{(L)} \to z.\]</span></p>
+<p>Two ways to read this:</p>
+<ul>
+<li><strong>Features of features.</strong> A <em>feature</em> is any property of the input. Instead of hand-picking features (square footage, size of the yard), the network invents its own. The first layer can only match crude, <em>local</em> templates — “is this patch orange?”, “is there an edge here?” The next layer combines those into bigger pieces — “is this the corner of an eye?” — the next into “is this a face?”, and so on. Features built on features built on features.</li>
+<li><strong>A partially-specified program.</strong> A network with nine hidden layers is like a nine-step computation whose steps aren’t written by you but <em>learned</em>: compute <span class="math inline">\(h^{(1)}\)</span> from the pixels, <span class="math inline">\(h^{(2)}\)</span> from <span class="math inline">\(h^{(1)}\)</span>, …, output from <span class="math inline">\(h^{(9)}\)</span>. Deep learning = learning the steps.</li>
+</ul>
+<h3 id="what-are-the-deeper-units-detecting">What are the deeper units detecting?</h3>
+<p>For a first-layer unit we could reshape its weights into an image and look. A <em>deeper</em> unit’s inputs are the <span class="math inline">\(h\)</span>’s, not pixels, so its weights don’t form a picture. So we borrow Hubel &amp; Wiesel’s trick (below): feed the network many images and see <strong>which inputs make the unit fire hardest</strong> — those images <em>are</em> its “preferred stimulus.”</p>
+<p>Do this for a network trained on <strong>ImageNet</strong> (the 1000-category, ~million-image dataset that kicked off the deep-learning era in 2012) and a clean hierarchy appears:</p>
+<ul>
+<li><strong>Early layer (≈3):</strong> units fire for orange patches, yellow patches, simple edges and curves — low-level texture and colour.</li>
+<li><strong>Middle layer (≈4):</strong> units fire for a specific dog’s fur pattern, wheels, spirals — parts and motifs.</li>
+<li><strong>Late layer (≈5):</strong> units fire for whole abstract objects — a unicycle, a particular breed of dog, “creepy eyes.”</li>
+</ul>
+<p>The deeper you go, the more abstract the concept. (Caveat: a “dog” unit hasn’t learned what dogs <em>are</em>; among only 1000 options, a few characteristic patches are enough to bet “dog.” Don’t over-read it.) The same principle runs modern image-understanding — paste a photo into an LLM and it will categorise it.</p>
+<h2 id="the-deep-learning-hypothesis">The deep learning hypothesis</h2>
+<p>Why should stacking layers work so well? An argument due to Ilya Sutskever (a co-founder of OpenAI). Distinguish two properties a model can have:</p>
+<ul>
+<li><strong>Powerful</strong> — able to express complicated, multi-step computation. A programming language like Python is powerful: you can write an arbitrarily long program. A deep network is <em>also</em> powerful, in the “stepwise computation” sense above.</li>
+<li><strong>Learnable</strong> — tunable to the right behaviour just by showing it input/output examples. Python is <em>not</em> learnable: you can’t hand an interpreter some examples and have correct code fall out. A network <em>is</em> learnable: nudge the coefficients until the training outputs are right.</li>
+</ul>
+<p>Deep networks are rare in being <strong>both</strong>. The hypothesis then rides on a fact about the brain: humans do perceptual tasks — “dog / cat / unicycle” — in about a tenth of a second. Neurons communicate by firing rate and can only fire on the order of 100 times per second, so in 0.1 s a chain of neurons can be at most ~10 steps deep. If a person can do a task in that budget, a network ~10 layers deep ought to be able to as well. It has held up: fast networks with modest depth now classify objects, and even judge “shape” (position quality) in the board game <strong>Go</strong> better than expert humans — who themselves judge it by fast intuition, not explicit search.</p>
+<h2 id="why-neural-the-biological-inspiration">Why “neural”? The biological inspiration</h2>
+<p>The name is a metaphor, but not an empty one.</p>
+<p>A neuron is a cell that, when stimulated enough, “fires” an electrical pulse that in turn stimulates other neurons. The human brain has on the order of 100 billion of them, and the idea is that cognition arises from neurons firing and triggering each other in cascades.</p>
+<p>The clearest evidence comes from the <strong>visual cortex</strong> — the brain region that handles early vision. In a Nobel-winning experiment, Hubel and Wiesel recorded from a single neuron in a cat’s visual cortex while showing it patterns, and could <em>hear</em> the neuron fire (as clicks) only for a specific stimulus — e.g. a bar at one particular orientation, moving one particular way. There is, quite literally, a neuron that fires for a diagonal edge and stays quiet for a horizontal one.</p>
+<p>Map that onto the network:</p>
+<ul>
+<li>The inputs <span class="math inline">\(x_j\)</span> are like light receptors on the <strong>retina</strong>: a bright pixel is a receptor firing.</li>
+<li>A hidden unit <span class="math inline">\(h_m\)</span> is like a <strong>visual-cortex neuron</strong>: it “fires” (is large) when the input matches its template — its preferred pattern.</li>
+<li>An output neuron somewhere “deeper” fires because a particular combination of hidden neurons fired — “this is person 3.”</li>
+</ul>
+<p>For early vision this picture is well supported; deeper in the brain, neurons do respond to more abstract things, but general cognition is not understood — there is no single neuron that lights up when someone says “neural network” to you. The biology inspired the model; it is not a literal description of it.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Supervised learning: pick coefficients <span class="math inline">\(\theta\)</span> so <span class="math inline">\(f_\theta\)</span> fits the training set, and hope it generalises. Neural nets are fit by gradient descent instead of <code>lm</code>/<code>glm</code>, but it’s the same idea.</li>
+<li>An image is a vector of pixel brightnesses. Compare images by <strong>cosine similarity / dot product</strong>, not raw Euclidean distance, which is thrown off by overall brightness.</li>
+<li><strong>1-nearest-neighbour</strong>: label a new image by its closest training image.</li>
+<li><strong>Logistic regression = a zero-hidden-layer network</strong>: one <em>template</em> (weight vector) per class; classify by the largest dot product. One template per person is too few.</li>
+<li>A <strong>hidden layer</strong> gives you many templates; outputs are computed from how well the image matches each template. Enough templates and the network can memorise training images — great training accuracy, possible overfitting.</li>
+<li><strong>Deep</strong> networks stack layers, building <em>features of features</em>: early units detect edges and colours, deeper units whole objects. Inspect a deep unit by the images that make it fire hardest.</li>
+<li>The <strong>deep learning hypothesis</strong>: deep nets are both <em>powerful</em> and <em>learnable</em>, and anything a human does in ~0.1 s should fit in ~10 layers.</li>
+<li>“Neural” is a metaphor grounded in the visual cortex (Hubel &amp; Wiesel): hidden units behave like feature-detecting neurons.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Hubel &amp; Wiesel, receptive fields in the cat’s visual cortex — the experiment behind the “edge-detector neuron” picture.</li>
+<li>The face-recognition templates example follows the instructor’s <a href="https://www.cs.toronto.edu/~guerzhoy/">machine-learning course materials</a>.</li>
+<li>Connections back to <a href="logistic_regression.html">logistic regression</a> (the sigmoid, the linear score) and <a href="cross_validation.html">cross-validation</a> (why memorising the training set is a trap).</li>
+</ul>
+</div>
+</body>
+</html>

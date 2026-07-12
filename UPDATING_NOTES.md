@@ -52,7 +52,7 @@ From the repo root:
 
 ## Quick checklist for a new lecture
 
-1. Read `materials/transcripts/MayNNPart{1,2}.txt`; list the topics covered.
+1. Read `materials/transcripts/MayNNPart{1,2}.txt`; list the topics covered. Read MIE1626_slides.pdf for slides, use images from slides where appropriate (or re-render). If you see something that seems incorrect, ask me.
 2. For each topic: update an existing `.Rmd` or add a new one — transcript-faithful, comprehensive, `%>%`, real interfaces.
 3. Cache any new datasets under `topics/data/`.
 4. `Rscript render_topics.R <topics>`; confirm 0 `## Error` and that math/figures render.

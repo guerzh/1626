@@ -1,0 +1,449 @@
+She is broadcasting.
+
+Oh, actually starts broadcasting before. Uh, okay. All right. So what I want to do is basically a general kind of workflow for both statistical analysis. So figuring out whether something is happening in a data or not and for more kind of predictive machine learning where you have the expected labels and you want to get to something there. I'm going to try to do it in a kind of modern way. Uh so uh here's the thing, right? So the traditional workflow for someone who is not a statistician is to go and get a statistical consultant. Uh the reason is that uh items number uh uh items number two and three and five are actually quite tricky to do. uh at the same time kind of if the problem is genuinely difficult uh you'll just have different opinions from different statistical consultants as well. And so um what we'll try to do here is we'll try to model kind of looking things up on with an LLM and then trying to verify that the LLM is not completely out to lunch. uh kind of recognizing that like statistical consultants are quite often out to lunch and like the second example uh that I'll give would be kind of an example of that. Um but yeah, anyway, so in general kind of you have some predictor variables. So if it's an experiment, those would be settings that you just set for the different uh for different experiments. And then you have variable of interest like maybe you're interested in whether you know some predictor is actually associated with the variable of interest stuff like that. Uh you then want to figure out what is the appropriate model. So what we had in this class was like well like maybe it's just like linear regression because the scatter plot looks like it's a cloud that kind of looks like a line. Uh maybe it's something more complicated where for example you think that like with the RAN example that actually the structure of the data is kind of nested where you have different slopes in different counties in the state of Minnesota whatever um so once you've decided on the appropriate appropriate model uh so uh the test statistic if it's a textbook model would come automatically with the model people have figured out both the distribution both the test statistic. So the thing that you can the quantity that you compute for example you know the different between the difference between the beak depth in whatever it was 78 and 76 uh the usual test statistic is that divided by the standard deviation right and then you have a distribution of test statistic that's associated with the null hypothesis. So for example, if the null hypothesis is that the difference between the peak depth was zero, then the difference should the difference should be distributed like the t distribution which is basically the normal distribution. Once you have that, you can compute the p value. Uh so you want to check whether the data actually looks like the model. So if you assume some model but the data doesn't look like what the model predicts at all, that means that the model doesn't fit. Sometimes honestly mostly in the case of linear regression there's diagnostic plots that you can get just by calling an R function. So that's what we had with linear regression often not. Uh then you have a p value which you can compute either with a pre-made function that would be the usual thing. uh or like if uh if it comes to that you can do a fake data simulation meaning you assume the null hypothesis and you generate the data from the model and then you compare what you see in the fake data simulation with the actual p value that you have. Uh so you then want to identify whatever limitations there are. So if you are trying to figure out some causal connection between you know x1 and x2 then uh just the bler regression is just not going to tell you that it might be that it's x2 that's causing x1 and not the other way around. It might be that there's a different variable that's causing both. So there's like all all sorts of things that could happen. There could be a very complicated causal structure as well. The data ordinarily is just not going to tell you that. Uh so sometimes there's hints. So if you if you see that you know the raiden looks just different in different counties that would imply that the county structure is actually important but sometimes not. So okay uh I want to do an example. So that's like a quite famous example which makes it difficult to pretend to that this is the first time that you've seen it because if you just copy and paste the description of the data set into uh into claude uh or whatever it'll just tell you oh that's that's a big million example people know about it anyway. Uh so Pelonian for people who don't know that's like an ancient Greek myth about um I guess like a guy who made uh a sculpture who he then fell in love with and then she came alive or possibly the other way around. I don't remember. Uh anyway, it did not happen. Uh there's also a famous you know George Bernard Shaw play and movie My Fair Lady which is like kind of loosely based on the myth uh or like reinterpreting it whatever. Uh so okay uh so uh the pig million effect is separate from it. Uh it's more like a famous experiment. Uh so the hypothesis in that experiment was like this. So the hypothesis would be that if you tell a teacher, so in this case a training officer for soldiers that the students in this case the soldiers are in some way special then the teacher would unconsciously somehow make it so that they actually become better. So like if you told me I had the time that I'm getting an exceptional group of students here, I would teach better or something or maybe I would just assign better grades, right? Uh so the experiment was like this. So there was a company of soldiers uh and the comp well apparently the company is subdivided into platoon. I don't really know how that works, but a platoon is like a subset of the company. A company is a larger group. Uh and um so uh each of the 10 platoon so group of soldiers uh was either assigned to the pymalian treatment group. So the treatment group was uh a group where they told the commander that the soldiers were you know did better than usual on some tests that they gave them or they were just assigned to the control group meaning they did not tell the commander or the training officer that uh there was anything special about them. uh and then they um and uh then they uh measured uh the outcomes for the soldiers. So there was some kind of like practical specialty test that they gave the soldiers after some uh period of training. So this is the experiment. So um there is data which we'll look at in a second. And the question is does it work? So does it does it happen that if you tell the officer that the soldiers are special then the soldiers become special by the end of the training period. So, okay. So, uh we'll go and get the data.
+
+Okay. Um
+
+uh so I'll I usually uh you used to type uh I think in this lecture I'll I think all of you now have an agent that's kind of working. So, I encourage you to kind of work along with me and uh see uh see what's going on. You can do it in whatever lang language you want.
+
+This would be
+
+I create like the million R&D here. And I will just tell it to read in the data and visualize it.
+
+So one thing that it will tell it just like to make it more realistic is to pretend it doesn't know what's going on. Uh so
+
+so uh this is 1302 from statistical sleuth. So statistical sloop is just the textbook.
+
+So I'll just do that and again uh kind of uh code like try try it along with me. Uh hopefully we'll get kind of something interesting. Obviously for different people it might be slightly different.
+
+So it was doing it online. So I'm just telling it to dump the results into the R&D so that uh it's preserved. It just stopped it working with with escape.
+
+Oh, I didn't actually change the folder. All
+
+right. So we are over here.
+
+Uh uh so okay. Uh so I need to run it I guess.
+
+It still doesn't work in mine.
+
+Okay, it actually ran the HTML All
+
+right. Sorry. So, it actually did run it. Uh, so I just opened the HTML. So, what happens? Uh, which like maybe you saw it before, maybe not. It generates the HTML file. I told it to open the HTML file. Uh so so this is the data. So um it's uh 20 uh so it's uh 29 by3. So uh we have kind of the company. So there is several different companies. Uh there's treatment and there is the outcome score. So the treatment is pmonian. So they told the commander that the soldiers special and there's control. They did nothing.
+
+And we have kind of diff uh we have kind of two different uh so we have I think actually more companies than that. Uh so uh we have kind of se several companies and which within those we have platoon where it's either bit million or it's not or it's not million right. Uh so there's 10 companies that's right. Uh so uh here it just generated something. So not anything that they asked. We don't necessarily need to uh re review this code just because like it's probably right these days like if you use a good LLM like if if that if that's the computation like this this function is almost surely correct. Uh but it's also not difficult to read. Uh and here you have kind of the mean score for the control and the mean score for biton. uh it helpfully computed the difference between uh the mean score for pamelon and for control and that turned out to be seven. Uh so one thing that you can do here with the tools that you have is say this is the same as the VDEP thing right uh because if you ignore the companies basically you have measurements for pig million measurements for control if those are approximately normally distributed you can do the difference. Uh the issue here and this is why it's a textbook example is you might say hey like maybe the companies are actually systematically different right so the first question that I would ask is okay and there's kind of multiple designs there's like a classical solution which I'll show you uh you can just say okay I'll just control for the company right and that would be like maybe a not unreasonable thing to do. Uh you can also say okay like
+
+uh what's a good model for
+
+uh for accounting for company effects
+
+and just kind of see what it says.
+
+Um
+
+uh so here it actually uh this is very small kind of anyone see this probably not Uh
+
+okay. It then increases both. Okay. Uh so it actually so it suggests uh two things. Uh so one thing it suggests is what can what's in the textbook uh which is a randomized blog design. Uh which is kind of whatever you can you you can do that. Uh so the other thing it suggests is conveniently another thing that we actually saw in this class uh which is random effects right so what it says is okay like the model is the score depends on the treatment. So this would be because the treatment can be just one of two things for control. So this would be you know plus something for a million plus something else for uh plus something else for control and then what it says is there's also a company effect but it's a random effect. So uh what does what does it mean that it's a what does it mean that it's a random effect? It means that we are saying it's probably zero but we'll sample a
+
+but we'll sample like an a coefficient for the company from
+
+from a normal with a sigma square. The sigma square would be determined from the data. Right? the full model would be
+
+it's like really nice. So So the so the full model would be normal from Oh, this is the Japanese chalk. That's fine. This is like the hagmo chalk thing. So yeah, that is really nice. You can try it during the break. So uh so this is so this is normal from a effect
+
+plus a CI.
+
+Okay. Uh does that does that make sense? So for every company we determine the coefficient for the company. So like maybe some companies are better than others systematically and then we say okay so the score is going to be centered around the effect whatever is the coefficient for treatment and control and then we'll add uh the company coefficient uh that corresponds to row line. Yeah. All right. So um so that's convenient. Uh so uh we can say okay uh so do the random effect model.
+
+So in general it kind of did a little bit of a bad thing. It ran the model before and now I tell it to just run it. uh this is kind of encouraging you to engage in questionable practices because uh it already tells you the it already tells you the result. In general, what you want to do if you're running kind of a serious study is ideally pre-commit to a workflow before you actually get the data. Because here what's going to happen is you run one model, if you're happy with it, you probably if you're happy with the outcome, you'll report the result. If you're not happy with the outcome, you'll say uh like maybe that was a bad model. I'll try a different one. Uh which would inflate uh your uh uh kind of false uh false positives because naturally people just want to get something that works. Um, so okay. Uh, so, um, okay. I I told it to pretend that it doesn't know what's going on, but it clearly figured it out. [laughter] So, um, so here it estimated the coefficient for the chameleon effect uh to uh 7.12. Uh, it also estimated the between company. So that's this guy to be this. Those numbers don't really tell you very much uh because uh you don't know kind of on what scale the score is even. So let's do this first. Uh
+
+so I'll say like report the analysis
+
+and I'll also say show the overall distribution of scores.
+
+So really what you kind of want to know is how much does the effect matter compared to just random noise. So the right comparator is the 6.55. Right? So the so this says what's this guy and this guy is how much do the scores differ even if those guys are the same. Right? though that's kind of the right quantity to ask for like is 7.12 a lot or a little. The answer is it's about as it's about as much as people differ between themselves on average. So like if you take the standard deviation for a group that's as as homogeneous as possible, they'll vary between themselves by 6.55. and also the actual big mail unit is like shifting everyone by one standard deviation. So actually quite a lot according to this analysis. So um what I'll do in order to visualize it is I'll say okay like within this comp so within like a fake company show me the distribution
+
+uh with the residual SD
+
+and just like you know like and also SE separate a pistograms
+
+uh for pigon and non-pmalian.
+
+Hey
+
+It's all right. Um,
+
+87 minutes.
+
+Okay.
+
+So, we can take a look. Uh so this is kind of the usual LMER that we have.
+
+So um this is what we've done before. So I wanted to look at the overall distribution of the scores. Uh so this is the so this is the overall distribution. So if you were like I I to be honest I don't really believe that this experiment I mean like this is real data but I I don't believe that if you tried it again it would come out again like this. Uh but uh be be that as it may. So this is the distribution of the scores. So if you remember our estimate for how much the score shifts due to the pig million effect is seven. So on its face it's quite a lot right? So this is like going from an average of whatever 74 to like 80 81 I guess. Uh so quite a lot. So what I asked it to do is to say okay like uh what would it look like if you had like a fake company? Uh sorry it is within company. Um okay so here it said like within a fake company and then it distributed okay it did it did distribute it as with just as the residual which I would check that it did it correctly but yeah I believe it did uh so it says like residual 6.55 so this is like not the all the scores which is spread out more but just scores with this standard deviation just to visualize what it would mean to move by seven here. So this would be like you're taking this kind of class and platoon I guess here. So a rare hallucination because this clearly should be platoon rather than company right because the platoon was the unit. Uh so oh sorry sorry sorry uh oh I'm sorry okay so this is uh this sorry this is within within company this is like a lot of fake platoon so this is right okay uh and now uh what we asked is um uh just like actual how how things actually split in the actual data. So this is the histograms of the actual data where we have kind of the control platoon and we have the pig million platoon which look like this. Make sense? Okay. So uh it should be that you know uh we we should do some kind of checking of whether the model is correct or not because right now we just got a number out of this model. So we fit the best coefficients but that's all we had done. We have no idea whether the data actually looks like this or not. Right? So uh what I would do in this case with this model is I would say okay the structure is actually not that bad. So I can so I can look at so I want to look and this is kind of a custom part of the analysis which like for this one I kind of know the answer because I'm familiar with the model but like you would have to think about it every time. So what's going So what's going on here? So here we have um here we have a company coefficient and the claim here is that the company coefficients are distributed normally. So the way we would falsify it is if you look at the different companies and they are mostly clustered around here and then there's like a wide outlier that would mean that it's probably not normal, right? So uh it also claims that within a company the platoon are distributed normally. Again like what would falsify it is either if you see kind of one company is like this another company is like this another company is like this and another one is kind of like this. So that would make it so that the sigma squar s is not actually constant. Uh so here there's probably almost no way to see it because there's like three platoon per company or something. uh but you know maybe some sometimes maybe you would see kind of some some kind of spread. So the spread here would usually be given that you have very few data points per company is like you would just have like an outlier but that would also break the model. So uh let's see. So uh what we would ask for is the distribute is to get us the distribution of the averages per company. That doesn't quite give give us what we want but it would falsify hypothesis right. So,
+
+so I will, so this is kind of like model check.
+
+So I would say like plot the histogram of
+
+of the means.
+
+Uh actually I uh instead of a histogram uh let me do like a box plot.
+
+I don't know. Have I uh I think I've shown you box plots, right? Have I? No. Anyway, it's it's very intuitive. You'll see what it is. Uh so uh for So this is going to be for each company.
+
+Um I'll say like for each platoon but grouped by company
+
+and then sorry for each this is going to be uh group uh sorry so for each company and then grouped together by so I'll just say sorted
+
+treatment. So I'll get like all the data points but there's going to but there's going to be like all the pig million or the nonpelonian. So I'll see kind of both things together.
+
+Uh and say all in the same figure
+
+and then what we wanted is this guy. So I'll say plot the residual
+
+for each platoon. So the residual for each platoon would be this guy minus this guy which should be Gaussian
+
+Thank you. So, uh I guess people don't know. So, uh the tokens displayed here, what's going on is it's outputting character by character and it's doing chain of thought. So, the thinking is it's outputting text which is reasoning out what the final output should be. So the number of tokens that's displayed here is kind of like how much text it generated in the background before it actually generated the code.
+
+So here I kind of had my own idea of what kind of plots to make. You could obviously also ask the language model to see what it comes up with.
+
+All right.
+
+All right. So,
+
+so, so here we have uh so here we have uh kind of the distribution for each of the uh for each of the companies. So the situation is in each of the companies there was one pig million platoon and then two control platoon. So what would falsify what would would falsify the model is if the differences between the gray points were like wildly different between the between the different companies. Uh you might ask what does wildly different mean? So that's a judgment call. There is no there is no rule although you can ask for a ruling from an LLM. I I assume it's applied its own ruling. In general, I would say it should be different by like an order of magnitude in order for you to really notice for this kind of thing. Uh but it's it's it's kind of a judgment call. So you don't see anything that's really smooshed together so that you don't see that they're separate. You don't see anything that goes out of the plot. So I would say probably okay. Uh so uh with a pig million we can't actually tell because the pig million ones like maybe the pig million effect is different depending on the company. Uh if that were the situation there there would be absolutely nothing that we can do about it. Uh so um so uh I also asked for the residual for each for each platoon and what we see here. So um it decided to it decided to display it not as a histogram but just as a bunch of points. So a histogram would mean that you take all those points and you see how far they are from how far they are from zero. You could imagine just like bringing all of them to the left and making his right. Uh it did not make the histogram but like you can kind of tell that it's it's fine. There is no huge outliers, right? So a huge outlier again would be like all the points are here and then there's like a one that's like way up there.
+
+So there is a natural thing here that's going on where the scores are probably out of out of 100. So you couldn't possibly have an outlier and it's like larger than 25. At the same time down you actually could have an outlier. And in grade data you see that. So, if a student just stopped showing up and stopped submitting, which sometimes happens, and they got like a three out of 100, like that's like a thing that sometimes happens because they didn't drop, but still, you know, like they kind of effectively dropped, but didn't actually officially drop that that happened. That would be an outlier that you would actually want to uh but here it was a test. I I guess in the army they're stricter than at so like everyone writes the test. So [gasps] uh so yeah. All right. Uh so this is this is that uh so I would say that's kind of an example of an analysis. Uh does that kind of make sense? Uh so again I kind of picked a thing that you were familiar with already. in general and if you encounter a new thing uh well you you can ask an LLM like what does this look like? It might or might not say uh and it might might not be right. Uh I would say that currently uh just kind of blindly plugging in data like it actually gives you the answer without doing model checking. As you saw plug it computer the answer that is bad. Uh if you tell it to do model checking, it probably will. I did not try to do it a lot, but that that is obviously something that needs to be done for the analysis to be like anywhere close to valid. All right. Uh questions. Is that good? All right. Um don't you wish someone has had told you that you're elite like a year ago? [laughter] Uh so okay. Uh so I'll do another example which is like a little bit of hobby horse of mine but I think I'm right. Uh so so this is slightly different. Uh so this is uh again actually to do with teaching. So this is a paper from the proceedings of the national academy of sciences. This is like an extremely prestigious journal that's like you know it's like below science nature but I think or like whatever cell but other than that that is where you want to be. Uh so um so the claim here is they want to measure the learning versus the sense that you're feeling that you're learning uh in active versus non-active learning classrooms. So active learning classrooms is classrooms where um you know you're made to do exercises during the class and then this is in contrast to what we're doing right now which is me speaking and you listening. Uh so the usual claim like that's something that people often find and that I believe is true is that uh students generally on average at least enjoy uh the non-active classrooms more. Uh on the other hand a claim that's maybe a little bit contested but that's generally believed is that they actually learn more in uh in the active learning classrooms. Um, I personally think that a lot of this has to do with how you measure uh the learning because if what you do during class is make people do the same exercises that you give them on the exam and then you give them an exam then yeah the students who you force to do the exercises are going to do better on the exam which has the same exercises. [gasps] Uh on the other hand, if you try to see whether the active learning transfers, what you would actually have to do is you would actually have to have exam questions that are on purpose substantially different from what you did in class, which nobody would actually ever do for just for the sake of the experiment. Uh which kind of breaks things a little bit in my opinion, but that's kind of an outside limitation, right? Uh so uh what I wanted to focus on is something different. So I want to look at table three here.
+
+Uh so here what so here what they're doing is they are
+
+predicting the feeling of learning and the um what's what does to stand for I'm not sure but this is like the test performance performance I guess uh and here they're uh and here what they're doing is they're predicting what's called the standardized Z score. So that's kind of the same thing that I told you about informally just now where what you're doing is you are looking at the score. So either kind of the liquid score that they report for the feeling of learning. Leard means like strongly agree, agree, neutral to strongly disagree and those are like one two three four five and then you average whatever the test score is just the test score and then you divide by the standard deviation so that what you're predicting is always a normally distri an approximately n01 kind of variable right so then what this then what this table saying is
+
+Uh so so what this table so what this table is saying is f is whatever like 0.34
+
+plus
+
+0 minus 0.56 or Uh active.
+
+Yeah. Uh 56 3 4 5 seconds. Yeah.
+
+Times I active
+
+uh plus whatever this. So they had I guess several topics. So this was a physics class. So they had like a fluid section and static section uh and so on. Right? So and then you have
+
+like a noise thing at the end. Right? So this is what this model means. And then the claim here is uh the feeling of learning decre uh decreases uh decreases by 0.56 if it's uh if it was an active section. Does that make sense? So
+
+on the other hand uh the tests here again it increased by 0.46 46 if it was active. So uh on the scale of whether it matters or not this is about half of the pyonian effect right so the pig million effect was one standard deviation here the effect is half a standard deviation the way I know is they standardized the scores right so the scores are all distributed like n01 is that making sense sorry if I'm talking too fast let me know uh so yeah all Okay. So, all right. So, they also had kind of various other uh variables. So, for example, you might imagine that what's being measured here is just the outcomes. But what if the classes are different? Like what if the sections are different in terms of their previous knowledge? So, they actually test for that. Uh so, apparently like the pre-est thing was completely the same. Uh how they asked for feeling of learning as a pre-est. I'm not sure. I guess they could just ask you like how do you feel about the glass as you're walking in. I think like there's like another study which indicates that I know about as you're walking in but that like in the first couple minutes of the class you actually know how you're going to feel about it at the end. So yeah. Uh but I guess this study kind of refutes that actually right. So the other study that I'm referring to that's like a quite famous one where they ask students within the first few minutes of the class like in the first lecture of the class like how do you feel about the class like how would you rate it and then they try to correlate it with the ratings that the students give give in the evaluation at the end of class and it turns out at least kind of the headline result is that whatever you feel in the first few minutes is kind of what you feel at the end as well. Uh so this kind of refutes it in a way because the difference in the F or the sections was like zero but then there was a difference depending on whether it was an active learning class or not. So yeah but again this is just one study who knows. So okay so uh this so this is the model. So, uh, one thing that to me seemed kind of weird when I read this study is, okay, like you have your FO scale, which I do think makes sense, but you have your to scale, which is just like one single test, right? So, is it possible? I started wondering whether this is due to how you tested the students and if you had a different test with different questions would the outcome be plausibly different this model doesn't account for that right so this model is saying your to is whatever and the only change the only way that the prediction would change is if you switched from active to passive, right? So,
+
+so one thing that uh you could do in order to kind of audit it and I should acknow this is going on in YouTube that's fine but uh so like one so one thing to audit it is to say okay but what if I thought about all the possible tests that I could give plausibly how would those tests differ and build that into the model. Right? So I should say this is not a charitable way to read this because if I start saying things like that about almost any study like hey did you try any other tests and like so what happened a lot of the effects would go away just because the sample size is so limited. Uh with that said I don't think it's like unfair. I think they kind of invited given that this is their headliner result. Uh which is kind of kind of strong in a kind of a prestigious journal. Uh so um here is the analysis that I would propose again this is not the only possible analysis but it's the kind of thing that I think I would think about is okay so feeling of learning and belief I'm focusing on the to so to I would Okay
+
+is is is
+
+uh is this coefficient that has to do with the test and then I'll add all of those other things. Right? So this would be whatever like
+
+and so on. But then I'll say okay I could have given different tests and I want to estimate uh how those tests might differ.
+
+So that's my model. So the problem here is that it is kind of based based based on this thing. Uh there I should double check whether they did do several tests but uh certainly not for the certainly not for the same section. So I have no way of estimating a because I'm talking about one test that was actually given and then all sorts of other hypothetical tests that could be given with possibly different scores. Right? So the only thing that I do have is kind of the difference between the tasks that were given for uh the scores that were given on passive and active. So that gives me kind of an idea of how different class settings respond to different tests that could all be attribut attributable to genuine learning, right? But there is kind of a learning style test match or mismatch. So this I would have to kind of guess based on prior experience. So I would say you know like how do tests that are on average the same how could the average on those tests differ depending on the match between the class and the learning style? I would say kind of you know like if the average test score so this is Harvard uh so uh and they have like a different scale than uft so an A at Harvard is like 92 and up I think or 93 and up uh usually I think they now have a policy where I think like at most 20% or something so they they changed it recently uh so now it's curved but anyways so uh let's say the average is like 85 usually. So, uh how would it differ? Like I wouldn't say that it varies from like 80 to 90, but I would say that it's plausible that it will go from like whatever like 82 to 88 like easily, right? So, uh that so 82 to 88 means that kind of two standard deviations is three. So this would be like whatever like 1.5 or something right. So uh I will now do the analysis.
+
+Um so I don't know how many of you know you can just take a screenshot and paste it into VS code. Uh so uh let me do a new clock session.
+
+So I want like fake data.
+
+So this is kind of vague. So, I'll just tell it like ask me for details if you don't get it.
+
+It's like a lot less work than writing code yourself, but we'll see how it works out. It's kind of stocastic.
+
+All right.
+
+So very conscientious. So uh okay. So what is the grouping variable?
+
+Uh so so here it asks like where is the random effect? So the random the the terminology again is the random effect is this guy right and the options it suggests is class section. So each class section uh gets random effect student instructor uh or topic semester. Uh so what I want is like none of those.
+
+Uh no actually I want uh yeah so I actually want class so I actually want class section. So we give a different test to sorry not class throughout this is difficult. Um so yeah so what we want is like different styles for uh different styles for each instructor at each at each time. So
+
+okay. So the outcome is the test.
+
+So how large should the simulate uh be? So here so we actually want uh yeah so we want the same the same scale. So 300 skins, 12 groups.
+
+So what I'll do is I'll look I'll review the code that it's will have generated. Then what they want to do is actually want to find how are the findings different depending on rerunning the experiment again. So now it's going to generate just the one set. I'll then generate multiple sets and I'll see how the effects v how the effect varies.
+
+Okay.
+
+So for each instructor semester we have one test. The outcome is to 300 students.
+
+Yeah. Yeah. This this makes sense.
+
+All right. Let's see what it came up with.
+
+Uh so uh here is what we have. So we have the coefficients. So the coefficients are all the same. Uh it got this it got the residuals from the table which is good. Um so it then generates
+
+uh so it generates just [snorts] like random data for like pre-est midterm stuff like that. So it then draws the random effect.
+
+Uh so where is the random effect here? [snorts] Okay. So it's called random intercept.
+
+Okay. So one so it's called u. Uh so
+
+the random intercept would be u and where is u? Oh it's it's added like uh so and then it's actually re. So it generates it using sigma re. Uh so one good reason that I'm auditing it is I don't recall ever saying what I mean for sigma e to be and yet it somehow think seems to think that it knows. So let's see what it decided for sigmar. Oh did I say oh I guess I said 1.5 because it does say 1.5. Uh okay. So that's good. uh and then it just generates it uh in a way that probably makes sense. Let me see.
+
+So here it says to is all of this stuff plus the art.
+
+Okay, so that seems good. uh I would double check it like if if I ever write a letter to the editor about it, I will double double check it. We'll see if the outcome is the same as what he tried before. Uh so what I want to do is I want to now generate
+
+uh 100 data sets of 300 stints and plot the estimate uh the histogram of the estimated
+
+beta active. So beta active would be It's gone.
+
+I'm excited.
+
+All right. So, let's see what they what it came up with.
+
+So um not actually not not actually so bad. So based on so so based on what we see is it kind of so it kind of says okay like the central estimate for uh uh for the effect is about the same which is what you would what you would hope is the case like we've coded we hardcoded in the effect from the study. It's supposed to be the same but it says like if you try to if you try to do it again then uh it it can vary this much. So this by itself is fine because the table itself already had uncertainty right. So uh so here it says that it's statist so here it says that it's like as statistically significant as it could get. Uh it doesn't say uh uh it doesn't say the standard deviation but I think it's somewhere else in the study or in the supplementary materials. We can however just reproduce it. So what I can do is I can say okay considering this model which makes things more uncertain than they otherwise would be. Uh can I just uh can I just estimate the uncertainty on uh the uncertainty on this guy and see if it's still significant? Right. So
+
+we'll say is
+
+so using linear regression
+
+as well as using a random effect model. So my point is if you use a random effect the the confidence interval would be wider.
+
+So that makes sense.
+
+Yeah, I'm hoping that I don't see a lot of people typing, but if you wanted to do an active learning thing, you could also type along with me. So uh and the the next section so kind of after the break we'll do uh kind of active learning where you're going to be doing like the machine learning thing. All right.
+
+Is it done?
+
+It's not done yet.
+
+All right. So um so here's the kind of thing that we get. Uh so here it's doing uh CF
+
+uh okay let me
+
+Okay. Oh that's nice.
+
+So, so here apparently it actually did uh So here apparently it did the other thing. So it plots the uh linear regression estimate. Oh, this is like very different. So it did so it does the linear regression estimate over here. It does the random effect over here which seems like kind of weird but it seems like quite different actually. Uh so here what you see is the LMR is actually like pulled more towards the mean. So yeah. Uh okay. I don't really have an explanation for this but it is different which is what I was trying. So uh yeah. Uh okay. All right. So uh let's do kind of a break until 3:30 and then we'll do machine learning demonstration.
+
+And I think it's probably going to take like less than an hour.
+
+Make some chocolates if you want.
+
+Not done anything.
+
+everyone here? I think so. Uh so okay so uh a natural a natural kind of question uh about the previous thing is like which of those is testable? Uh like to be honest like most of this is not testable on a test just because a lot of it is kind of like use your judgment and then read complex code which I could not possibly ask on a test or anything like that. Uh so I think one thing I could ask is here's a data generation model uh that's like proposed by an LLM or like fake proposed by an LLM would you accept it or not and why something like that. Uh so for example you know like if we're talking about the big million thing uh like I would propose like a data model that just ignores the company and the expectation would be that you say ah but what about the company like you can't just ignore it. So that's actually it did actually propose it at first, right? So it it not kind of implicitly just computed the average across the pig million platoon and the non-palian platoon and just ignore the companies completely. So like I could ask I suppose like here's a new data set here's like either something that Claude actually proposed or something that I pretend Claude proposed and then ask you to critique it in some way which like actually did happen here. Uh so that is kind of one thing. Uh I don't think I don't think really kind of uh much of anything else that we hadn't already done previously. So kind of certainly kind of do like generate data from a model compute the p value that's reasonable to the extent that we done it previously not today which today it was all automatic. Um, so this kind of thing, uh, yeah, like I I could ask for a story like just like I did on test one. And hopefully like you saw some kind of live demonstrations of me like critiquing people's models during the presentation, which by the way like is also fine like every model has limitations. I think every like I I think I gave everyone good grades for the presentation. Uh, so uh yeah. All right. So uh machine learning workflow uh so here it's kind of in a way simpler because the the assumption here is that you're not trying to do inference you're just trying to predict as well as possible. Uh so the considerations are different. So in general what you do well like you split into training validation and test set. Uh so um one thing that people often get wrong is they kind of just do training validation training test. Uh that means that if you try multiple things, you test each one on the validation set, you pick the one that works the best in the valid validation set and report it as if that's the final model and the final measurement of how well the model works. Well, you tried multiple things. You picked the one that works the best on the validation set. the outcome on the validation set is now just for that validation set. It's not represent representative when of what you'll get on new data. So the best practice which like I try to do on my kind of more serious projects I sometimes neglect to do otherwise is I take the test set out of my data. I just sequester it somewhere where I physically cannot touch it. uh when like at least kind of on a different folder and I do not touch it until I kind of pretty sure that I picked a good model that I actually want to report the results on externally. Uh so that's like the best practice. I don't think anyone is perfect at following that. Yeah. Uh so um for kind of data that's not like text or image in general just like you know try linear regression if it's a continuous outcome try logistic regression if it's not a continuous outcome. Um you know on some data sets in some situations that are not like actually as frequent as you might imagine random force work better. uh deep war neuronet networks like almost never actually work better than than random forest on just tabular data. Uh if there is like on some kind of tabular data there is like specialized models that work better not like in general but you can look into it. I'm not going to do it in this class certainly. So on text data as I was saying to several people on Wednesday LMS probably work the best. Yeah. Question. What's the difference between like you shot one shot hero shot? Yeah. So uh yeah that's a good uh that's a good question. So I I think I kind of answered it but it bears repeating. So in this context I mean in context uh kind of the in context learning of fshot. So that means that if what you want to do is classify you tell the model okay like here are my labeled examples the labeled examples are included in the prompt. So like in the prompt you just say like here are the labeled examples and now here are the examples which I want to classify. Uh so that would count as few shot zero shot would mean classify but I'm not giving you labeled examples at all. So just classify with meaningful labels just based on what the model says. Uh and then uh I guess like few shot implies that there could be many shots but that's like not not not the usual situation but if you have a very large number of labeled examples uh then that's probably not a big improvement on fshot if you just plug all of those examples into the prompt. Uh the prompt also like can only be so large. uh at that point you might consider uh what's called fine-tuning the model. Uh these days it's kind of slightly questionable because the really good frontier models don't actually allow you to fine-tune them. So fine-tuning means you actually change you actually change the parameters of the model so that they predict well on the training set. Uh the frontier models generally will not let you do that to them. So their their weights are fixed but they perform better even without fine-tuning sometimes. Yeah. The way you explain zeros you said there's no examples of lab data. That's right. So what's the difference between that and unsupervised learning? Oh unsupervised means something different. So unsupervised learning means uh so it's something like clustering. It's like separate the data into you know clusters that are like this is one kind of data point. This is another kind of data point. this another kind of data point without labels. That's just like the technical definition of of unsupervised. Uh so uh what you are saying I think is zero shot means the training set doesn't matter which is true like zero shot means you just plug in the test set and you ask like what kind of example is it and just like to be clear why it would ever work. So the example that we're going to do is like get some posts from the Miguel subreddit and get some posts from the UFT subreddit. And you could imagine that even without examples the model could figure out like if it's in French or something then it's probably it's probably from Miguel or something like that even without having any examples because it has a prior notion of what it means to be in the Miguel subreddit.
+
+So uh yeah uh and then uh image data we're not going to do. Uh so like for classification like what works today is multimodal LLMs. Uh this is all of them as well. Like they're all multimodal like you can plug in an image into any modern LM that usually works the best but like it it depends and like it probably going to be different in 12 months. But just so you know. Uh so we're not doing it anyways. Uh so uh all right. So I do want people to actually do this.
+
+Uh so this is not like a literally real data set. So Kaggle um I think most people know. So this is like a website that hosts competitions for precisely those kinds of things generally where they give you a data set and you try to classify the data set and do as well as possible. Uh and then there's like a secret test set which uh uh which you test on. Uh so um so what's happening I guess currently is predicting irrigation need. Uh so uh here's the data.
+
+So they give you kind of a train CSV and a test CSV which would please download
+
+all of them.
+
+I don't actually have a Kaggle API. So,
+
+Okay.
+
+I got it.
+
+Okay.
+
+Yeah.
+
+I'm like extracting it just to like a new folder.
+
+All right. Uh so please do that as well and then uh just try try working in it a little bit. So in general you could just tell code I assume like all of you have codeex not quad but you can tell codeex in the same way that they work with code to classify it with logistic regression. Then try some kind of random forest. Uh try it on the test set. Uh if you like you can split the test set into kind of validation and test. You don't have to because they actually have a secret test set and then see what works the best uh on trading set. Uh so uh please work on that. I I do want to kind of walk around as well just to make sure that everyone has actually done it or like has has started doing it at least the ones. Uh and then if you are bored uh the other task is uh is this. So just like fetch some posts from R Miguel and R U of T. Uh so obviously it's cheating to like use u of T and Miguel like literally the terms mentioned in there as predictors. So you have to first fetch the posts then remove all the obvious keywords. I would suggest just generating the obvious keywords and removing them and then trying to classify it. If you remember the way we had done the classification uh before was you can actually tell uh you can actually tell codeex or clog to classify it yourself. You kind of have to force it a little bit. So you have to say put it in a CSV and now just classify the CSV.
+
+uh and you have to separate into trading invest.
+
+Uh but yeah like uh please do did do the did everyone download the candle app right
+
+This is
+
+Yeah. And to be clear, so in the training set, there is an irrigation need column. This is what we're predicting. In the test, that column is missing.
+
+Sorry, so I misspoke before. So the test doesn't have the column. So you can't actually use it at a test set because you don't know the answers. This is what you you need to upload. Uh so you need to separate the training set to Ouch.
+
+Perhaps late.
+
+Yeah. So, yeah, I'm sorry to the people who don't have a laptop. Should have warned you. Um, so I'm going to do it as well.
+
+So this is like a Kaggle data set. uh they uh I did not work with this data set like extensively and they usually have like tricks where like if you do logistic regression or something it's not going to work as well as you might imagine because sometimes there's like outliers in the data stuff like this
+
+um uh so okay done that uh so I I'll I'll just because like it kind of occurred to me right now I'll try to see okay like uh what uh like if you see any outliers can you uh so outliers would mean here like there is like a wrong measurement somewhere here this is that's like whatever like a million which would just make the output like always one regardless of anything else so I'll just say okay like try just like try this and I'll I'll tell claw to try it and see if that helps a little bit. So currently our performance is like 84.2. Uh so I'll say uh
+
+So, I'll just like ask it to whatever suggest something. It'll let me pick whatever.
+
+Oh.
+
+All right.
+
+Uh okay. So here it so it suggest suggest clipping. So just like if anything is like below the first percentile or above the 99th percentile, just clip it to the first percentile and the 99th percentile. So what I'll say is like try flipping
+
+at 0.199
+
+percentile report validation set results.
+
+Hopefully it'll help a little bit.
+
+Not sure why it says pontificating because it it's just running the pipeline but okay.
+
+All right. Uh so
+
+so those so the accuracy is like literally the same. Those are the same. So it did not help. Uh let's let's try like one more thing just just to see. So another thing that often happens and you actually saw this before is the data is uh so the data is not like on a linear scale in the input and if you transform it with a log or something that work better. So what I'll do is I'll plot all the uh I'll plot all uh I'll plot all the distributions of each individual dimensions of the table and see what the distribution is like.
+
+I'll do that. Uh if any of them don't look Gaussian, then I'll transform them. We'll see.
+
+I'm hope hoping you're not bored because you're trying something else as well in parallel.
+
+I'm also going to try something else in parallel.
+
+What are we doing this time? Okay, it made me my histograms.
+
+All right. Uh, so soil pH, so soil pH, well, pH is kind of limited. So it's not surprising that it like it's already on. Uh, so soil moisture
+
+uh looks okay. So looks like this. This is again kind of limited. Uh so carbon looks
+
+kind of flat actually. Okay. Okay. Oh. Oh. Oh, there's conductivity again from your project. So, and that's good. Uh the temperature is range restricted. Humidity is also range restricted. Um, rainfall actually seems to vary somewhat. So, that's a little bit promising. Uh, sunlight, no. Uh, crop type is categorical. Those guys are categorical. Uh, field area also seems kind of wide and non Gaussian. uh previous seration also like
+
+it's not the CPU that's affecting the quality of the meeting it's me uh so so okay so I think kind of the uh field area is like it it kind of makes sense that the effect of field area on the need for irrigation. Like either there is nothing there or it's not necessarily linear, right? So there's no reason that the need for irrigation for a small area is going to be like so for a medium is going to be like between small and large, right? That that makes no sense. I mean, it could be, but that that would be weird. So I think the highest ROI here is to try to plot this. We'll just see what happens.
+
+So I guess so I guess it was kind of in in the figure but it's hard to see.
+
+Okay, it actually did a random forest. Uh and the validation accuracy is 98. So progress there.
+
+Uh, I will. So, like I I consider myself to be kind of done because like it's probably like not a not a lot. I'll do like one more thing regardless of if my other thing is working out. But what I want to do is I want to look at the field area. Sorry, it's not clicking. Just one sec.
+
+And we need to restart.
+
+Okay, I guess we'll do it like this. Uh, so I want to plot
+
+field area separately
+
+for different irrigation needs. uh for train split CSV. Hey,
+
+All right. So,
+
+so what it kind of looks like to me based on this is that I was maybe kind of right and medium field area kind of predicts uh is kind of like less high irrigation need than the others is the best that they can say. Well, this claims that it looks identical. Um
+
+So again, a random forest kind of does it automatically anyhow, but just just just to check
+
+Ah, see. Uh, so,
+
+oh, it's doing a test. That's convenient. Uh, so, okay. So,
+
+yeah. Amazing. So uh so what I'm so what I can do based so what I can do based on that is I can tell the logistic okay this is going going out in the middle here. So what I'm going to tell the logistic regression now is have like a low, medium, high area variable that's an extra variable and then plug it into into logistic regression.
+
+Now we're going to do it like this.
+
+So, uh, while it's working, whether that's going to work out or not, the last thing that I'm going to try here is I'm going to say, okay, I have a random force classifier and I have a logistic regression classifier. The logistic regression classifier isn't doing nearly as well as the random forest. But nevertheless, like what sometimes works is combining different models. So the easiest way to combine different models is to just run one, get the output for one, run another, get the output for the other, and then do a logistic regression on top of them. It's like on top of the outputs of the two different models. Oh, it's already Yeah. So it's it's already comparing Amazing.
+
+We got
+
+100 of a percent improvement. [laughter] But you know that's that's that's that's not nothing. Uh I suspect that the random porest would figure this out as well. This is of course also just the first try for like low, medium, high. So you might get some you might get get something different but you know the principle holds. We we squeeze something out of it. Uh I'll let you uh do the um I'll I'll let you do the combination. So the combination again you can just tell it you know combine the outputs of the model using a logistic regression on top of the outputs that are already there. Uh that might or might not squeeze out a little bit more. So on those KGO data sets so this is like not a real I think it might actually be a real one. Uh so um on those Kaggo data sets like people like that's what people do on those data sets is they squeeze out kind of a little bit of of a point of a percentage because the point is to be at the top of the leaderboard. So that's like a legitimate thing to try to do. Um uh so uh in reality like of course like you know if you're working at like Amazon or whatever and you're trying to figure out which ads to display and you're displaying them to you know a billion users then you know 0.00001 of a billion is still a lot so you can still make money. Uh so yeah. Okay. All right. So this is this one. Uh, I think it's getting late, so I'll just do the other one myself in front of you, but you're welcome to code along as well. I think it would be educational. So,
+
+do anyone
+
+I'll do waterl not Miguel recover
+
+Oh, and I got rid of the clawed window, which is nice.
+
+So, here I'm like I'm going to get a data set that's a text data set. Uh you can still do logistic regression. So if you have two uh if you have text data sets like one way to do logistic regression is like is this keyword in there then it's like one dimension of the vector is this keyword in there that's another dimension of the vector as well. So that kind of works but like not really well. Uh so an LLM usually works a lot better. So let me just scrape the data set.
+
+So in the meantime, we'll try to come up with keywords to exclude. So trying to classify our U of versus our water post
+
+and you suggest a list of keywords that they should exclude.
+
+Yeah, I'm going to try to kind of work with it. Uh, I think this is what what I would actually do. Uh, okay. So, you you'll see Toronto. Toronto. Yeah. Yeah. Okay. Uh, I'm not even sure what EV1 is.
+
+Okay. [laughter] Uh, okay. So, casing punctuation, I would say everything. Uh, so geese, if you don't know, Waterloo is famous for having a lot of geese on campus. It's also like a campus meme, but it seems like this is a valid predictor. Like if people are talking about geese, then it's watchaloo. That's like something that is fair to include. So I would say uh make a list of things to exclude
+
+uh with all kinds of casing.
+
+But don't exclude uh goose gas. Yes.
+
+Oh, it already has pulse. It's presumably working on the water loop now.
+
+Okay. So, this is exclude terms. Yeah. And it has Yeah. All right. Uh and my waterloop and heft posts are apparently ready. So, that's good. Uh so clean up your posts JSON and water posts JSON.
+
+So I can new files and exclude stuff as listed in exclude terms. py. So exclude terms. Y is the file that they made there.
+
+So in the meantime, I'm going to work on uh porting it to class. Uh I think it's going to be done very soon. So I'll wait for it to be done. Oh
+
+yeah. Okay. So I think the scraper for water is still working.
+
+Okay.
+
+Okay. So, watch loop post is now done.
+
+Okay.
+
+Okay. So, the class So, so the classification thing is I'm going to tell it
+
+So, so I'm going to tell it to run a kind of a small uh So, I'm going to tell it to do a training test separation. I'm going to first do a zero shot test set. See where it gets me. And oh, well, and then we'll uh Oh, because it's slashwaterlue, not you Waterloo.
+
+Okay.
+
+Okay. It's good thing it noticed.
+
+I'll just tell it to clean.
+
+All right. So, it's going to be just like a minute, I think. So I think we'll wait. I'm sorry if this is like slightly boring, but hopey it's a little bit exciting. See what happens. So yeah.
+
+All right.
+
+Uh okay. So title. Okay. So that's good. Uh okay. So separate the clean files into test train
+
+like a 3070 slit or something like this.
+
+Okay. Uh so what I'll say is like 4:30
+
+for the first.
+
+So here like I'm going to try to force it to do its own classification. So the way I'll do it is I'll just tell it to dump 30 from the train from waterlue 30 from uft to a new file without keeping the labels and just shuffle them. So dump
+
+So I'll make it shuffle because like I want to plug it in into itself and I wanted to not know the answers. So that's kind of how I'm doing it is I'm keeping an answer key but in a separate file.
+
+All right.
+
+Uh okay. That's a bit of a problem because it didn't actually keep I mean like maybe it knows that like the first that 0 to 29 is U of or something like this but okay uh okay so um
+
+You want to get
+
+okay.
+
+Yeah, I think it was but whatever. So, so now we know. So now we have the answers and we also have the sample posts. So sample o sample.json. Okay. So sample.json still has the subreddit. Uh so what we're going to do is from sample.json JSON remove all info except
+
+uh except the text. Dump it to a new file.
+
+Again, sorry this is like taking a while, but at the same time, like if you haven't done this before, I feel like this is the appropriate speed maybe to see it because like I could do a slideshow, but I feel like that that might be even less useful, but I am doing it live in Paris. Uh, okay. So, we have sample text. All right. So we have this uh so we're going to try to do it with zero shot. So the problem is if I do it in this window actually part of the prompt is going to be this window. So I'm just going to clo close claude
+
+and I'm going to tell it. So make sure you don't read well like so read anything except sample text JSON. Uh so in a new file indicate your guess about posts.
+
+The guesses can only be from our uft or
+
+from our water loop.
+
+So, this is not like amazing methodology. It could cheat, I guess, but uh it it it probably wouldn't. Again, kind of if I weren't cheap, I would plug in uh an API key and actually do it with an external thing here. Like the reason I'm doing it here is just that I already paid a flat rate for uh for using clock here.
+
+So it's kind of free for me and you can do it in codeex as well.
+
+Okay, it's thinking.
+
+It's a lot of thinking,
+
+but I I like that it it chose this time to not yell at me like, "Where's your API key? You need to pay me." Which happened last time I tried it.
+
+Yeah, this is probably actually pretty easy to guess. Like I could do it. I don't know if you guys can because like you were like in grad school. So like do you know that like this is UFP and this is waterloop because of the course code. So like the waterl course code is four letters that the course code is three
+
+All right. Yeah. So I think kind of the last thing. Okay. So we have guesses.mmd.
+
+Um I'll just say check guesses.m MD against. So our answers were in sample NBC's right.
+
+So uh just like to make sure that it's not hallucinating because in this case I think it might although probably not. Uh so I'll just make like make it do a plan. So like first uh dump uh uh guesses and correct answers
+
+into CSV files in the same formats
+
+then just do a computation Python. So like in Python just to make sure that it's not like trying to do math in its head.
+
+Yeah. So here kind of I suspect that actually like few shot.
+
+Yeah.
+
+All right. So here I'm guessing that doing few shot is not actually going to help. Uh although you could try. Uh so uh it seems like it's already doing pretty well. So it's getting like 87% accuracy. Uh but you might consider kind of just looking like if you were doing like a genuine flow like first of all it's unclear why you would want to classify them. probably like one reason might be that you want to actually figure out what makes it what makes one different from another which would mean that you would need to do an analysis on top of this. Uh so uh you might also consider just like taking out the obvious cues like whatever I figure out for just looking at it like the poor scopes or whatever. Uh but yeah 87 pretty good. Um, cool. Uh, all right. So, uh, I think I have meetings with most of you scheduled still. Uh, if you have a meeting with me at 6:00, wherever it is, I'm free until 5, so we can talk now. Uh, otherwise, I will see you. So, I'm sorry that the midterm grades are still not there. I will really So, I know that Monday is like the drop date, so I will make sure to get them to you before that. Uh otherwise we'll be in touch. It was a great time. Uh and we'll talk again. Uh oh actually no like we'll see you at the exam. So yeah. Okay. All right. See you. Bye. Thanks.

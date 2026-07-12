@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Decision Trees (and k-Nearest-Neighbours)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Decision Trees (and k-Nearest-Neighbours)</h1>
+</header>
+<p>Alongside <a href="neural_networks.html">neural networks</a>, the other workhorse for prediction — especially on <strong>tabular</strong> data — is the <strong>decision tree</strong>, and its ensemble cousin the <strong>random forest</strong>. We’ll motivate them by comparing how different classifiers carve up the input space.</p>
+<h2 id="the-running-example-oranges-vs.-lemons">The running example: oranges vs. lemons</h2>
+<p>Each fruit has a <strong>width</strong> and a <strong>height</strong>; we want to label it <em>orange</em> or <em>lemon</em>. A toy dataset:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">40</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>lemons  &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">width =</span> <span class="kw">rnorm</span>(n, <span class="fl">5.5</span>, <span class="fl">0.7</span>), <span class="dt">height =</span> <span class="kw">rnorm</span>(n, <span class="fl">7.5</span>, <span class="fl">0.7</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>                      <span class="dt">fruit =</span> <span class="st">&quot;lemon&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>oranges &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">width =</span> <span class="kw">rnorm</span>(n, <span class="fl">7.5</span>, <span class="fl">0.7</span>), <span class="dt">height =</span> <span class="kw">rnorm</span>(n, <span class="fl">7.0</span>, <span class="fl">0.7</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>                      <span class="dt">fruit =</span> <span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>fruit &lt;-<span class="st"> </span><span class="kw">rbind</span>(lemons, oranges)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>fruit<span class="op">$</span>fruit &lt;-<span class="st"> </span><span class="kw">factor</span>(fruit<span class="op">$</span>fruit)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(width, height, <span class="dt">color =</span> fruit, <span class="dt">shape =</span> fruit)) <span class="op">+</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="dt">lemon =</span> <span class="st">&quot;goldenrod&quot;</span>, <span class="dt">orange =</span> <span class="st">&quot;darkorange&quot;</span>)) <span class="op">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Classify a new fruit from width &amp; height&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-decision_trees/fruit-data-1.png" alt="" /><figcaption>plot of chunk fruit-data</figcaption>
+</figure>
+<h2 id="four-ways-to-draw-the-boundary">Four ways to draw the boundary</h2>
+<p>Every classifier we’ve met carves the feature space differently.</p>
+<ul>
+<li><strong>k-nearest-neighbours (kNN)</strong> — to label a new point, take its <span class="math inline">\(k\)</span> nearest training points and let them <strong>vote</strong>. (<span class="math inline">\(k = 1\)</span> is the plain nearest-neighbour of the <a href="neural_networks.html">neural networks</a> notes.) The boundary is a patchwork of little <strong>islands</strong> around clusters of each class.</li>
+<li><strong>Logistic regression</strong> — a single <strong>straight line</strong> (a hyperplane in higher dimensions): one side orange, the other lemon.</li>
+<li><strong>Neural network</strong> — logistic regression with a more flexible function: a <strong>smooth curved</strong> boundary.</li>
+<li><strong>Decision tree</strong> — repeatedly split the space in half on one feature at a time, giving a boundary of <strong>axis-parallel rectangles</strong>.</li>
+</ul>
+<h3 id="knn-concretely">kNN, concretely</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">library</span>(class)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>train_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(fruit), <span class="dv">60</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>train &lt;-<span class="st"> </span>fruit[train_idx, ]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>test  &lt;-<span class="st"> </span>fruit[<span class="op">-</span>train_idx, ]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>pred &lt;-<span class="st"> </span><span class="kw">knn</span>(<span class="dt">train =</span> train[, <span class="kw">c</span>(<span class="st">&quot;width&quot;</span>, <span class="st">&quot;height&quot;</span>)],</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>            <span class="dt">test  =</span> test[,  <span class="kw">c</span>(<span class="st">&quot;width&quot;</span>, <span class="st">&quot;height&quot;</span>)],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>            <span class="dt">cl    =</span> train<span class="op">$</span>fruit, <span class="dt">k =</span> <span class="dv">5</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="kw">mean</span>(pred <span class="op">==</span><span class="st"> </span>test<span class="op">$</span>fruit)   <span class="co"># accuracy</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>kNN needs no “training” beyond storing the data, but it must search all of it at prediction time, and “nearest” uses raw distances, so feature scaling matters.</p>
+<h2 id="a-decision-tree">A decision tree</h2>
+<p>A tree asks a sequence of yes/no questions. At each <strong>internal node</strong> a question like “is width &gt; 6.5?” sends you left or right; each <strong>leaf</strong> gives a label. It looks like an upside-down tree — root at top, leaves at the bottom.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">library</span>(rpart)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>tree &lt;-<span class="st"> </span><span class="kw">rpart</span>(fruit <span class="op">~</span><span class="st"> </span>width <span class="op">+</span><span class="st"> </span>height, <span class="dt">data =</span> fruit, <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="kw">plot</span>(tree, <span class="dt">margin =</span> <span class="fl">0.1</span>); <span class="kw">text</span>(tree, <span class="dt">use.n =</span> <span class="ot">TRUE</span>, <span class="dt">cex =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<figure>
+<img src="figure-decision_trees/tree-1.png" alt="" /><figcaption>plot of chunk tree</figcaption>
+</figure>
+<p>Read a prediction by walking root-to-leaf. Notice a tree may <strong>ignore</strong> a feature entirely if it isn’t useful, and may <strong>split on the same feature more than once</strong> at different thresholds. Let’s see the rectangular boundary it induces:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  <span class="dt">width  =</span> <span class="kw">seq</span>(<span class="kw">min</span>(fruit<span class="op">$</span>width),  <span class="kw">max</span>(fruit<span class="op">$</span>width),  <span class="dt">length.out =</span> <span class="dv">200</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="dt">height =</span> <span class="kw">seq</span>(<span class="kw">min</span>(fruit<span class="op">$</span>height), <span class="kw">max</span>(fruit<span class="op">$</span>height), <span class="dt">length.out =</span> <span class="dv">200</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>grid<span class="op">$</span>pred &lt;-<span class="st"> </span><span class="kw">predict</span>(tree, grid, <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_tile</span>(<span class="dt">data =</span> grid, <span class="kw">aes</span>(width, height, <span class="dt">fill =</span> pred), <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> fruit, <span class="kw">aes</span>(width, height, <span class="dt">color =</span> fruit, <span class="dt">shape =</span> fruit), <span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="dt">lemon =</span> <span class="st">&quot;goldenrod&quot;</span>, <span class="dt">orange =</span> <span class="st">&quot;darkorange&quot;</span>)) <span class="op">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="dt">lemon =</span> <span class="st">&quot;goldenrod&quot;</span>, <span class="dt">orange =</span> <span class="st">&quot;darkorange&quot;</span>)) <span class="op">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;A decision tree splits into axis-parallel rectangles&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-decision_trees/tree-boundary-1.png" alt="" /><figcaption>plot of chunk tree-boundary</figcaption>
+</figure>
+<h2 id="what-can-a-tree-represent">What can a tree represent?</h2>
+<p>In principle <strong>any</strong> boolean function of the inputs — including patterns a straight line <em>can’t</em> separate. The classic one is <strong>XOR / checkerboard</strong>: label <span class="math inline">\(1\)</span> on two diagonally-opposite corners, <span class="math inline">\(0\)</span> on the other two.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>xor_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="dt">x1    =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="dt">x2    =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  <span class="dt">label =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>xor_df</span></code></pre></div>
+<pre><code>##   x1 x2 label
+## 1  0  0     0
+## 2  0  1     1
+## 3  1  0     1
+## 4  1  1     0</code></pre>
+<p>No straight line separates the two labels, so <strong>logistic regression fails here</strong> — but a small tree handles it easily (split on <code>x1</code>, then on <code>x2</code> within each half).</p>
+<p>A caveat about that intuition, though: in <strong>two</strong> dimensions lots of things aren’t linearly separable, but with <strong>many</strong> features (say 50), a separating hyperplane usually <em>does</em> exist — our 2-D geometric intuition misleads us. So logistic regression works far more often than the XOR picture suggests.</p>
+<p>The flip side: some simple-looking functions are <strong>hard</strong> for trees. The <strong>parity</strong> function (output 1 iff an odd number of inputs are 1) is a high-dimensional checkerboard; a tree can represent it but needs to split on every feature repeatedly, so it takes a large tree and lots of data. As you allow bigger trees (more nodes, more depth), the <strong>hypothesis space</strong> — the set of labelings the tree can express — grows; logistic regression’s is always just “which hyperplane?”</p>
+<h2 id="how-a-tree-is-learned">How a tree is learned</h2>
+<p>Finding the <em>optimal</em> tree is NP-hard, so in practice we use a <strong>greedy heuristic</strong>: grow the tree top-down, at each step picking the split that looks best <em>right now</em>, then <strong>recurse</strong> on each side.</p>
+<pre><code>learn(data):
+  if all labels in `data` are the same -&gt; make a leaf
+  else:
+    pick the feature (and threshold) whose split is &quot;best&quot;
+    partition data into S0, S1 by that split
+    learn(S0); learn(S1)      # recurse on each side</code></pre>
+<p>Details:</p>
+<ul>
+<li><strong>Discrete feature</strong> → one branch per category. <strong>Continuous feature</strong> → pick a <strong>threshold</strong>. You don’t try every real number: only values <em>present in the data</em> can matter, so you try thresholds between adjacent observed values.</li>
+<li><strong>Which split is “best”?</strong> Simplest: try each feature’s best threshold and take the one giving the lowest <strong>error rate</strong>, where a not-yet-pure node is labeled by <strong>majority vote</strong>. One subtlety — error count can <em>stay the same</em> after a useful split, so real implementations use an information-theoretic score (information gain / Gini) instead of raw error. Same idea, more sensitive.</li>
+</ul>
+<h2 id="random-forests">Random forests</h2>
+<p>A single tree is easy to overfit and sensitive to the data. The fix that dominates tabular-data competitions (e.g. on Kaggle) is the <strong>random forest</strong>: grow <strong>many</strong> trees — each on a random resample of the data and a random subset of features — and <strong>average their predictions</strong>. Many trees ⇒ a “forest” (the name is a mild joke). You rarely build these by hand; a library does it. Empirically, for a plain table of features with labels, a random forest is often the most accurate off-the-shelf choice.</p>
+<h2 id="interpretability">Interpretability</h2>
+<p>Trees are often sold as <strong>interpretable</strong>: you can read the learned tree and say “outlook matters most; if it’s sunny, then humidity matters.” True for a <em>small</em> tree. But two caveats: a tree past a few branches is hard to hold in your head, and because it was built <strong>greedily</strong>, the feature at the root isn’t guaranteed to be the genuinely most important one. And a random forest — an average of many trees — loses this transparency almost entirely. So “interpretable” is real but limited.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li><strong>kNN</strong>: vote among the <span class="math inline">\(k\)</span> nearest training points; boundary is islands; no training, but stores and searches all data.</li>
+<li>Classifiers carve space differently — <strong>line</strong> (logistic regression), <strong>smooth curve</strong> (neural net), <strong>axis-parallel rectangles</strong> (tree), <strong>islands</strong> (kNN).</li>
+<li>A <strong>decision tree</strong> asks yes/no questions down to leaf labels; it can represent any boolean function (including XOR, which defeats a linear model), but some functions (parity) need a huge tree.</li>
+<li>Trees are learned <strong>greedily</strong> (optimal is NP-hard): pick the best split, recurse; thresholds come from values in the data; score splits by information gain.</li>
+<li><strong>Random forests</strong> — averages of many trees — are the go-to for tabular data, trading interpretability for accuracy.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Builds on <a href="neural_networks.html">neural networks</a> (nearest-neighbour, the model comparison) and <a href="logistic_regression.html">logistic regression</a> (the linear boundary).</li>
+<li>Hastie, Tibshirani &amp; Friedman, <em>The Elements of Statistical Learning</em>, Ch. 9 (trees) and Ch. 15 (random forests).</li>
+</ul>
+</div>
+</body>
+</html>

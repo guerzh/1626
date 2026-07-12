@@ -16,6 +16,73 @@ You hear this from age 12. It's true, but it doesn't tell you what to do. The po
 > "I used to think correlation implied causation. Then I took a statistics class. Now I don't." — Sounds like the class helped. — "Well, maybe."
 > *[xkcd 552]*
 
+## Warm-up: do storks deliver babies?
+
+A famous pedagogical paper (Matthews, *Teaching Statistics*, 2000, "Storks
+Deliver Babies, $p = 0.008$") plots the number of storks against the number of
+babies across European countries, runs a regression, gets a significant
+$p$-value, and uses it to warn students that $p$-values can mislead. The headline
+is fine; the analysis is a mess, and it's worth seeing *why*, because the same
+mistakes show up constantly.
+
+- **Per-capita vs. total.** The famous version plots *birth rate* (babies per
+  capita) against the *number* of storks. That's the wrong pairing: if storks
+  delivered babies, the effect would be on the total number of babies, not on the
+  rate. Mixing a per-capita quantity with a raw count is an error before you even
+  fit anything.
+- **The model doesn't fit — so don't compute the $p$-value.** Plot births per
+  year against storks and one country (Turkey) sits miles off the line. "Straight
+  line plus Gaussian noise" is visibly false, so the regression's $p$-value is not
+  a valid object. **You don't get to run the model when the model doesn't fit.**
+- **Removing outliers needs a justification.** You *may* drop Turkey — but only if
+  you have a reason (a data-entry error, a genuinely different regime), not just
+  because it ruins your line. Drop it for a real reason and the trend flattens to
+  nothing: no relationship, as expected.
+- **The "confounder" fix is silly.** The paper suggests adding *country area* as
+  a confounder, in an **additive** model $\text{babies} = \alpha + a_1\,\text{area}
+  + a_2\,\text{storks}$. There is no mechanism by which a weighted sum of area and
+  stork count produces babies. An additive confounder that "makes the effect go
+  away" is not an explanation.
+
+Now flip it. Scrape all 50 US states for number of obstetricians and number of
+births (easy with a coding agent). Births vs. obstetricians is strongly
+correlated — obviously, via **population**: more people, more of both. Divide by
+population (better: by women aged 15–44, since age structure matters) and a
+*robust* trend survives, $R^2 \approx 0.36$, tiny $p$-value, stable even if you
+drop the DC outlier. It is a real association.
+
+Would you conclude "obstetricians deliver babies"? Of course not — any causal
+link is roundabout. But here's the uncomfortable point: **if the trend had come
+out flat, or slightly positive, nobody would blink.** It would go straight into a
+textbook as a routine exercise. We scrutinise the stork claim because we know the
+answer in advance, and wave through the obstetrician claim for the same reason.
+That asymmetry means you can't actually trust the causal stories attached to most
+regressions in most textbooks.
+
+### Where this leaves you
+
+There's a spectrum of responses, from strict to lenient:
+
+1. **Maximalist:** observational regression *never* licenses a causal claim.
+   Fine as far as it goes, but it forbids most of empirical social science.
+2. **No model unless it fits, no outlier removal without justification.** Almost
+   no textbook has an exercise whose honest answer is "the model doesn't fit,
+   there is nothing you can do" — but such exercises should exist.
+3. **No causal claim without a mechanism.** In pharmacology a *mechanistic*
+   understanding means knowing, at the molecular level, how a drug produces an
+   effect — then you have a concrete prediction to test. Demanding that
+   everywhere is too strict (plenty of useful drug studies have no mechanism —
+   nobody fully knows how antidepressants work), but a plausible mechanism should
+   raise your confidence.
+
+The workable stance is **epistemic humility**: not nihilism ("believe nothing"),
+but awareness that every observational study — and to a degree every experiment —
+is bending the strict rules somewhere, so hold your conclusions loosely. What is
+*not* a matter of opinion, because the math guarantees it, is that trends which
+look completely real can arise with no causal link at all. The rest of these
+notes is about the cases where you can, carefully, do better than "there's a
+correlation."
+
 ## What "A causes B" actually means
 
 The cleanest working definition (the **counterfactual** one):
@@ -62,6 +129,18 @@ Three patterns are worth memorising:
 **3. Collider — "explaining away".** `Tar → Cancer ← Asbestos`. Marginally, Tar and Asbestos are *independent* (one is caused by smoking; the other isn't). But **conditional on Cancer**, they become *dependent*: if someone has cancer and we learn they were exposed to asbestos, that "explains" the cancer, lowering the probability they also had tar buildup. Conditioning on a collider *opens* a path that was closed.
 
 These rules together are called **d-separation**, and they're the link between a DAG's structure and the conditional-independence statements you can read off it.
+
+**A collider you've lived through.** `GPA → Admitted ← GRE`. In the general
+applicant pool, GPA and GRE are positively correlated — people good at one tend to
+be good at the other. But look only at *admitted* students, who got in on roughly
+the *sum* of the two scores, and the correlation flips negative: a high GPA
+"explains" the admission, so the admitted high-GPA students tend to have *lower*
+GREs. This is the origin of the folk belief that people are either "math people"
+or "humanities people." Inside a selective program — where you had to be strong at
+*something* to get in — being good at one subject really does predict being worse
+at the other. In the population at large it's the opposite: skills go together.
+The apparent trade-off is an artefact of conditioning on the collider
+(admission).
 
 ### Let's see it in code
 
@@ -205,6 +284,32 @@ If those three conditions hold, you can read off the causal effect of `Smoking �
 For each treated unit (e.g., a person who smoked), find an untreated unit that looks the same on every measured covariate. Compare them. Repeat. The estimated effect is the average of the within-pair differences.
 
 The hope: if you've matched on every confounder, the matched pairs differ only on the treatment, so you've recovered the counterfactual. The catch: you have to actually have measured the confounders, and you have to pair on all of them. **Propensity score matching** is the most common automated version.
+
+### When it actually works: a real example
+
+Backdoor adjustment does sometimes pay off. In a data-science course, students
+could opt in to interacting with the teaching assistants (as part of a pedagogy
+study). Students who opted in did better in the course — but so what? Maybe
+**keeners** opt in, and keeners do better anyway. The naïve "opting in → higher
+grade" association is exactly the confounded kind.
+
+The trick was to find a *proxy* for the confounder. The same course had an
+optional extra-credit assignment worth almost nothing — so doing it mostly
+signalled **enthusiasm** for the course. Draw the DAG:
+
+```
+        Enthusiasm ──┬──► did extra credit
+                     ├──► signed up for the study
+                     └──► test 1 / test 2 performance
+```
+
+Enthusiasm is unobserved, but "did the extra credit" is a measured child of it.
+Folding this structure into the data — conditioning on the extra-credit signal to
+partly account for enthusiasm — the effect of participation on first-test
+performance *survived*. That's a case where thinking about the causal structure,
+and finding an observable proxy for the confounder, turned "just a correlation"
+into a defensible causal claim. It usually doesn't work out this cleanly, which is
+exactly why it's worth doing when it does.
 
 ## A bigger DAG: brushing and heart disease
 

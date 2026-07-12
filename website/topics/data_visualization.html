@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Data Visualization</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">Data Visualization</h1>
+</header>
+<p>This is an <em>introduction</em> — ideas to think about for your project, not a set of rules. Good data visualization is a <strong>creative process</strong>; there are no answers, only better and worse choices. The goal here is to sharpen your eye, mostly by looking at what goes wrong.</p>
+<h2 id="why-bother-a-table-hides-what-a-plot-reveals">Why bother: a table hides what a plot reveals</h2>
+<p>A real story. Take years of your own cholesterol blood tests — a plain table of numbers on a hospital website — and ask an LLM to just <strong>plot</strong> them. Total cholesterol is (by definition) a weighted sum of the other components, so it can never exactly equal any single one of them. Yet on the plot, one month’s triglycerides sat <em>exactly</em> on the total-cholesterol line — visibly impossible. It was a <strong>data-entry typo</strong>: someone had keyed the total-cholesterol number into the triglycerides field. Two doctors reading the <em>table</em> never caught it (and flagged “high triglycerides, keep monitoring” for two years); the <em>picture</em> made it jump out immediately.</p>
+<p>That’s the whole case for visualization in one anecdote: plotting exposes structure — and errors — that a table conceals. Now, what makes a plot good?</p>
+<h2 id="what-makes-a-visualization-good">What makes a visualization good</h2>
+<p>A good visualization presents information in a way that is:</p>
+<ul>
+<li><strong>Comprehensible</strong> — easy to understand;</li>
+<li><strong>Non-misleading</strong> — the visual impression matches the data;</li>
+<li><strong>Memorable</strong> — it sticks.</li>
+</ul>
+<p>These pull against each other, which is why it’s a craft. A few touchstones:</p>
+<ul>
+<li><strong>Minard’s map of Napoleon’s 1812 march on Moscow</strong> — the canonical “good” example. One figure encodes geography, direction of travel, the shrinking size of the army (line thickness), temperature, and time. Memorable and information- dense — though whether you truly <em>understand</em> the campaign afterward is fair to question. Good visualization is genuinely arguable.</li>
+<li><strong>Chart junk</strong> — Edward Tufte’s term for graphical elements that don’t carry information: 3-D bar charts with fake shadows, pictures of rockets on a reliability plot, decorative gradients. They distract without informing. A 3-D bar chart almost never beats the flat version.</li>
+</ul>
+<h2 id="misleading-by-construction">Misleading by construction</h2>
+<p>Some charts are “technically accurate” yet built to mislead. The most common trick is <strong>truncating the y-axis</strong> so a small change looks huge.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>enroll &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  <span class="dt">year =</span> <span class="dv">2016</span><span class="op">:</span><span class="dv">2021</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="dt">students =</span> <span class="kw">c</span>(<span class="dv">30500</span>, <span class="dv">31000</span>, <span class="dv">31200</span>, <span class="dv">31600</span>, <span class="dv">32100</span>, <span class="dv">32400</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"># Honest: zero baseline — a modest rise.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">ggplot</span>(enroll, <span class="kw">aes</span>(year, students)) <span class="op">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">33000</span>)) <span class="op">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Zero baseline: a modest rise&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-data_visualization/truncated-axis-1.png" alt="" /><figcaption>plot of chunk truncated-axis</figcaption>
+</figure>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># Same data, truncated axis — looks dramatic.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">ggplot</span>(enroll, <span class="kw">aes</span>(year, students)) <span class="op">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">30000</span>, <span class="dv">33000</span>)) <span class="op">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Truncated axis: looks dramatic&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-data_visualization/truncated-axis-2.png" alt="" /><figcaption>plot of chunk truncated-axis</figcaption>
+</figure>
+<p>Same numbers, opposite impressions. Reading the axis labels would set you straight — but most people read the <em>bars</em>, not the labels. Truncating a bar chart’s axis edges from “emphasis” into “dishonesty.”</p>
+<p>The famous <strong>Challenger O-ring</strong> chart is a subtler failure. The engineers’ original plot of O-ring damage was so cluttered — rocket icons, no clear temperature axis — that the crucial signal (damage rises sharply at low temperature, and the launch temperature was far colder than anything ever tested) was invisible. A clean scatter of <em>damage vs. temperature</em> makes the danger obvious. Here the visualization didn’t lie; it just failed to communicate, with catastrophic consequences.</p>
+<p>Another class: <strong>misleading data, faithfully plotted.</strong> A New York Times chart showed a steep drop in the share of people rating it “essential” (10/10) to live in a democracy — implying collapsing support. But the survey was a 1–10 <em>scale</em>; collapsing it to “was it a 10 or not” throws away most of the information, and the <em>average</em> rating barely moved. The chart honestly shows a bad summary of the data.</p>
+<h2 id="designing-for-human-perception">Designing for human perception</h2>
+<p>Even an honest chart can be hard or easy to read depending on how you encode categories. <strong>Color pops out; shape much less so.</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">runif</span>(<span class="dv">100</span>), <span class="dt">y =</span> <span class="kw">runif</span>(<span class="dv">100</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>d<span class="op">$</span>special &lt;-<span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>d<span class="op">$</span>special[<span class="dv">42</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span>   <span class="co"># one odd point out of 100</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"># Encoded by COLOR: instantly visible.</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">ggplot</span>(d, <span class="kw">aes</span>(x, y, <span class="dt">color =</span> special)) <span class="op">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">`</span><span class="dt">FALSE</span><span class="st">`</span> =<span class="st"> &quot;grey60&quot;</span>, <span class="st">`</span><span class="dt">TRUE</span><span class="st">`</span> =<span class="st"> &quot;orange&quot;</span>)) <span class="op">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Encoded by COLOR: instantly visible&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-data_visualization/popout-1.png" alt="" /><figcaption>plot of chunk popout</figcaption>
+</figure>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Encoded by SHAPE (triangles vs one circle): hard to spot.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">ggplot</span>(d, <span class="kw">aes</span>(x, y, <span class="dt">shape =</span> special)) <span class="op">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_shape_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">`</span><span class="dt">FALSE</span><span class="st">`</span> =<span class="st"> </span><span class="dv">17</span>, <span class="st">`</span><span class="dt">TRUE</span><span class="st">`</span> =<span class="st"> </span><span class="dv">16</span>)) <span class="op">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Encoded by SHAPE: hard to spot&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-data_visualization/popout-2.png" alt="" /><figcaption>plot of chunk popout</figcaption>
+</figure>
+<p>The orange point among grey is <em>pre-attentive</em> — you find it without searching. The lone circle among triangles takes a deliberate hunt. Color, or color <strong>plus</strong> shape, is a stronger encoding for “which one is different?”</p>
+<h3 id="we-see-patterns-that-arent-there">We see patterns that aren’t there</h3>
+<p>Humans are pattern-detectors, which backfires on scatter plots. Points placed <strong>completely at random</strong> (a Poisson process) look <em>clumpy</em>; points arranged to <em>avoid</em> clumping look, paradoxically, more “random” and even.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co"># Truly random (Poisson): independent uniform points.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>poisson_pts &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">runif</span>(<span class="dv">120</span>), <span class="dt">y =</span> <span class="kw">runif</span>(<span class="dv">120</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="co"># Regular: a jittered grid — deliberately spread out, no clumps.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">x =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="dt">length.out =</span> <span class="dv">11</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>                 <span class="dt">y =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="dt">length.out =</span> <span class="dv">11</span>))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>g &lt;-<span class="st"> </span>g[<span class="kw">sample</span>(<span class="kw">nrow</span>(g), <span class="dv">120</span>), ]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>regular_pts &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> g<span class="op">$</span>x <span class="op">+</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">120</span>, <span class="fl">-0.03</span>, <span class="fl">0.03</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>                          <span class="dt">y =</span> g<span class="op">$</span>y <span class="op">+</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">120</span>, <span class="fl">-0.03</span>, <span class="fl">0.03</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>both &lt;-<span class="st"> </span><span class="kw">rbind</span>(</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>  <span class="kw">cbind</span>(poisson_pts, <span class="dt">type =</span> <span class="st">&quot;Actually random (looks clumped)&quot;</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>  <span class="kw">cbind</span>(regular_pts, <span class="dt">type =</span> <span class="st">&quot;Structured to avoid clumps (looks random)&quot;</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="kw">ggplot</span>(both, <span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>type) <span class="op">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<figure>
+<img src="figure-data_visualization/clumps-1.png" alt="" /><figcaption>plot of chunk clumps</figcaption>
+</figure>
+<p>Most people call the left plot “structured” and the right one “random” — it’s the other way around. The lesson: if your real data looks clumpy, don’t let a reader (or yourself) conclude there’s a pattern by eyeballing it. Back the claim with an actual <strong>numeric</strong> measure of clustering, so nobody is fooled by the eye’s appetite for patterns.</p>
+<h2 id="dashboards">Dashboards</h2>
+<p>For the project you’ll build some kind of <strong>dashboard</strong> — an <em>interactive</em> visualization, not a static pie chart. “Interactive” can mean you click a cluster and see the posts inside it, or you feed in new data and it updates. You do <strong>not</strong> need Shiny; a coding agent will happily produce a standalone interactive HTML page. Prefer a standalone artifact (a URL or file you can put on a résumé) over something that only runs inside a chat window — the content can be identical, but only one of them is shareable.</p>
+<p>For the final version, the expectation is that you <strong>iterate</strong>: keep screenshots of your first attempt and what was wrong with it, then your improvements. The value you add isn’t beating the agent at coding — it’s the creative judgment about what is informative, usable, and worth looking at.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Plot your data before trusting a table — a picture exposes structure and errors a table hides.</li>
+<li>Aim for <strong>comprehensible, non-misleading, memorable</strong>; cut <strong>chart junk</strong>.</li>
+<li>Beware honest-but-misleading tricks: <strong>truncated axes</strong>, and faithful plots of bad summaries.</li>
+<li>Encode “which is different?” with <strong>color</strong> (pre-attentive), not shape.</li>
+<li>The eye invents patterns in random data — support pattern claims with numbers.</li>
+<li>Build an <strong>interactive, standalone</strong> dashboard for the project, and show your iterations.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Claus O. Wilke, <a href="https://clauswilke.com/dataviz/"><em>Fundamentals of Data Visualization</em></a> — free online, the main source for this lecture. Leaf through it for examples near what you’re building.</li>
+<li>Edward Tufte, <em>The Visual Display of Quantitative Information</em> — chart junk, the Minard map, data-ink.</li>
+<li>Follows on from the <a href="tidyverse.html">tidyverse / ggplot</a> notes.</li>
+</ul>
+</div>
+</body>
+</html>

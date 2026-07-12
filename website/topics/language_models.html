@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>How Large Language Models Work</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">How Large Language Models Work</h1>
+</header>
+<p>This is a from-first-principles sketch of how models like Claude and ChatGPT work. It won’t be the complete story, but it builds directly on the <a href="neural_networks.html">neural networks</a> notes — and it turns out you already have almost everything you need.</p>
+<p>The one new problem is <strong>language</strong>. For the face network, an input was a fixed-size vector of pixel brightnesses: even a big image resizes to a fixed number of pixels. Language isn’t like that. A prompt is a variable number of <strong>words</strong>, and words aren’t numbers, let alone fixed-dimensional vectors. Two tricks fix this, and that’s essentially all a language model is.</p>
+<h2 id="what-an-autoregressive-language-model-does">What an (autoregressive) language model does</h2>
+<p>An <strong>autoregressive</strong> language model does one thing: given the previous context (the <strong>prompt</strong>), predict the <strong>next word</strong>.</p>
+<p>That’s it. To generate text you do it in a loop:</p>
+<pre><code>prompt                       -&gt; predict word₁
+prompt, word₁                -&gt; predict word₂
+prompt, word₁, word₂         -&gt; predict word₃
+...</code></pre>
+<p>Each predicted word is appended to the context and fed back in. That loop, one word at a time, is what’s happening when Claude or ChatGPT writes you a paragraph. (In practice the unit is a <strong>subword</strong> token, not a whole word, but the idea is identical.)</p>
+<p><strong>“Predict” in what sense?</strong> The same sense as the image classifier. You train it on a training set built from ordinary text: chop text into (context → next word) pairs.</p>
+<pre><code>&quot;To be or&quot;          -&gt; &quot;not&quot;
+&quot;To be or not&quot;      -&gt; &quot;to&quot;
+&quot;To be or not to&quot;   -&gt; &quot;be&quot;
+...</code></pre>
+<p>At <strong>training</strong> time you already know the answer and adjust the coefficients so the model gets it right (exactly like showing the face network a labelled photo). At <strong>generation</strong> time you run the same machine on a context whose continuation you <em>don’t</em> know. “Prediction” is the training verb; generation is prediction with the answer hidden.</p>
+<h2 id="trick-1-words-become-vectors-embeddings">Trick 1: words become vectors (embeddings)</h2>
+<p>Pick a fixed dimension — say 2000 — and map every word to a 2000-dimensional vector, its <strong>embedding</strong>. <code>dog</code> is some 2000-vector, <code>hat</code> is another, and so on.</p>
+<p>Where do the vectors come from? You don’t write them by hand. They are just more <strong>parameters</strong>: the model starts with random vectors and, while training to predict the next word, adjusts them along with everything else. “Figure out whatever mapping from words to vectors makes next-word prediction work best.”</p>
+<p>Once each word is a fixed-length vector, a variable-length prompt still has to become one fixed-length vector. The simplest recipe: <strong>average the word vectors</strong> in the context, then feed that average into a network whose outputs <span class="math inline">\(z_1, \ldots, z_V\)</span> score each word in the vocabulary — predict the word with the highest score, exactly the multinomial-logistic setup from the face network (with <span class="math inline">\(V\)</span> = vocabulary size in place of 6 faces). Averaging is crude but really works; the modern architecture (below) replaces it with something better.</p>
+<h3 id="the-famous-side-effect-word-arithmetic">The famous side effect: word arithmetic</h3>
+<p>When you learn embeddings <em>only</em> to predict well, something remarkable falls out for free: directions in the vector space become <strong>meaningful</strong>. The step from <code>man</code> to <code>woman</code> is roughly the same vector as the step from <code>king</code> to <code>queen</code>, so</p>
+<p><span class="math display">\[\text{vec}(\text{king}) - \text{vec}(\text{man}) + \text{vec}(\text{woman})
+\approx \text{vec}(\text{queen}).\]</span></p>
+<p>Nobody built that in. It <strong>emerges</strong> because vectors that are good for prediction end up placing analogous words in analogous positions. (It’s not fully understood, and it doesn’t always work — but it works often enough to be startling.) To actually run it you take the arithmetic result and find the vocabulary word whose embedding is closest to it — the same cosine/dot-product nearest-neighbour search from the <a href="neural_networks.html">neural networks</a> notes.</p>
+<h2 id="trick-2-the-transformer-handling-variable-length-properly">Trick 2: the transformer (handling variable length properly)</h2>
+<p>Averaging throws away word order and structure. The real architecture is the <strong>transformer</strong>. The shape is familiar — layers of hidden units — with one twist to cope with variable length.</p>
+<ul>
+<li>Convert each of the <span class="math inline">\(K\)</span> prompt words to its embedding vector.</li>
+<li>Stack <strong>layers</strong>, each the <em>same size</em> as the input (one hidden vector per input position). Transform embeddings → hidden layer → hidden layer → … — hence “trans<strong>former</strong>.”</li>
+<li>Read the final layer’s output as a fixed-dimensional vector and finish with the ordinary output layer (<span class="math inline">\(z_1, \ldots, z_V\)</span>), picking the largest — just like the face network.</li>
+</ul>
+<p>The twist: with a variable number of words you can’t have a <em>fixed</em> set of connection weights between layers. So the transformer <strong>computes the connection weights on the fly</strong> — the weight linking position <span class="math inline">\(i\)</span> to position <span class="math inline">\(j\)</span> is itself a <em>function of the vectors at <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span></em>. That data-dependent wiring (this is <strong>attention</strong>) is the whole trick; everything else is the neural network you already know. This is the <strong>decoder transformer</strong> architecture that essentially everyone uses.</p>
+<p>The training set is, again, just text — potentially all the text on the internet, cut into chunks — turned into (context → next word) pairs.</p>
+<h2 id="what-makes-chatbots-useful-icl-chain-of-thought-tools-agents">What makes chatbots useful: ICL, chain-of-thought, tools, agents</h2>
+<p>Pure next-word prediction “works but often produces bad outputs.” A few developments turned it into something useful.</p>
+<ul>
+<li><strong>In-context learning (few-shot).</strong> If the prompt contains a few <strong>worked examples</strong>, the output gets much better — the model picks up the pattern from the prompt itself, no retraining. The surprising discovery (early 2020s): train it to use worked examples in <em>one</em> domain and it starts using them across <em>other</em> domains too. (This requires setting up training the right way, not just plain gradient descent.)</li>
+<li><strong>Chain-of-thought (“think step by step”).</strong> Because the model just continues text coherently, a prompt that says <em>think step by step</em> makes the continuation coherent with <em>following that instruction</em> — so it emits a first step, then a second, then a third: a logical chain instead of a blurted guess. Same reason a math teacher says “show your work”: writing intermediate steps makes the final answer more likely to be right. This is now baked into the <strong>system prompt</strong>, so you rarely need to say it yourself.</li>
+<li><strong>Multi-hop reasoning is a weakness.</strong> Predicting the next token is bad at tasks that need lots of lookahead in one shot — playing chess well, executing a chunk of code in your head. Chain-of-thought helps but doesn’t cure it.</li>
+<li><strong>Tool use.</strong> The fix for hard sub-tasks: train the model to emit special text that the surrounding program reads as an <em>instruction</em> — “run this Python”, “do this search”, “make this figure” — instead of guessing the answer. This was the big recent advance and is exactly what Claude Code does.</li>
+<li><strong>Agents.</strong> An agent is an autoregressive model <strong>run in a loop</strong>: it predicts a plan, treats the whole running history as its new prompt, acts (often by running code via a tool), then plans again from the updated history. “Agentic” borrows the philosophical sense of <em>agency</em> — it emits text that <em>is</em> a plan and then continues as if executing it.</li>
+</ul>
+<h2 id="can-prediction-alone-produce-understanding">Can prediction alone produce understanding?</h2>
+<p>A genuinely open, and fun, question — and one where the early confident “no” has aged badly.</p>
+<p><strong>The octopus test (Bender &amp; Koller, 2020).</strong> Two people on separate islands converse by telegraph through an undersea cable. A hyper-intelligent octopus taps the cable and learns to imitate the messages statistically. Could it <em>fool</em> one person into thinking it’s the other? The paper argues no: when a genuinely novel situation arrives — “I’m being chased by a bear, I have a couple of sticks, what do I do?” — the octopus has only ever seen word patterns, never a bear or a stick (no <strong>grounding</strong> in meaning), so it can’t help. They tested GPT-2 (2020) and it indeed failed such prompts.</p>
+<p><strong>The falsifiable slip.</strong> In the appendix they predicted the argument rules out addition too: GPT-2, asked to finish <code>3 + 5 =</code>, emits <em>a</em> number but the <em>wrong</em> one, and they claimed this is “beyond the ability of any pure language model.” That’s a testable claim — and it turned out false. GPT-3 and later do addition well (up to a point: ~10-digit sums start failing, multiplication is harder, division basically doesn’t work without a tool). And it isn’t memorisation — models trained on data that provably excludes the specific answers still do it.</p>
+<p><strong>Why might prediction alone get there?</strong> An analogy from the history of astronomy. Stars are “just inputs” — dots in the sky; we never touched one. Yet astronomers, purely from observation, went geocentric → epicycles (which predicted <em>superbly</em>) → Copernicus (physically truer but initially <em>worse</em> at prediction) → <strong>Kepler’s ellipses</strong> (simpler <em>and</em> better) → Newton → Einstein. The engine was: predict the observations well while keeping the model <strong>simple</strong> (Occam’s razor). A neural network can be pushed the same way — fewer layers, coefficients kept near zero, and other regularisers all pressure it toward simpler models. So maybe, given enough data and the right pressure toward simplicity, a predictor <em>could</em> recover the underlying structure — just as astronomers did from dots of light. Or maybe it gets stuck on “epicycles” — a decent-but-wrong theory — and needs impractically much data. It’s genuinely unsettled; a claimed <em>proof</em> of impossibility from a couple of years ago has itself been argued to be flawed.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>An autoregressive LM predicts the next word/subword from the context, in a loop. Training data is ordinary text cut into (context → next word) pairs.</li>
+<li><strong>Trick 1:</strong> map words to fixed-dimensional <strong>embedding</strong> vectors — themselves learned parameters. A side effect is meaningful <strong>word arithmetic</strong> (king − man + woman ≈ queen).</li>
+<li><strong>Trick 2:</strong> the <strong>transformer</strong> handles variable-length input by computing its connection weights on the fly from the token vectors (<strong>attention</strong>); the rest is the neural network from before.</li>
+<li><strong>In-context learning</strong>, <strong>chain-of-thought</strong>, <strong>tool use</strong>, and the <strong>agent</strong> loop are what make a next-word predictor genuinely useful.</li>
+<li>Whether prediction alone can yield real understanding (the <strong>octopus test</strong>) is open — but the confident early “no” underestimated it.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Bender &amp; Koller (2020), “Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data” — the octopus thought experiment.</li>
+<li>Vaswani et al. (2017), “Attention Is All You Need” — the transformer.</li>
+<li>Mikolov et al. (2013) — word embeddings and the king/queen arithmetic.</li>
+<li>Builds on the <a href="neural_networks.html">neural networks</a> notes (templates, the dot product, the multinomial-logistic output layer).</li>
+</ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>A Modern Analysis Workflow (with an LLM)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">A Modern Analysis Workflow (with an LLM)</h1>
+</header>
+<p>This is a capstone: how to actually <em>do</em> an analysis end-to-end, both for <strong>inference</strong> (is something really going on in the data?) and for <strong>prediction</strong> (get the best labels you can) — in a modern way, using an LLM as a <strong>fast consultant you then verify.</strong></p>
+<p>The traditional move for a non-statistician is to hire a statistical consultant, because choosing the model, the test statistic, and spotting the limitations are genuinely hard. But consultants are expensive, disagree with each other, and are “quite often out to lunch.” An LLM is a stand-in that’s instant and cheap — and <em>also</em> frequently wrong. The skill is the same either way: <strong>get a proposal, then check it isn’t nonsense.</strong></p>
+<h2 id="the-inference-workflow">The inference workflow</h2>
+<p>The steps, whoever (or whatever) proposes them:</p>
+<ol type="1">
+<li><strong>Identify</strong> the predictor(s) and the variable of interest.</li>
+<li><strong>Choose a model.</strong> Maybe plain linear regression (the scatter looks like a line); maybe something nested like the <a href="hierarchical_models.html">multilevel</a> radon model.</li>
+<li><strong>Get a test statistic and its null distribution.</strong> For a textbook model both come for free (e.g. a difference divided by its standard error, compared to a <span class="math inline">\(t\)</span> distribution). Otherwise, <a href="hypothesis_testing.html">simulate the null</a> with fake data.</li>
+<li><strong>Compute the p-value</strong> — from a built-in function, or from the simulation.</li>
+<li><strong>Check the model fits.</strong> Assume a model but the data looks nothing like what it predicts, and the model is wrong. For linear regression there are <a href="regression_diagnostics.html">diagnostic plots</a>; often you must think it through yourself.</li>
+<li><strong>Name the limitations.</strong> A regression won’t tell you <span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span> vs. the reverse vs. a common cause (<a href="causal_inference.html">causal inference</a>).</li>
+</ol>
+<p>An LLM will happily do steps 1–4 and skip 5 entirely unless told. <strong>Blindly plugging in data and taking the number it prints is bad</strong>; ask it to do model checking and it usually will.</p>
+<h2 id="worked-example-the-pygmalion-effect">Worked example: the Pygmalion effect</h2>
+<p>The <strong>Pygmalion effect</strong>: if you tell a teacher their students are special, do the students actually do better? The experiment: within each of 10 army <strong>companies</strong>, one <strong>platoon</strong> was randomly given the “Pygmalion” treatment (the commander was told those soldiers had scored exceptionally), the others were controls; later, everyone took a skills test.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(Sleuth3)   <span class="co"># case1302 = the Pygmalion data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>d &lt;-<span class="st"> </span>case1302</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">str</span>(d)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    29 obs. of  3 variables:
+##  $ Company: Factor w/ 10 levels &quot;C1&quot;,&quot;C10&quot;,&quot;C2&quot;,..: 1 1 1 3 3 3 4 4 5 5 ...
+##  $ Treat  : Factor w/ 2 levels &quot;Control&quot;,&quot;Pygmalion&quot;: 2 1 1 2 1 1 2 1 2 1 ...
+##  $ Score  : num  80 63.2 69.2 83.9 63.1 81.5 68.2 76.2 76.5 59.5 ...</code></pre>
+<p><strong>The naive analysis</strong> — ignore companies, just compare the two groups:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">mean</span>(d<span class="op">$</span>Score[d<span class="op">$</span>Treat <span class="op">==</span><span class="st"> &quot;Pygmalion&quot;</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(d<span class="op">$</span>Score[d<span class="op">$</span>Treat <span class="op">==</span><span class="st"> &quot;Control&quot;</span>])</span></code></pre></div>
+<pre><code>## [1] 7.068421</code></pre>
+<p>About <strong>+7 points</strong>. This is the difference-of-means test from <a href="hypothesis_testing.html">hypothesis testing</a> — but it treats every soldier as independent and ignores that they’re grouped in companies, which may differ systematically. That’s exactly what makes this a textbook example, and it’s the first thing to flag if an LLM proposes it.</p>
+<p><strong>The fix</strong> — account for the company. A consultant (human or LLM) offers two options: the classical <strong>randomized block design</strong>, or <strong>random effects</strong> — the <a href="hierarchical_models.html">multilevel model</a> from earlier. As a random-effects model, each company gets its own offset drawn from <span class="math inline">\(\mathrm{Normal}(0, \sigma_{\text{company}})\)</span>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Score <span class="op">~</span><span class="st"> </span>Treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Company), <span class="dt">data =</span> d)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients</span></code></pre></div>
+<pre><code>##                Estimate Std. Error   t value
+## (Intercept)    71.57757   1.851367 38.662014
+## TreatPygmalion  7.12243   2.562611  2.779365</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">as.data.frame</span>(<span class="kw">VarCorr</span>(m))[, <span class="kw">c</span>(<span class="st">&quot;grp&quot;</span>, <span class="st">&quot;sdcor&quot;</span>)]</span></code></pre></div>
+<pre><code>##        grp    sdcor
+## 1  Company 3.392582
+## 2 Residual 6.550097</code></pre>
+<p>The treatment effect is <strong>7.12</strong>. Is that a lot? The raw number means nothing until you compare it to the noise — the <strong>residual SD, 6.55</strong> (how much two soldiers in the <em>same</em> company, same treatment, differ). The Pygmalion effect is about <strong>one within-group standard deviation</strong> — genuinely large.</p>
+<p><strong>Model checking.</strong> We fit coefficients, but haven’t asked whether the data looks like the model. The model claims (a) company offsets are Normal — <em>falsified</em> by a wild outlier company — and (b) the residual spread is constant across companies — <em>falsified</em> if one company’s platoons are bunched and another’s are wildly spread. With only ~3 platoons per company you mostly look for gross violations:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">ggplot</span>(d, <span class="kw">aes</span>(<span class="dt">x =</span> Company, <span class="dt">y =</span> Score, <span class="dt">color =</span> Treat)) <span class="op">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">position =</span> <span class="kw">position_dodge</span>(<span class="dt">width =</span> <span class="fl">0.3</span>)) <span class="op">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Pygmalion (red) vs control (teal) within each company&quot;</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>       <span class="dt">subtitle =</span> <span class="st">&quot;Look for an outlier company or wildly different within-company spread&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-analysis_workflow/pyg-check-1.png" alt="" /><figcaption>plot of chunk pyg-check</figcaption>
+</figure>
+<p>No company flies off the chart and the spreads are comparable, so the model’s assumptions are at least not grossly violated. (A gross violation would be one company’s points an order of magnitude more spread than the rest.)</p>
+<blockquote>
+<p><strong>A workflow hazard.</strong> The LLM computed the answer <em>before</em> we chose the model, which quietly invites the <a href="pvalue_pitfalls.html">garden of forking paths</a>: if you like the first result you report it, if not you “try another model” — inflating false positives. For a serious study, <strong>pre-commit</strong> to the analysis before seeing the outcome.</p>
+</blockquote>
+<h2 id="worked-example-auditing-a-published-effect-by-simulation">Worked example: auditing a published effect by simulation</h2>
+<p>A subtler use of the workflow: stress-testing someone else’s claim. A prominent PNAS study on <strong>active learning</strong> reports (on standardized scores) that active classrooms <em>lower</em> the <em>feeling</em> of learning by ~0.56 SD but <em>raise</em> test performance by ~0.46 SD. (For scale: the Pygmalion effect was ~1 SD, so this is about half as big.)</p>
+<p>One worry: <strong>test performance is measured by a single test.</strong> The model treats the test as fixed — the only thing that can change a prediction is switching active vs. passive. But had they given a <em>different, equally fair</em> test, would the 0.46 survive? The honest way to encode that doubt is to add a <strong>random effect for the test</strong> and see how much it widens the uncertainty. (This is an uncharitable-but-not unfair reading: adding “what if another test?” would shrink the effect in almost <em>any</em> small study — but a headline result in a top journal invites it.)</p>
+<p>Let’s simulate. Twelve instructor-semester groups, each giving <em>one</em> test (so “active” is assigned at the <strong>group</strong> level, and each group carries its own test-level offset). The effect is hard-coded at 0.46; the test-to-test SD is a judgment call (~0.5 SD, reasoned from a plausible class average wandering over a few points):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1626</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>sim_once &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n_groups =</span> <span class="dv">12</span>, <span class="dt">n_per =</span> <span class="dv">25</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>                     <span class="dt">beta_active =</span> <span class="fl">0.46</span>, <span class="dt">sigma_test =</span> <span class="fl">0.5</span>, <span class="dt">sigma_resid =</span> <span class="dv">1</span>) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>  grp    &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">group =</span> <span class="kw">factor</span>(<span class="dv">1</span><span class="op">:</span>n_groups),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>                       <span class="dt">active =</span> <span class="kw">rep</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">length.out =</span> n_groups),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>                       <span class="dt">u =</span> <span class="kw">rnorm</span>(n_groups, <span class="dv">0</span>, sigma_test))   <span class="co"># per-test offset</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>  dat &lt;-<span class="st"> </span>grp[<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>n_groups, <span class="dt">each =</span> n_per), ]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>  dat<span class="op">$</span>score &lt;-<span class="st"> </span>beta_active <span class="op">*</span><span class="st"> </span>dat<span class="op">$</span>active <span class="op">+</span><span class="st"> </span>dat<span class="op">$</span>u <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(dat), <span class="dv">0</span>, sigma_resid)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>  dat</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>}</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">sim_once</span>()</span></code></pre></div>
+<p>Fit it two ways. Plain linear regression treats all 300 students as independent; the <a href="hierarchical_models.html">multilevel</a> model knows they cluster by test:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co"># Ignores test-level clustering -&gt; SE too small.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>ci_lm   &lt;-<span class="st"> </span><span class="kw">confint</span>(<span class="kw">lm</span>(score <span class="op">~</span><span class="st"> </span>active, <span class="dt">data =</span> dat))[<span class="st">&quot;active&quot;</span>, ]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="co"># Accounts for the test as a random effect -&gt; honest (wider) SE.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>m_re    &lt;-<span class="st"> </span><span class="kw">lmer</span>(score <span class="op">~</span><span class="st"> </span>active <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>group), <span class="dt">data =</span> dat)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>ci_lmer &lt;-<span class="st"> </span><span class="kw">confint</span>(m_re, <span class="dt">parm =</span> <span class="st">&quot;active&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;Wald&quot;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="kw">rbind</span>(<span class="dt">linear_regression =</span> ci_lm, <span class="dt">random_effect =</span> ci_lmer)</span></code></pre></div>
+<pre><code>##                       2.5 %   97.5 %
+## linear_regression 1.0385482 1.487870
+## active            0.7849758 1.741443</code></pre>
+<p>The random-effect interval is <strong>wider</strong> — because “active” was really varied over only a handful of tests, not 300 independent students, so there’s far less information about it than a naive regression assumes. One draw could be a fluke, so repeat the whole experiment many times (as in the lecture) and look at the average interval width, plus how much the <em>estimate itself</em> bounces around:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>widths &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">200</span>, {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>  dd &lt;-<span class="st"> </span><span class="kw">sim_once</span>()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>  fit &lt;-<span class="st"> </span><span class="kw">lmer</span>(score <span class="op">~</span><span class="st"> </span>active <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>group), <span class="dt">data =</span> dd)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>  w_lm   &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">confint</span>(<span class="kw">lm</span>(score <span class="op">~</span><span class="st"> </span>active, <span class="dt">data =</span> dd))[<span class="st">&quot;active&quot;</span>, ])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>  w_lmer &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">confint</span>(fit, <span class="dt">parm =</span> <span class="st">&quot;active&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;Wald&quot;</span>)[<span class="dv">1</span>, ])</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>  <span class="kw">setNames</span>(<span class="kw">c</span>(w_lm, w_lmer, <span class="kw">unname</span>(<span class="kw">fixef</span>(fit)[<span class="st">&quot;active&quot;</span>])),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>           <span class="kw">c</span>(<span class="st">&quot;width_lm&quot;</span>, <span class="st">&quot;width_lmer&quot;</span>, <span class="st">&quot;estimate&quot;</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>})</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a><span class="kw">c</span>(<span class="dt">mean_width_lm   =</span> <span class="kw">mean</span>(widths[<span class="st">&quot;width_lm&quot;</span>, ]),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>  <span class="dt">mean_width_lmer =</span> <span class="kw">mean</span>(widths[<span class="st">&quot;width_lmer&quot;</span>, ]),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>  <span class="dt">sd_of_estimate  =</span> <span class="kw">sd</span>(widths[<span class="st">&quot;estimate&quot;</span>, ]))</span></code></pre></div>
+<pre><code>##   mean_width_lm mean_width_lmer  sd_of_estimate 
+##       0.5008857       1.2197142       0.2989891</code></pre>
+<p>The random-effect interval is systematically <strong>more than twice as wide</strong>, and the estimate wobbles from run to run by an amount comparable to the nominal 0.46 effect itself. An effect that looks comfortably significant under <code>lm</code> can slide toward non-significant once you admit the test itself was a draw from a population of possible tests. That is the whole point of the audit — and it’s why the lecturer “doesn’t really believe it would come out the same if you ran it again.”</p>
+<h2 id="the-prediction-workflow">The prediction workflow</h2>
+<p>When the goal is prediction, not inference, the considerations change.</p>
+<ul>
+<li><strong>Split into training / validation / test — and <em>sequester</em> the test set.</strong> The classic mistake: try many models, pick the best on the <em>validation</em> set, and report <em>that</em> number as your final accuracy. You optimized against the validation set, so its score is no longer representative. Best practice: physically set the test set aside (a different folder you don’t touch) until you’ve committed to a model. See <a href="cross_validation.html">cross-validation</a>.</li>
+<li><strong>Pick a model family by data type:</strong>
+<ul>
+<li><em>Tabular</em>: try linear/logistic regression, then a <strong>random forest</strong> — which surprisingly often wins, and which deep neural nets rarely beat on plain tables. See <a href="decision_trees.html">decision trees</a>.</li>
+<li><em>Text</em>: an <a href="language_models.html">LLM</a> usually beats keyword-vector logistic regression. Use <strong>zero-shot</strong> (ask the model to label, no examples), <strong>few-shot</strong> (put labeled examples in the prompt — in-context learning), or <strong>fine-tuning</strong> (actually change the weights — but frontier models often don’t let you). Distinct from <strong>unsupervised</strong> learning (clustering, no labels).</li>
+<li><em>Image</em>: multimodal LLMs.</li>
+</ul></li>
+</ul>
+<h3 id="worked-example-a-kaggle-tabular-problem-agent-driven">Worked example: a Kaggle tabular problem (agent-driven)</h3>
+<p>Predicting “irrigation need” from soil/weather columns. The loop is agent-driven — you <em>direct</em>, it codes — but the moves are classic:</p>
+<pre class="text"><code>&quot;Load train.csv/test.csv, fit logistic regression, report validation accuracy.&quot;
+   -&gt; ~84%.
+&quot;Clip each feature to its 1st/99th percentile (outliers) and refit.&quot;
+   -&gt; no change.
+&quot;Plot each feature&#39;s distribution.&quot;                 # find non-Gaussian columns
+&quot;Fit a random forest instead.&quot;                       -&gt; ~98%.
+&quot;Bucket field_area into low/medium/high and add it.&quot; # feature engineering
+&quot;Stack: logistic regression on top of the RF and LR outputs.&quot;  # ensembling
+   -&gt; another fraction of a percent.</code></pre>
+<p>Random forests do a lot of this (nonlinear cutoffs, interactions) automatically, which is why they jumped from 84% to 98% with no hand-holding. Squeezing the last fractions via feature engineering and <strong>stacking</strong> is exactly what wins Kaggle leaderboards — and at billion-user scale, a 0.01% gain is real money.</p>
+<h3 id="worked-example-classifying-subreddit-posts-agent-driven">Worked example: classifying subreddit posts (agent-driven)</h3>
+<p>Classify r/uwaterloo vs. r/UofT posts. Scrape both, then <strong>remove the giveaway keywords</strong> — but thoughtfully: drop “Toronto”/“Waterloo” and obvious course-code tells, yet <em>keep</em> “geese” (a fair, genuine Waterloo signal, not a cheat). Then let the LLM classify <strong>zero-shot</strong>. Watch for <strong>prompt leakage</strong>: keep the answer key in a separate file, don’t let the labels sit in the model’s context, and <strong>verify in Python</strong>, not in the model’s head. Result: ~87% — and few-shot probably wouldn’t add much here. (This continues the workshop in <a href="llm_text_analysis.html">classifying text with an LLM</a>.)</p>
+<h2 id="the-through-line-verify-everything">The through-line: verify everything</h2>
+<p>Whether the consultant is human or an LLM, the discipline is identical:</p>
+<ul>
+<li>Does the proposed model actually <strong>fit</strong> — did anyone do model checking, or just print a coefficient?</li>
+<li>When you asked for specific parameters (an effect size, a <span class="math inline">\(\sigma\)</span>), <strong>did it use them</strong>? (Audit the generated code — it will sometimes invent values you never gave.)</li>
+<li>Force real <strong>computation in code</strong>, not arithmetic “in its head.”</li>
+<li>Pre-commit for inference; sequester the test set for prediction.</li>
+</ul>
+<p>The LLM makes the mechanics fast. It does not make the judgment for you.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Two workflows: <strong>inference</strong> (choose model → null distribution → p-value → check fit → limitations) and <strong>prediction</strong> (split &amp; sequester test set → pick a model family → iterate).</li>
+<li>Use an LLM as a fast <strong>consultant</strong>, but <strong>verify</strong>: it skips model checking, invents parameters, and does math in its head unless stopped.</li>
+<li><strong>Pygmalion</strong>: a real effect (~1 SD), but only once you model the company structure with a <a href="hierarchical_models.html">random effect</a> instead of a naive difference of means.</li>
+<li><strong>Auditing by simulation</strong>: adding a random effect for the <em>test itself</em> widens the CI and can dissolve a borderline published effect.</li>
+<li><strong>Prediction</strong>: sequester the test set; tabular → random forests; text → LLMs (zero-/few-shot); squeeze accuracy with feature engineering and stacking.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Ramsey &amp; Schafer, <em>The Statistical Sleuth</em> — case 1302 is the Pygmalion data.</li>
+<li>Deslauriers et al. (2019, PNAS), “Measuring actual learning versus feeling of learning…” — the active-learning study audited above.</li>
+<li>Ties together <a href="hypothesis_testing.html">hypothesis testing</a>, <a href="hierarchical_models.html">hierarchical models</a>, <a href="regression_diagnostics.html">regression diagnostics</a>, <a href="cross_validation.html">cross-validation</a>, <a href="decision_trees.html">decision trees</a>, and <a href="language_models.html">language models</a>.</li>
+</ul>
+</div>
+</body>
+</html>

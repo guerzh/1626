@@ -361,7 +361,7 @@
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true"></a>y_new &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dt">mean =</span> coef_lqp <span class="op">%*%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, x_new), <span class="dt">sd =</span> sig_y)</span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true"></a><span class="kw">quantile</span>(y_new, <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
 <pre><code>##       2.5%      97.5% 
-## -0.2334825  2.6694801</code></pre>
+## -0.1724486  2.7498475</code></pre>
 <p>The 95% predictive interval for log-radon. Exponentiate to get the interval for raw radon.</p>
 <h3 id="new-observation-in-a-new-county">New observation in a <em>new</em> county</h3>
 <p>This is the interesting one. We don’t have <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> for the new county — but the model tells us how county-level parameters are distributed. We draw <span class="math inline">\((\alpha, \beta)\)</span> from the <strong>population distribution</strong>, then draw a <span class="math inline">\(y\)</span> given those:</p>
@@ -380,7 +380,7 @@
 <span id="cb35-13"><a href="#cb35-13" aria-hidden="true"></a>                      <span class="dt">sd =</span> sig_y)</span>
 <span id="cb35-14"><a href="#cb35-14" aria-hidden="true"></a><span class="kw">quantile</span>(y_new_unknown, <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
 <pre><code>##       2.5%      97.5% 
-## -0.8764068  2.4250217</code></pre>
+## -0.7871038  2.3904607</code></pre>
 <p>The interval is <strong>wider</strong> than for a known county — and it should be, because for a new county we have to integrate over our uncertainty about where its <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> sit.</p>
 <p>This kind of prediction is one of the big practical benefits of hierarchical models: you get principled uncertainty quantification for groups you’ve never seen.</p>
 <h2 id="another-case-study-voting-patterns-across-us-states">Another case study: voting patterns across US states</h2>
@@ -395,6 +395,75 @@
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true"></a><span class="kw">glmer</span>(bush <span class="op">~</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>(income <span class="op">|</span><span class="st"> </span>state), <span class="dt">data =</span> polls, <span class="dt">family =</span> binomial)</span></code></pre></div>
 <p>The fitted <span class="math inline">\(\beta_{s}\)</span>’s differ substantially: <strong>in poor states (Mississippi), income strongly predicts voting Republican. In rich states (Connecticut), income barely matters or even reverses.</strong> That state-level heterogeneity is what dissolves the rich-state/rich-voter paradox.</p>
 <p>This is a place where you really need a varying-slope hierarchical model — a plain logistic regression with state fixed effects would miss the substantive finding entirely.</p>
+<h2 id="case-study-shaquille-oneals-free-throws-a-binomial-multilevel-model">Case study: Shaquille O’Neal’s free throws (a binomial multilevel model)</h2>
+<p>The radon model pooled <em>continuous</em> measurements. The same machinery works for <em>counts of successes</em> — here, a <strong>binomial</strong> multilevel logistic regression.</p>
+<p>Shaquille O’Neal was a great basketball player and a famously <em>bad</em> free-throw shooter (bad enough that “Hack-a-Shaq” — deliberately fouling him — was a real strategy). We have his makes and attempts across a set of games. The question: is he <em>uniformly</em> bad, or does he have good games and bad games — and how much of the game-to-game variation is real, versus luck in a handful of attempts?</p>
+<p>We’ll build a Shaq-like dataset. (This is also the “generate fake data from the model” exercise: the DGP below <em>is</em> the model we then fit — decide <code>a</code> and <code>sigma</code>, draw a per-game offset <code>a_g ~ Normal(0, sigma)</code>, and simulate makes.)</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1626</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true"></a>n_games   &lt;-<span class="st"> </span><span class="dv">23</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true"></a>a_true    &lt;-<span class="st"> </span><span class="kw">qlogis</span>(<span class="fl">0.45</span>)   <span class="co"># baseline: ~45% on an average game</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true"></a>sigma_true&lt;-<span class="st"> </span><span class="fl">0.5</span>            <span class="co"># game-to-game spread on the logit scale</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true"></a>shaq &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true"></a>  <span class="dt">game     =</span> <span class="dv">1</span><span class="op">:</span>n_games,</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true"></a>  <span class="dt">attempts =</span> <span class="kw">sample</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">20</span>, n_games, <span class="dt">replace =</span> <span class="ot">TRUE</span>)   <span class="co"># opportunities per game (given, not modelled)</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true"></a>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true"></a>a_g          &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n_games, <span class="dv">0</span>, sigma_true)                 <span class="co"># per-game offset</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true"></a>p_g          &lt;-<span class="st"> </span><span class="kw">plogis</span>(a_true <span class="op">+</span><span class="st"> </span>a_g)                          <span class="co"># per-game make probability</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true"></a>shaq<span class="op">$</span>scored  &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n_games, shaq<span class="op">$</span>attempts, p_g)           <span class="co"># makes</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true"></a>shaq<span class="op">$</span>missed  &lt;-<span class="st"> </span>shaq<span class="op">$</span>attempts <span class="op">-</span><span class="st"> </span>shaq<span class="op">$</span>scored</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true"></a><span class="kw">head</span>(shaq)</span></code></pre></div>
+<pre><code>##   game attempts scored missed
+## 1    1       12      5      7
+## 2    2       15     10      5
+## 3    3       13      1     12
+## 4    4       14      3     11
+## 5    5       16      4     12
+## 6    6       12      2     10</code></pre>
+<p><strong>Complete pooling</strong> — one number for Shaq, ignoring games:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true"></a><span class="kw">sum</span>(shaq<span class="op">$</span>scored) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(shaq<span class="op">$</span>attempts)</span></code></pre></div>
+<pre><code>## [1] 0.3392226</code></pre>
+<p><strong>No pooling</strong> — each game on its own (<code>scored / attempts</code> is the MLE per game):</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true"></a>shaq<span class="op">$</span>p_hat &lt;-<span class="st"> </span>shaq<span class="op">$</span>scored <span class="op">/</span><span class="st"> </span>shaq<span class="op">$</span>attempts          <span class="co"># per-game MLE</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true"></a><span class="kw">head</span>(shaq[, <span class="kw">c</span>(<span class="st">&quot;game&quot;</span>, <span class="st">&quot;scored&quot;</span>, <span class="st">&quot;attempts&quot;</span>, <span class="st">&quot;p_hat&quot;</span>)])</span></code></pre></div>
+<pre><code>##   game scored attempts      p_hat
+## 1    1      5       12 0.41666667
+## 2    2     10       15 0.66666667
+## 3    3      1       13 0.07692308
+## 4    4      3       14 0.21428571
+## 5    5      4       16 0.25000000
+## 6    6      2       12 0.16666667</code></pre>
+<p>Some games look far better or worse than others — but a game with only a handful of attempts can read very high or very low off a single make or miss, so those extremes are mostly noise. Partial pooling is the fix, exactly as with radon: shrink small-sample games toward the overall rate.</p>
+<p>The data are <strong>summarised</strong> (makes-out-of-attempts), not one row per shot, so we use the <code>cbind(successes, failures)</code> response syntax instead of expanding to 0/1 rows:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(scored, missed) <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>game),</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true"></a>           <span class="dt">data =</span> shaq, <span class="dt">family =</span> binomial)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients            <span class="co"># fixed effect: the baseline intercept a</span></span></code></pre></div>
+<pre><code>##               Estimate Std. Error   z value     Pr(&gt;|z|)
+## (Intercept) -0.7737149  0.2206713 -3.506187 0.0004545762</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true"></a><span class="kw">as.data.frame</span>(<span class="kw">VarCorr</span>(m))          <span class="co"># random-effect SD: sigma (game-to-game spread)</span></span></code></pre></div>
+<pre><code>##    grp        var1 var2      vcov     sdcor
+## 1 game (Intercept) &lt;NA&gt; 0.6225979 0.7890487</code></pre>
+<p>Read it like the radon output. The <strong>fixed</strong> intercept is <span class="math inline">\(a\)</span> (the average-game logit); the <strong>random effect</strong> gives <span class="math inline">\(\hat\sigma\)</span>, the spread of the per-game offsets <span class="math inline">\(a_g \sim \mathrm{Normal}(0, \sigma)\)</span>. Turn that into a plausible range of game-level make probabilities — an average game, a good day (<span class="math inline">\(+2\sigma\)</span>), a bad day (<span class="math inline">\(-2\sigma\)</span>):</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true"></a>a_hat     &lt;-<span class="st"> </span><span class="kw">fixef</span>(m)[<span class="dv">1</span>]</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true"></a>sigma_hat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">VarCorr</span>(m))<span class="op">$</span>sdcor[<span class="dv">1</span>]</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true"></a><span class="kw">plogis</span>(a_hat <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dt">bad_day =</span> <span class="dv">-2</span>, <span class="dt">average =</span> <span class="dv">0</span>, <span class="dt">good_day =</span> <span class="dv">2</span>) <span class="op">*</span><span class="st"> </span>sigma_hat)</span></code></pre></div>
+<pre><code>##    bad_day    average   good_day 
+## 0.08692182 0.31567604 0.69091116</code></pre>
+<p>If <span class="math inline">\(\hat\sigma\)</span> were near zero, the games would be indistinguishable (partial pooling collapses to complete pooling — “uniformly bad”). A clearly positive <span class="math inline">\(\hat\sigma\)</span> says the good-day/bad-day gap is real, not just small-sample luck. Note there’s no automatic “are the games different?” hypothesis test here; the model instead <em>quantifies</em> the spread and lets you read off the plausible range.</p>
+<p>A caveat baked into the model: it assumes every attempt <em>within</em> a game shares one probability. In reality misses may be streaky (miss one, get discouraged, miss the next) — a fancier model could relax that.</p>
+<h2 id="case-study-ranking-restaurant-chains-across-cities">Case study: ranking restaurant chains across cities</h2>
+<p>A consulting problem (for CBC) with the same grouped-data flavour, done with a generalized linear model rather than <code>lmer</code>. Municipal inspectors visit restaurants and record <strong>major</strong> and <strong>minor</strong> violations. CBC wanted a single national ranking of restaurant <em>chains</em> by food-safety compliance. The obstacle: different cities train inspectors to different standards — far fewer violations are recorded in Calgary than in Toronto, largely because of what counts as a violation there, not because Calgary restaurants are cleaner. Ranking within each city is easy (just count); the hard part is a <strong>unified</strong> ranking that adjusts for the city standards.</p>
+<p>The trick is to define <em>what you rank by</em> precisely: <strong>if a Toronto-trained inspector walked into a random location of chain <span class="math inline">\(c\)</span>, how many major violations would they record on average?</strong> Model the count as Poisson with a <strong>multiplicative</strong> mean:</p>
+<p><span class="math display">\[\mathbb{E}[\text{violations}] = \lambda_0 \cdot (\text{city factor}_{\,\text{city}})
+\cdot (\text{chain factor}_{\,\text{chain}}).\]</span></p>
+<p>Multiplicative (not additive) is the natural choice, and it’s exactly what a Poisson regression with a log link gives you:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true"></a><span class="kw">glm</span>(violations <span class="op">~</span><span class="st"> </span>city <span class="op">+</span><span class="st"> </span>chain, <span class="dt">family =</span> poisson, <span class="dt">data =</span> inspections)</span></code></pre></div>
+<p>because <span class="math inline">\(\log \mathbb{E}[\text{violations}] = \log\lambda_0 + (\text{city term}) + (\text{chain term})\)</span> exponentiates to a product. Multiplicative makes sense: you wouldn’t say “Toronto always adds one violation,” you’d say “what counts as 1.5 violations in Vancouver is 2 in Toronto” — a <em>ratio</em>. Likewise across chains: “for every violation at Starbucks, expect two at Second Cup” is more sensible than a fixed additive offset.</p>
+<p>To rank, fix the city factor at the Toronto standard and read off the chain factors. Each chain’s estimate comes with a <strong>confidence interval</strong> (few inspection visits → a wide interval, like estimating a coin’s bias from a handful of flips). When two chains’ intervals <strong>overlap</strong>, their ranking is not resolved — the apparent order could be luck. That uncertainty is the honest output, not a single hard-ranked list.</p>
+<p>Note this uses <em>fixed</em> city and chain effects, not the partial pooling of the rest of these notes — but it’s the same core move: <strong>model the group (city) you don’t care about so you can compare the thing (chain) you do.</strong> With many chains seen in few cities, layering partial pooling on the chain effects would be the natural next step.</p>
 <h2 id="the-bayesian-connection">The Bayesian connection</h2>
 <p>Everything above can be reformulated as Bayesian inference:</p>
 <ul>
@@ -403,8 +472,8 @@
 <li>The hierarchical structure is part of the prior: it says “the <span class="math inline">\(\alpha_j\)</span> are drawn from a common population,” which is exactly what produces partial pooling.</li>
 </ul>
 <p>Tools like Stan, <code>rstanarm</code>, and <code>brms</code> fit these models fully Bayesianly. For the radon example:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true"></a><span class="kw">library</span>(rstanarm)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true"></a><span class="kw">stan_lmer</span>(log.radon <span class="op">~</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span>(floor <span class="op">|</span><span class="st"> </span>county), <span class="dt">data =</span> mn)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true"></a><span class="kw">library</span>(rstanarm)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true"></a><span class="kw">stan_lmer</span>(log.radon <span class="op">~</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span>(floor <span class="op">|</span><span class="st"> </span>county), <span class="dt">data =</span> mn)</span></code></pre></div>
 <p>returns posterior samples for every parameter, including each county’s <span class="math inline">\(\alpha_j\)</span>. Useful when you want full uncertainty quantification (e.g. for the rare-county-prediction case above) and when you want to use <strong>weakly informative priors</strong> to stabilize the model further on small data.</p>
 <h2 id="a-useful-mindset">A useful mindset</h2>
 <p>For grouped data, the spectrum is:</p>

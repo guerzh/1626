@@ -10,11 +10,12 @@
 # You'll be prompted for your CS password once per run unless you've
 # set up an SSH key (see the note at the bottom of this file).
 #
+# This script only ever ADDS or UPDATES remote files. It can never delete
+# anything on the server — there is no mirror/--delete mode.
+#
 # Usage:
 #   ./deploy.sh            upload changed files (never deletes anything remote)
 #   ./deploy.sh -n         dry run: show exactly what WOULD change, transfer nothing
-#   ./deploy.sh --delete   mirror: also remove remote files no longer present locally
-#   ./deploy.sh -n --delete  preview a mirror (recommended before a real --delete)
 #
 set -euo pipefail
 
@@ -37,11 +38,12 @@ EXCLUDES=(
 )
 
 DRY_RUN=()
-DELETE=()
 for arg in "$@"; do
   case "$arg" in
     -n|--dry-run) DRY_RUN=(--dry-run) ;;
-    --delete|--mirror) DELETE=(--delete --delete-after) ;;
+    --delete|--mirror)
+      echo "Refusing: $arg is disabled — this script never deletes remote files." >&2
+      exit 2 ;;
     -h|--help) awk 'NR>1 && /^#/{sub(/^# ?/,"");print;next} NR>1{exit}' "$0"; exit 0 ;;
     *) echo "Unknown option: $arg (try --help)" >&2; exit 2 ;;
   esac
@@ -62,7 +64,6 @@ DEST="${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}/"
 echo "Local : $LOCAL_DIR/"
 echo "Remote: $DEST"
 if [[ ${#DRY_RUN[@]} -gt 0 ]]; then echo "Mode  : DRY RUN (no changes will be made)"; fi
-if [[ ${#DELETE[@]} -gt 0 ]]; then echo "Mode  : MIRROR (stale remote files will be DELETED)"; fi
 echo
 
 # -a archive, -v verbose, -z compress, -h human-readable, --progress live status.
@@ -70,7 +71,6 @@ echo
 # --chmod forces web-readable permissions so the server can serve every file.
 rsync -avzh --progress \
   "${DRY_RUN[@]}" \
-  "${DELETE[@]}" \
   "${EXCLUDE_ARGS[@]}" \
   --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
   --rsync-path="mkdir -p $REMOTE_PATH && rsync" \

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>The Two Cultures, and a Predictive Workflow</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link href="../style/newstyle.css" rel="stylesheet" type="text/css">
+  <style>
+    /* topic-page-specific overrides */
+    body { padding-top: 0; }
+    .topic-body { max-width: 880px; margin: 1.5rem auto; padding: 0 1.5rem; }
+    .topic-body h1 { font-size: 1.8rem; margin-bottom: 0.4rem; color: #820000; }
+    .topic-body h2 { font-size: 1.3rem; margin-top: 2rem; }
+    .topic-body h3 { font-size: 1.1rem; margin-top: 1.3rem; }
+    .topic-body img { max-width: 100%; height: auto; }
+    .topic-body figure { margin: 1rem 0; }
+    .topic-body figcaption { display: none; }
+    .topic-body pre { background: #f6f6f6; padding: 0.6rem 0.8rem; border-radius: 3px; overflow-x: auto; }
+    .topic-body pre code { background: transparent; }
+    .topic-body code { background: #f0f0f0; padding: 0.1rem 0.3rem; border-radius: 2px; font-size: 0.92em; }
+    .topic-crumbs { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+    .topic-crumbs a { color: #134a85; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <a href="../index.html">
+    <img src="../style/imgs/mie_logo.png" style="height:40px; float: left; margin-left: 20px; margin-right: 20px;" alt="MIE logo">
+  </a>
+  <a class="navbar-brand" href="../index.html">MIE1626</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topicNavbar" aria-controls="topicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topicNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="../materials/1626s26/mie1626_syllabus.pdf">Syllabus</a></li>
+      <li class="nav-item"><a class="nav-link" href="../lectures.html">Lectures</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#mini-projects">Mini-projects</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#project">Project</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#info">Course info</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#logistics">Logistics</a></li>
+      <li class="nav-item"><a class="nav-link" href="../index.html#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="topic-body">
+<p class="topic-crumbs"><a href="../lectures.html">&larr; Lecture calendar</a></p>
+<header id="title-block-header">
+<h1 class="title">The Two Cultures, and a Predictive Workflow</h1>
+</header>
+<h2 id="breimans-two-cultures">Breiman’s two cultures</h2>
+<p>Leo Breiman — a Berkeley statistician — wrote a famous 2001 essay, <em>“Statistical Modeling: The Two Cultures,”</em> telling the story of his own move from one half of this course to the other. He identifies two ways to analyze data:</p>
+<ul>
+<li><strong>The data-modeling culture.</strong> Assume a <strong>model of how the data was generated</strong> — a mechanism, a causal structure — fit it, and draw conclusions <em>about the world</em> from it. This is the first half of the course: probability models, maximum likelihood, Bayesian inference, hypothesis testing, causal inference.</li>
+<li><strong>The algorithmic (predictive) culture.</strong> Admit you <em>don’t</em> know the true data-generating mechanism, and don’t try to. Just take the inputs and <strong>predict the outputs as accurately as possible.</strong> This is the second half: predictive modeling, cross-validation, trees and forests, neural networks.</li>
+</ul>
+<p>The trade is real. The predictive culture often <em>predicts</em> better — especially on high-dimensional data like images — but it buys accuracy at the price of <strong>understanding</strong>: a model tuned only to predict licenses no claims about how the world works. (Your instructor leans culture-1 philosophically: prediction is useful but “can only get you so far” — you can say what you’d have predicted, not why.) Sometimes you can peek inside a complex model (which hidden unit detects what — see the <a href="neural_networks.html">neural networks</a> notes), but those interpretations are shaky.</p>
+<h2 id="the-course-so-far-in-one-frame">The course so far, in one frame</h2>
+<p><strong>Inference (culture 1).</strong> The core question is often “is <span class="math inline">\(X\)</span> merely <em>associated</em> with <span class="math inline">\(Y\)</span>?” You can answer it:</p>
+<ul>
+<li><strong>by hand</strong> — simulate fake data under the null and see whether the real data is consistent with it (<a href="hypothesis_testing.html">hypothesis testing</a>);</li>
+<li><strong>by looking up a test</strong> — usually faster, and usually applied slightly <em>incorrectly</em>, because the standard test’s model is rarely exactly right;</li>
+<li><strong>with a custom generative model</strong> — write your own data-generating process, simulate, and test;</li>
+<li><strong>Bayesianly</strong> — get actual probabilities you can believe, at the cost of needing a prior (<a href="bayesian_inference.html">Bayesian inference</a>).</li>
+</ul>
+<p>None of that is <strong>causal</strong> inference. There <em>is</em> a causal structure to real data, but you usually don’t know it; only in well-studied areas do you have the pieces (how flossing affects inflammation, how inflammation affects heart disease…) to attempt it (<a href="causal_inference.html">causal inference</a>).</p>
+<p><strong>Prediction (culture 2).</strong> Many models — linear/logistic regression, trees, neural networks. Complex models often (not always) predict better, especially in high dimensions; interpreting them is possible but limited.</p>
+<p>The rest of these notes is a culture-2 worked example: predicting a tournament.</p>
+<h2 id="worked-example-predicting-the-world-cup">Worked example: predicting the World Cup</h2>
+<p>The goal: build a full <strong>bracket</strong> — a predicted winner for each game, and overall finishing odds. This is pure predictive culture: we make no claim about <em>why</em> teams win, only about <em>who probably will</em>.</p>
+<h3 id="where-do-the-input-probabilities-come-from">Where do the input probabilities come from?</h3>
+<p>Not FIFA rankings — they update slowly and ignore that some teams landed in harder groups. A better source is a <strong>prediction market</strong>.</p>
+<blockquote>
+<p><strong>Prediction markets.</strong> A site where people bet on outcomes. If a “yes” share for <em>Spain wins the World Cup</em> trades at 16.6¢ — pay 16.6¢ now, receive $1 if Spain wins — the market is implicitly pricing Spain’s chance at about <strong>17%</strong>. The site acts as a broker: as demand for “yes” rises, its price rises. For heavily-traded events these implied probabilities are usually more reliable than slow official rankings — when a goal is scored mid-game, prices adjust in seconds. (This is a lens on probability, not a betting recommendation.)</p>
+</blockquote>
+<h3 id="getting-the-data-with-an-agent">Getting the data with an agent</h3>
+<p>You don’t need a scraper. A quick, reliable workflow:</p>
+<pre class="text"><code># 1. Select-all / copy the market&#39;s probabilities from the web page,
+#    paste into polymarket_raw.txt.
+# 2. Ask the coding agent:
+&quot;Turn polymarket_raw.txt into a tidy CSV: columns team, win_prob.&quot;
+# 3. And, in parallel:
+&quot;Scrape the latest FIFA men&#39;s ranking into fifa.csv.&quot;</code></pre>
+<p>Copy-paste → “make me a CSV” is often faster and more robust than scraping ad-heavy sites like Polymarket — and you can <strong>verify</strong> the small CSV by eye. FIFA serves here only as a <strong>tiebreaker</strong> (the market rates all the no-hope teams identically).</p>
+<h3 id="from-ratings-to-match-outcomes">From ratings to match outcomes</h3>
+<p>Give each team a strength, and turn the <em>difference</em> in strength into a match probability with the <strong>logistic function</strong> from <a href="logistic_regression.html">logistic regression</a>: a bigger edge → a higher win probability, squashed into <span class="math inline">\([0,1]\)</span>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># Win probability for A vs B as a logistic function of the rating gap.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>p_win &lt;-<span class="st"> </span><span class="cf">function</span>(rating_a, rating_b, <span class="dt">scale =</span> <span class="fl">0.9</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="kw">plogis</span>(scale <span class="op">*</span><span class="st"> </span>(rating_a <span class="op">-</span><span class="st"> </span>rating_b))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">p_win</span>(<span class="fl">2.0</span>, <span class="fl">1.0</span>)   <span class="co"># a one-point-stronger team</span></span></code></pre></div>
+<pre><code>## [1] 0.7109495</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">p_win</span>(<span class="fl">1.0</span>, <span class="fl">1.0</span>)   <span class="co"># evenly matched -&gt; 0.5</span></span></code></pre></div>
+<pre><code>## [1] 0.5</code></pre>
+<p>Group games can end in draws, so we carve the same logistic score into <strong>loss / draw / win</strong> bands — a modeling choice you then <em>sanity-check</em> by simulating a few games and seeing whether the mix looks plausible (not all draws, not the same team always winning):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>outcome_probs &lt;-<span class="st"> </span><span class="cf">function</span>(rating_a, rating_b, <span class="dt">scale =</span> <span class="fl">0.9</span>) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  s &lt;-<span class="st"> </span><span class="kw">plogis</span>(scale <span class="op">*</span><span class="st"> </span>(rating_a <span class="op">-</span><span class="st"> </span>rating_b))   <span class="co"># in (0,1)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="co"># Map the score to (loss, draw, win). Draws most likely for even games.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  draw &lt;-<span class="st"> </span><span class="fl">0.30</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>s <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))          <span class="co"># peaks at s = 0.5</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  win  &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>draw) <span class="op">*</span><span class="st"> </span>s</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>  loss &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>draw) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>s)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>  <span class="kw">c</span>(<span class="dt">loss =</span> loss, <span class="dt">draw =</span> draw, <span class="dt">win =</span> win)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>}</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="kw">round</span>(<span class="kw">outcome_probs</span>(<span class="fl">2.0</span>, <span class="fl">1.0</span>), <span class="dv">2</span>)   <span class="co"># stronger team: win most likely</span></span></code></pre></div>
+<pre><code>## loss draw  win 
+## 0.24 0.17 0.59</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">round</span>(<span class="kw">outcome_probs</span>(<span class="fl">1.0</span>, <span class="fl">1.0</span>), <span class="dv">2</span>)   <span class="co"># even: draw inflated, win = loss</span></span></code></pre></div>
+<pre><code>## loss draw  win 
+## 0.35 0.30 0.35</code></pre>
+<h3 id="why-simulate-rather-than-just-rank">Why <em>simulate</em> rather than just rank?</h3>
+<p>Because the bracket structure matters: a strong team in a brutal group can be knocked out early, and raw rankings can’t see that. So we <strong>simulate the whole tournament</strong> many times and count how often each team advances — a <a href="hypothesis_testing.html">Monte-Carlo</a> estimate of finishing odds.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1626</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="co"># Illustrative strengths (NOT real market numbers) for eight teams.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>teams &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">Spain =</span> <span class="fl">2.4</span>, <span class="dt">France =</span> <span class="fl">2.3</span>, <span class="dt">Brazil =</span> <span class="fl">2.2</span>, <span class="dt">Argentina =</span> <span class="fl">2.1</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>           <span class="dt">England =</span> <span class="fl">1.8</span>, <span class="dt">Portugal =</span> <span class="fl">1.7</span>, <span class="dt">Netherlands =</span> <span class="fl">1.5</span>, <span class="dt">Canada =</span> <span class="fl">1.0</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="co"># One single-elimination match: stronger team wins with prob p_win</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="co"># (knockouts have no draws — a shootout resolves them).</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>play &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) <span class="cf">if</span> (<span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">&lt;</span><span class="st"> </span><span class="kw">p_win</span>(teams[a], teams[b])) a <span class="cf">else</span> b</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>simulate_bracket &lt;-<span class="st"> </span><span class="cf">function</span>() {</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a>  round &lt;-<span class="st"> </span><span class="kw">names</span>(teams)                 <span class="co"># 8-team bracket, seeded 1..8</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a>  <span class="cf">while</span> (<span class="kw">length</span>(round) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a>    winners &lt;-<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">length</span>(round), <span class="dt">by =</span> <span class="dv">2</span>))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true"></a>      winners &lt;-<span class="st"> </span><span class="kw">c</span>(winners, <span class="kw">play</span>(round[i], round[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]))</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true"></a>    round &lt;-<span class="st"> </span>winners</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true"></a>  }</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true"></a>  round                                 <span class="co"># the champion</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true"></a>}</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true"></a>champions &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">2000</span>, <span class="kw">simulate_bracket</span>())</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true"></a>title_odds &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">table</span>(champions) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(champions), <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true"></a><span class="kw">round</span>(title_odds, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## champions
+##       Spain      France      Brazil   Argentina     England    Portugal 
+##       0.195       0.168       0.156       0.133       0.124       0.106 
+## Netherlands      Canada 
+##       0.088       0.030</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>odds_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">team =</span> <span class="kw">names</span>(title_odds), <span class="dt">prob =</span> <span class="kw">as.numeric</span>(title_odds))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">ggplot</span>(odds_df, <span class="kw">aes</span>(<span class="kw">reorder</span>(team, prob), prob)) <span class="op">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;simulated title probability&quot;</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>       <span class="dt">title =</span> <span class="st">&quot;World Cup title odds from 2000 simulated brackets&quot;</span>)</span></code></pre></div>
+<figure>
+<img src="figure-two_cultures/simulate-plot-1.png" alt="" /><figcaption>plot of chunk simulate-plot</figcaption>
+</figure>
+<p>Notice how the small per-game edges <strong>compound</strong>: the favourite is barely ahead of the second seed in any single match, yet ends up with a clearly larger title probability, and it sits well above the even 1-in-8 (0.125) a coin-flip bracket would give. That amplification — the “rich get richer” — is exactly what raw rankings miss and simulation captures. If you fed the market’s own numbers in, you could even re-tune <code>scale</code> until the simulation is <strong>self-consistent</strong> with the market.</p>
+<h3 id="trust-but-audit">Trust, but audit</h3>
+<p>The agent will happily run all this, and it makes mistakes — here it repeatedly grabbed data it already had, and once computed standings for the <em>groups</em> instead of the tournament. If you were betting real money you’d <strong>audit the generated code</strong>; for a low-stakes office pool, less so. The honest takeaway: the optimal bracket is “the market’s probabilities, plus your own hot takes” — and the point of the exercise is that assembling this whole predictive pipeline, agent and all, is now something you can do in an afternoon.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Breiman’s <strong>two cultures</strong>: model the data-generating mechanism and infer <em>about the world</em> (culture 1) vs. predict the output as well as possible with no such claims (culture 2). This course does both halves, in that order.</li>
+<li>Culture 2 buys predictive accuracy at the cost of understanding; culture 1 buys understanding at the cost (often) of predictive power.</li>
+<li><strong>Prediction markets</strong> turn prices into calibrated-ish probabilities — a good predictive input.</li>
+<li>A predictive workflow in practice: pull probabilities, convert rating gaps to outcome probabilities with the <strong>logistic function</strong>, <strong>simulate</strong> the whole bracket (Monte Carlo) to respect its structure, and <strong>audit</strong> the agent’s code.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Breiman (2001), “Statistical Modeling: The Two Cultures,” <em>Statistical Science</em>.</li>
+<li>Ties together <a href="hypothesis_testing.html">hypothesis testing</a> (simulation), <a href="logistic_regression.html">logistic regression</a> (the outcome model), <a href="causal_inference.html">causal inference</a>, and <a href="neural_networks.html">neural networks</a> (culture-2 models).</li>
+</ul>
+</div>
+</body>
+</html>

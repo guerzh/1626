@@ -1,0 +1,107 @@
+Oh, that is unfortunate. Thank you. Uh, okay. Yeah. Yeah, I I was muted. Thank you. Yeah. Uh, okay. Hello. Uh, I guess I'll re-record. Uh, okay. So, uh, yeah. Thank you.
+
+Uh so all right so uh hello I I am now unmuted. Uh so uh I wanted to kind of show people this paper. I'm not going to go in uh kind of very much details on it. Uh but it is famous. Uh so this is uh like statistical modeling the two cultures. Uh so essentially so Leo Briman is a was a professor at Berkeley I guess. Uh so uh what he's doing in this paper is kind of telling the story of how he went from being about all about the first half of this course to being all about the second half of this course essentially. Uh so uh the idea is that there are kind of two ways in a way to analyze data and one way to analyze data is to kind of build a model of build build a model of how uh how the data has been generated. So that's the kind of thing that we've been doing for the first couple weeks and then try to draw conclusions based on the actual observations about the data generation model. Uh the other kind of approach is to say whatever we don't actually know uh the causal structure of the data. there's no way to know the causal structure of the data or like the mechanistic structure of the data. And what we're going to do instead is we're going to just like take the inputs and try to predict the outputs as as well as possible. Uh and you will not be able to draw conclusions about you know this how the world works based on that but you are going to be able to predict. Uh so um that's kind of the two cultures. Uh uh I I I myself am like much more culture one philosophically in the sense that you can predict stuff but predicting stuff uh can only get you so far. You cannot actually draw conclusions about what's going on. You can only say what you will have been able to predict uh in the past data. uh but uh yeah I wanted to mention this. So I wanted to kind of summarize uh what uh we have been doing and then do kind of like an example of a workflow of this. So um so what have been we've been doing? So um we started with inference and one kind one kind of question that you ask is like is x just like associated with with why based on the model of the world. Uh so we started by doing it by hand by just generating fake data and saying okay like is the data consistent with our hypothesis. Usually, however, you can just look up a statistical test uh that's appropriate and run it. Also, usually if you do that, you will apply it incorrectly. Uh because like that's that's that's that's what mostly happens. Uh so incorrectly at least in the sense that the model is usually not quite right. It's like kind of right, but like not necessarily quite right. Uh you can however have a custom causal model in which case you can generate fake data test hypothesis stuff like that. You can try basing inference. The problem with the the advantage of basian inference is that you get actual probabilities that you can kind of believe. The issue is that it requires that you have prior beliefs. uh none of this is causal inference, right? So kind of the upshot is there is a causal structure to any kind of data in the world, but at the same time you don't actually know that causal structure. Usually sometimes in kind of very well explored fields you have, you know, like specific studies about how whatever how flossing affects inflammation, how inflammation that then affects heart disease and so on. And you can try to do something but in general it's hard. Um so prediction there is like just like different models. Uh so you will do in project three whatever like linear logistic regression stuff like that. Uh so often but not always and especially on highdimensional data uh complex models can predict better. So certainly on images um sometimes it's possible to try to interpret what the complex model is doing. um often it's often it's difficult and any of those interpretations. So like the kind of thing that you're going to do for mini project tree it's like you can kind of say okay like you know this this hidden neuron is doing something this hidden neuron is doing like something similar but or something different but those interpretations uh can be genius. Uh all right so that's kind of what I wanted to do. Uh so uh for the last thing uh for today, what I want to do is uh kind of an analysis. Uh so uh you're welcome to follow along and to like also also make your own. So what we're going to be doing is we're going to be predicting
+
+uh so we're going to be like predicting the outcome of the World Cup which started yesterday. Um
+
+so so hopefully it's a little bit fun. So I did it yesterday. Um it it worked out like the first time. I do want I I do want to do it from scratch.
+
+Um
+
+it's the wrong one.
+
+So, okay. Um, so basically, uh, okay. All right. So, uh what we want is like want the full bracket
+
+uh for the World Cup.
+
+So, um uh so here's so here's kind of the idea. So you can uh so uh I I I assume people kind of know but uh yeah uh so there are all sorts of rankings uh that exists for that exist for soccer teams. So like there is like you know
+
+uh
+
+so you can just go off of that kind of right. Uh so FIFA ranking is actually known to be not very good. Uh so um there are those how many people know about prediction markets? Uh so um so prediction markets basically it's you know it's a website where you can go and bet on the outcome of basically anything. Uh those are generally considered at least for things where a lot of people are participating to be kind of uh uh to be kind of more reliable uh than you know whatever like FIFA rankings which are based on like they're updated uh not not very fast. Uh so uh in particular you can go to whatever. So I I do not recommend that people go and bet on things, you know. Um [laughter] uh but uh you can look at basically the inferred probabilities from what from what people bet. Uh so it seems that there's like a 54 probability that Canada is going to win and 20% probability that Bosnia is going to Bosnia is going to win according to this. Yeah. What are the percentages here? Uh this is the inferred percentage right. So there are so basically uh so this is like the inferred percentage of the outcome being yes. So inferred based on the prices of uh the prices of the bats. So usually kind of the the way so usually the way those things are set up is you can uh you know so here you can buy a yes for apparently 16.6 cents. So buy a yes means you pay 16.6 six now and you get a dollar if Spain wins the World Cup. So the implication here is that you know like that's like according to this like this website thinks that the probability of Spain winning the World Cup is about 17% because that's how much it's selling the yes. There there was another bet like SpaceX I saw though that was 100% 100% uh that's usually because it's already happened. Uh uh so um uh so what is that? Uh yeah so this is like space x market uh closing market cap above 1 trillion 1.2 I I guess that I guess it already happened so that's why it like converged to 100%. So usually so you can like look at like graphs.
+
+So so those those thing kind yeah the internet is kind of slow. Uh so those thing kind of evolve over time right. So and like Canada is about to start playing I think at 3:00 right so if someone scores a goal the prices are going to change very fast. Uh and the idea here is the website is kind of serving as a broker, right? So there's people buying yeses, there's people buying nos, and then if the demand for yeses rises, then the yeses get more expensive. So uh so uh yeah. So all right. Uh so uh so that's the kind of thing. So let's say uh so uh so this is inspired by Yeah. So here uh so I guess yeah so it evolved kind of a little bit then not not that much. Um so uh so if if you want to like look at uh whatever like the Champions League thing that evolved like so that that would be a good thing to look uh
+
+sure if they just closed it. Um
+
+I think that disappeared now. So like the the point is like if if the game is going on like there is a goal scored then there is like a very big a very fast adjust adjustment uh in in the markets. Uh there I guess they closed it. Okay. Anyways, so uh what I want to do is I want to create a bracket which uh so uh so I want to predict who's going to win. Uh uh I want a prediction for each game. I also want kind of a prediction for the final uh for the finalist. So I could in principle just go off of the poly market or the FIFA rankings. Uh so the FIFA rankings are not ideal because we already know that you know the teams are assigned to particular pots which means that some teams are maybe ranked higher but they're in a difficult group stuff like that. Uh so uh you want to do something more sophisticated let's say. Uh so in general like poly market as I said is considered uh considered by people on Reddit whatever it's considered more reliable.
+
+Uh so uh here's kind of the plan. So I want to
+
+so I want to get data from poly market uh and
+
+I want to I want to get uh the FIFA ranking as a tiebreaker. Uh, I already kind of looked and the poly market thing for for the teams that have no chance, they are all ranked kind of the same. So, I want to get the FIFA ranking to serve as a tiebreaker. And then I want to simulate the tournament.
+
+Uh, and the reason
+
+the reason to simulate is that just going off the rankings doesn't consider the fact that some teams are in more difficult groups than other teams. So just the FIFA rankings is not going to do it. The poly market might do it, but the poly market like it does have predictions for individual games, but I want to like do my own, right?
+
+So like the structure of the tournament is preset.
+
+Uh so uh sometimes the agent is going to be able to scrape uh poly market uh or or stuff like that. Uh so FIFA is able to scrape. Uh usually what I do is I just go to the website. Uh so this would be uh whatever probability uh so like world cup winner whatever.
+
+Uh so usually what I do is I just like copy paste. So uh there is so there are all those probabilities uh I think okay so Italy did not make it uh so I just like select all and paste
+
+So I'll call it like poly market raw.txt. Uh and uh what I've been doing now is once I have this data, it's easier than scraping. I will now just tell cloud code to produce a CSV
+
+and I will then be able to like verify it.
+
+So, while it's working on that, I'll also tell it to scrape the latest FIFA. Uh, so like scrape the latest FIFA ranking.
+
+Okay. So the CSV has been So the CSV has been created and here we have the uh probabilities for each country.
+
+So, okay. And that's like usually faster and more reliable than scraping, especially for like annoying websites like Poly Market which have like ads and features and things like that. Right. So, while we're doing it, I So, while we're doing it, I one will set up uh a uh a model for actually playing. So here it's going to be like slightly arbitrary but got but got to do something. So what do I want to do? So I want to
+
+so you can of course also just ask it for ideas about how to do it. it'll come up with something. Uh I have my own ideas about what I want to do that have kind of to do with the ideas in the course. So I have data that's the poly market rankings. I have the FIFA Well, I will have Oh, I now have the FIFA man's ranking. That's great. It's it has it has just appeared. So that's nice. Uh so I want to simulate a tournament. So how can I do it? Uh so I basically want a probability for winning, right? So how do I get a probability for winning? Well, I have the rankings. We have our logistic function that converts any number to probability. So that's good. So I can say something like, you know, logistic
+
+delta, right? And that would be like the probability of winning, right? So, um so that so that would be kind of for winning uh there should be some prob some probability for draw as well, right? So um so how can we do it? Well, one thing I can do is just say okay so I have my logistic delta rank and then I'll just say okay like if this is like 0 to 0.2 then it's a loss. If it's 0.2 to 0.8 it's a draw. If it's above 0.8 it's a win or something. Right? So that's kind of arbitrary. What I'm going to do is I'm going to ask it to do it and then see what the outcomes are and see if the outcomes are plausible. Uh so
+
+I'm going to say compute
+
+So I'm going to like 10 simulations of group one results. So the reason I'm doing it is just to see whether it looks like it's going to produce something that makes sense or if I like messed up this kind of this kind of function and it turns out that like everything is a draw or something which like could happen like if I said like it's like a draw unless it's like very close to zero very close to one that that that would be it Okay.
+
+like thinking too hard.
+
+Yeah. Okay. So, I'm going to stop it.
+
+So I stopped it with escape because it was trying to get the data again and I actually had it. So I just told it to use polymer market.csv.
+
+Oh, good call. Thank you. Yeah.
+
+Okay. So, it actually overruled me. I wanted the ranking. it decided to go of the strength. So it says like delta is like the difference between the logs.
+
+Uh so here I'm kind of relying on it to actually run the simulation. So here I ran the simulation.
+
+Um so uh so uh so here okay so this is like number of wins no number of draws number of losses uh and what you see here is like it actually looks pretty good right so this is kind kind of a plausible thing where it's not the case that the same team wins every time, which like usually you can't actually tell uh that you can't actually like predict for the same team to win every time. At the same time, it's not completely random. So, Mexico seems to be doing well except like South Korea sometimes wins. Uh Czecha never won once, which is kind of weird. check is pretty strong, I thought, but apparently not. So, um, so, so that's kind of like this. So, to me, okay, that that's that seems like a reasonable model. If I were putting my money in this, I would audit this code. But, uh, looks good. So what I'm now gonna So what I'm now going to do is I'm going to say okay so um I got the full uh got the full group stage data
+
+run 1000 simulations
+
+and uh compile statistics on uh top three places.
+
+Uh so now it's just going to do it. Uh so so the the point I'm making here is like you you can you can do it. Uh
+
+uh and uh yeah. So, uh, and hopefully it's kind of fun.
+
+So, while it's doing it, we'll see we'll see what the outcome is. I like probably it's just going to agree with poly market but to the to the extent and to the extent that it doesn't like poly market was the input anyways.
+
+Uh, okay. So, here it actually did something bad. It did not save the results.
+
+Uh, so I'm I'm going to ask it for that and then I'm going to ask for like how much of the time What? What?
+
+Okay. Uh so this is group stage.
+
+It's
+
+So I actually wanted like the first place, second place, third place. Uh what this seems to have done is uh did that for the group for the groups rather than for the tournament as a whole.
+
+So, it was trying to get data for the knockout stage, which hasn't actually happened yet. I stopped it.
+
+Okay. So, it now I think got what I actually wanted from it.
+
+Uh, so it's now going to produce it.
+
+So, I'm kind of trying to audit it.
+
+Okay. Uh so again I would I would audit the code except I don't care like that much. [laughter] So so uh that so so that's that's kind of the result. So obviously I just use poly market as the input. It would be better if I wanted to just predict the probability to get a pol market. So like what you see is that Spain uh so I think like all of so I think kind of the rich got richer. I think on poly market this was like 15%. Using the simulation it's like 25. I could in principle now go and make it consistent with poly market so that to the extent that poly market is correct I can figure out the correct the correct problem the correct formula here so that it's self-consistent in principle uh but what I was trying to do was produce a bracket I produced a bracket so yeah uh so uh what I wanted to do I think I could actually just tell you that it's possible to do. I think seeing that this kind of thing is possible to do at least once is just useful. Uh and also hopefully it's it's kind of fun. Uh so I personally would have an office pool. So I I I like did this and then like I think it's like bat sportsmanship to just take Poly Market and put that as your as your bat. So I I like inserted some hot takes, but I think the optimal strategy is just poly market plus your hot takes rather than mess around. Uh okay. Uh so that is uh kind of what I wanted to do today. Um yeah uh questions does this make sense? Um all right. Um so hopefully that's been useful. Uh okay. So I think the plan is basically like this. Uh I am done for today. Uh unless people have questions or requests or anything like that. Uh so we're going to do the presentations uh on Wednesday. I'm going to um post the uh order in which people present ahead of time uh so that people like uh are prepared. Um, and then I think uh that's uh I think we're going to have like another lecture on Friday uh that's going to be like basically main project 4 and then we're done.
+
+Uh all right. Um uh yeah, I'm done for today. Uh do people have requests? All right. Uh okay. Uh yeah. Okay. Well, the game is starting. Go watch. Yeah. Yeah. Yeah. So I I I believe do do they uh do they have the game on I think they have the game in front cabinets possibly.

@@ -305,6 +305,153 @@
         </td>
       </tr>
 
+      <!-- =================== WEEK 5 =================== -->
+      <tr>
+        <td><b>Week 5</b><br><span class="text-muted">June 3 &amp; June 5</span></td>
+        <td>
+          <p><b>Causal inference, revisited</b></p>
+          <p><a href="topics/causal_inference.html">Causal inference</a>
+            (<a href="topics/causal_inference.Rmd">Rmd</a>):
+            extended with the storks-vs-obstetricians warm-up (per-capita vs.
+            total, additive &ldquo;confounders,&rdquo; epistemic humility,
+            mechanistic understanding), the grad-admissions collider
+            (&ldquo;math people vs. humanities people&rdquo; as a selection
+            effect), and a real research example where backdoor adjustment paid
+            off.</p>
+
+          <p><b>Machine learning: neural networks</b></p>
+          <p><a href="topics/neural_networks.html">Neural networks</a>
+            (<a href="topics/neural_networks.Rmd">Rmd</a>):
+            faces as pixel vectors; one-nearest-neighbour; cosine similarity vs.
+            Euclidean distance; logistic regression as one template per class;
+            hidden layers as many templates; deep &ldquo;features of features&rdquo;
+            and what deep units detect (ImageNet); the deep-learning hypothesis;
+            the Hubel &amp; Wiesel biological inspiration.</p>
+          <p><a href="topics/language_models.html">How large language models work</a>
+            (<a href="topics/language_models.Rmd">Rmd</a>):
+            autoregressive next-word prediction; word embeddings and the
+            king&nbsp;&minus;&nbsp;man&nbsp;+&nbsp;woman&nbsp;&asymp;&nbsp;queen
+            arithmetic; the transformer and attention; in-context learning,
+            chain-of-thought, tool use, and agents; the Bender &amp; Koller
+            octopus test.</p>
+
+          <p><b>Communicating results</b></p>
+          <p><a href="topics/data_visualization.html">Data visualization</a>
+            (<a href="topics/data_visualization.Rmd">Rmd</a>):
+            comprehensible / non-misleading / memorable; chart junk; truncated
+            axes; colour vs. shape pop-out; seeing patterns in random data;
+            dashboards. Also: the multiplicative-Poisson
+            <a href="topics/hierarchical_models.html#case-study-ranking-restaurant-chains-across-cities">restaurant-ranking case study</a>
+            added to the multilevel notes.</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            Shalizi, <a href="https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/"><i>Advanced
+            Data Analysis from an Elementary Point of View</i></a>, Ch.&nbsp;21&ndash;24
+            (causal inference);
+            Claus O.&nbsp;Wilke, <a href="https://clauswilke.com/dataviz/"><i>Fundamentals
+            of Data Visualization</i></a> (free online).
+          </p>
+          <p><b>Just for fun</b>:
+            Matthews (2000), &ldquo;Storks Deliver Babies (<i>p</i>&nbsp;=&nbsp;0.008)&rdquo;;
+            Bender &amp; Koller (2020), &ldquo;Climbing towards NLU.&rdquo;
+          </p>
+          <p><b>Lecture recordings</b>:
+            June 3 &mdash;
+            <a href="https://www.youtube.com/watch?v=qSZvfujkotU">Part 1</a>;
+            June 5 &mdash;
+            <a href="https://www.youtube.com/watch?v=wLoTBqEQtC8">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=-j4h3c7fhr0">Part 2</a>.
+          </p>
+        </td>
+      </tr>
+
+      <!-- =================== WEEK 6 =================== -->
+      <tr style="background-color:#d9dbff">
+        <td><b>Week 6</b><br><span class="text-muted">June 10 &amp; June 12</span></td>
+        <td>
+          <p><b>Multilevel inference, one more example</b></p>
+          <p><a href="topics/hierarchical_models.html#case-study-shaquille-oneals-free-throws-a-binomial-multilevel-model">Shaquille O&rsquo;Neal&rsquo;s free throws</a>
+            (<a href="topics/hierarchical_models.Rmd">Rmd</a>):
+            a binomial multilevel logistic model (<code>glmer</code> with the
+            <code>cbind(makes, misses)</code> syntax); partial pooling across
+            games; reading off the good-day/bad-day spread.</p>
+
+          <p><b>Fairness in machine learning</b></p>
+          <p><a href="topics/fairness_ml.html">Fairness in machine learning</a>
+            (<a href="topics/fairness_ml.Rmd">Rmd</a>):
+            the COMPAS / ProPublica story; demographic parity, false-positive
+            parity, accuracy parity, calibration, anti-classification; the
+            impossibility theorem when base rates differ; why dropping the
+            protected attribute fails; label bias and feedback loops; causal /
+            counterfactual fairness; model cards.</p>
+
+          <p><b>More models: trees</b></p>
+          <p><a href="topics/decision_trees.html">Decision trees (and k-NN)</a>
+            (<a href="topics/decision_trees.Rmd">Rmd</a>):
+            how kNN, logistic regression, neural nets, and trees carve up the
+            feature space; axis-parallel splits; XOR and parity; greedy learning;
+            random forests; interpretability.</p>
+
+          <p><b>Stepping back: the two cultures</b></p>
+          <p><a href="topics/two_cultures.html">The two cultures, and a predictive workflow</a>
+            (<a href="topics/two_cultures.Rmd">Rmd</a>):
+            Breiman&rsquo;s data-modeling vs. algorithmic cultures; a recap of the
+            whole course; prediction markets; a Monte-Carlo World Cup bracket
+            simulation built with a coding agent.</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            Breiman (2001), <a href="https://projecteuclid.org/euclid.ss/1009213726">&ldquo;Statistical
+            Modeling: The Two Cultures&rdquo;</a>;
+            Corbett-Davies et al. (2017), &ldquo;Algorithmic Decision Making and the
+            Cost of Fairness.&rdquo;
+          </p>
+          <p><b>Datasets</b>:
+            COMPAS / Broward County (from the mini-project); Statistical
+            <code>Sleuth3</code>.
+          </p>
+          <p><b>Lecture recordings</b>:
+            June 10 &mdash;
+            <a href="https://www.youtube.com/watch?v=65EEk4_rboQ">Part 1</a>,
+            <a href="https://www.youtube.com/watch?v=W_9MgeTuHjs">Part 2</a>;
+            June 12 &mdash;
+            <a href="https://www.youtube.com/watch?v=4IVn7S44ePY">recording</a>.
+          </p>
+        </td>
+      </tr>
+
+      <!-- =================== WEEK 7 =================== -->
+      <tr>
+        <td><b>Week 7</b><br><span class="text-muted">June 17 &amp; June 19</span></td>
+        <td>
+          <p><b>Project presentations</b> (June 17)</p>
+          <p>Three-minute progress presentations; feedback and discussion.</p>
+
+          <p><b>A modern analysis workflow</b></p>
+          <p><a href="topics/analysis_workflow.html">A modern analysis workflow (with an LLM)</a>
+            (<a href="topics/analysis_workflow.Rmd">Rmd</a>):
+            using an LLM as a fast &mdash; but verified &mdash; statistical
+            consultant. The inference workflow via the Pygmalion effect
+            (<code>Sleuth3::case1302</code>, a multilevel model plus model
+            checking); auditing a published active-learning effect by simulation;
+            the prediction workflow (sequestering the test set; random forests;
+            zero-/few-shot LLM classification; feature engineering and stacking on
+            Kaggle; classifying subreddit posts).</p>
+        </td>
+        <td>
+          <p><b>Reading</b>:
+            Ramsey &amp; Schafer, <i>The Statistical Sleuth</i> (Pygmalion, case&nbsp;1302);
+            Deslauriers et al. (2019, PNAS), &ldquo;Measuring actual learning versus
+            feeling of learning&hellip;&rdquo;
+          </p>
+          <p><b>Lecture recordings</b>:
+            June 19 &mdash;
+            <a href="https://www.youtube.com/watch?v=CK-zL0BGjBo">recording</a>.
+          </p>
+        </td>
+      </tr>
+
       </tbody>
     </table>
 

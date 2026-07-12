@@ -1,0 +1,236 @@
+---
+title: "Fairness in Machine Learning"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+When a machine-learning model makes consequential decisions about people —
+who gets bail, who gets a loan — "is it *fair*?" turns out to be a question with
+several precise, **mutually incompatible** mathematical answers. This lecture is
+about what those answers are, why you can't have all of them at once, and why even
+picking one is philosophically fraught.
+
+## The COMPAS story
+
+Around 2015 the newsroom **ProPublica** obtained criminal-justice data from
+Broward County, Florida (which is unusually open with its data). At issue was
+**COMPAS** — *Correctional Offender Management Profiling for Alternative
+Sanctions* — a tool used in many probation departments. You feed in answers to a
+long questionnaire about a defendant (charges, prior record, whether offenses
+involved violence, and so on — memorably including "does the offender have a
+criminal alias?"), and it outputs risk scores: probability of re-offending
+("recidivating"), of a violent offense, of failure to appear.
+
+The scores drive real decisions — e.g. whether to grant bail. **Race was not an
+input.** Yet ProPublica found that, broken down by race, the system's scores and
+error patterns differed between groups — in particular, Black defendants who did
+not go on to be rearrested were more often flagged high-risk. The company replied
+that the scores were *equally predictive* across groups. Remarkably, **both were
+right** — and understanding how is the whole point.
+
+## Setup and notation
+
+- $C$ — the **classifier's** output (e.g. $1$ = "predicted to reoffend").
+- $Y$ — the **ground truth**: was the person actually rearrested? (Note already:
+  *rearrested*, not *reoffended* — they aren't the same thing. More below.)
+- $D$ — the **group** (race, sex, age...): the axis we're checking for disparity.
+- $X$ — other features used for prediction.
+
+## Five things "fair" could mean
+
+Each of these is a reasonable-sounding definition. They are **different
+quantities.**
+
+1. **Demographic parity.** The prediction rate is equal across groups:
+   $P(C = 1 \mid D = 0) = P(C = 1 \mid D = 1)$. The same fraction of each group is
+   flagged.
+2. **False-positive parity** (a.k.a. *equal opportunity*). Among people who did
+   *not* reoffend, the flag rate is equal across groups:
+   $P(C = 1 \mid Y = 0, D = 0) = P(C = 1 \mid Y = 0, D = 1)$. "Of the people who
+   didn't do it, how often are we wrong about them?" — the criterion the ProPublica
+   story turned on.
+3. **Accuracy parity.** The classifier is equally accurate in each group:
+   $P(C = Y \mid D = 0) = P(C = Y \mid D = 1)$.
+4. **Calibration.** A score means the same thing regardless of group: among
+   everyone assigned score $s$, the chance of $Y = 1$ is the same across groups.
+   "A 7 out of 10 is a 7 out of 10, whoever you are." (This is the sense in which
+   COMPAS *was* fair.)
+5. **Anti-classification.** Don't use the protected attribute (or its proxies) as
+   an input at all. This is also a *legal* concept: two people identical except for
+   a protected characteristic should get the same output.
+
+## The impossibility result
+
+**You generally cannot satisfy more than one of these at once — unless the base
+rates are equal across groups.** If the groups genuinely reoffend at different
+rates, calibration, false-positive parity, and accuracy parity mathematically
+*cannot* all hold.
+
+Here's the intuition, made concrete. Suppose a risk tool sorts people *perfectly*
+into "low risk" (actually reoffend 10% of the time) and "high risk" (80%), and we
+flag every high-risk person. It can't see the future for an individual — it only
+knows their risk bucket. Now give two groups **different base rates**: group A is
+60% high-risk, group B is 50%.
+
+
+``` r
+metrics <- function(frac_high, p_lo = 0.10, p_hi = 0.80) {
+  frac_low <- 1 - frac_high
+  # Predict 1 for the high-risk bucket, 0 for the low-risk bucket.
+  # Expected cell proportions (per person):
+  TP <- frac_high * p_hi          # high-risk & reoffend  -> predicted 1, correct
+  FP <- frac_high * (1 - p_hi)    # high-risk & not       -> predicted 1, wrong
+  FN <- frac_low  * p_lo          # low-risk  & reoffend  -> predicted 0, wrong
+  TN <- frac_low  * (1 - p_lo)    # low-risk  & not       -> predicted 0, correct
+  c(
+    flagged_rate = TP + FP,               # for demographic parity
+    error_rate   = FP + FN,               # for accuracy parity
+    FPR          = FP / (FP + TN),         # for false-positive parity
+    PPV          = TP / (TP + FP)          # calibration-ish: is a flag equally trustworthy?
+  )
+}
+
+rbind(groupA = metrics(0.60),
+      groupB = metrics(0.50))
+```
+
+```
+##        flagged_rate error_rate       FPR PPV
+## groupA          0.6       0.16 0.2500000 0.8
+## groupB          0.5       0.15 0.1818182 0.8
+```
+
+Look at the two right-hand columns. **PPV is identical** across the groups (a flag
+is exactly as trustworthy either way — the tool is "calibrated"), yet the
+**false-positive rate is not** (an innocent person in the higher-base-rate group
+is flagged more often). Equalizing FPR would force you to *deliberately be more
+wrong* about one group — which then breaks calibration and accuracy parity. That
+trade-off is not a bug in COMPAS; it's a theorem, and it bites the moment base
+rates differ. In the real Broward data they do differ (partly because the group
+populations differ in age structure, and crime skews heavily young).
+
+## If calibration is optimal, why not just use it?
+
+There's a principled argument that calibration is the "right" target. Suppose you
+attach a **cost** to each true/false positive/negative — a false positive jails
+someone who wouldn't have reoffended; a false negative releases someone who does.
+Then there's a theorem (Corbett-Davies et al.) that the decision rule minimizing
+total expected cost is always a **single threshold on the true probability**: flag
+everyone whose $P(Y=1\mid X)$ exceeds some cutoff. The intuition is trivial once
+stated — if you must jail some fixed number of people, jail the ones most likely
+to reoffend. And a threshold rule needs the score to *mean* the same thing for
+everyone — i.e. **calibration**.
+
+So calibration is optimal *if* you accept that framework. Whether you should is
+exactly what's contested.
+
+## Why "just don't use race" (anti-classification) fails
+
+The tempting fix — drop the protected attribute — doesn't deliver fairness. In the
+real COMPAS data, at the *same* score, women reoffend *less* than men. So a
+sex-blind score of 5 overstates a woman's risk relative to a man's; using it for
+bail treats her *worse* than her actual risk warrants. Dropping the attribute
+didn't remove its influence — it just hid it, and the proxies (prior record, etc.)
+carry it anyway. (Same structure as sex-blind car-insurance pricing.)
+
+## Deeper problems: the labels themselves
+
+Every criterion above assumes $Y$ measures what we care about. It often doesn't.
+
+- **Label bias.** We observe *rearrest*, not *reoffense*. If some neighborhoods
+  are policed more heavily, their residents are rearrested more for the *same*
+  underlying behavior. A model calibrated to arrests is calibrated to a biased
+  proxy.
+- **Feedback loops.** **Redlining** — blanket denial of mortgages in
+  predominantly Black neighborhoods — may once have looked like "statistical
+  discrimination," but its systemic effect was to make those neighborhoods poorer,
+  which then justifies more denials. Predictive policing can loop the same way:
+  predict crime → send police → detect more crime → predict more.
+- **No counterfactuals.** The training data only records what happened to people
+  under the decisions actually made. You never see what *would* have happened had
+  you released someone you jailed.
+- **Distribution shift.** If the world changes after training, yesterday's
+  calibrated model is today's biased one.
+- **Externalities.** A rule can be optimal for each individual decision yet harmful
+  to society in aggregate.
+
+One response is to insist on **simple, transparent** rules ("use only number of
+prior arrests"). That buys interpretability, sometimes at a real accuracy cost —
+though for COMPAS specifically, the score is largely driven by priors, age, and sex
+anyway, so transparency would lose little.
+
+## Causal / counterfactual fairness
+
+A more philosophically satisfying idea: fairness should be about a
+**counterfactual** — would the decision change if we *intervened* to switch only
+the person's protected attribute, holding their own choices fixed? This is the
+$\mathrm{do}$-operator from the [causal inference](causal_inference.html) notes, not
+plain conditioning.
+
+Non-controversial example. Your **age** influences which **major** you pick, which
+determines which **math course** you take, which affects your **physics grade**:
+
+```
+Age ──► Major ──► Math course ──► Physics grade
+```
+
+Conditioning, physics grades *do* differ by age — but only *through a channel you
+chose*. The counterfactual "hold the major fixed, flip the age" leaves the grade
+unchanged. That feels fair: age mattered only via your own major choice. (This is
+**not** anti-classification, which would just refuse to look at age.)
+
+The COMPAS-style version (from Kusner et al.'s law-school example): unobserved
+**knowledge** drives GPA, LSAT, and first-year grades; a protected attribute may
+*also* feed into GPA and LSAT (unequal access to tutoring, etc.). Counterfactual
+fairness says: predict from `knowledge`, and **don't use anything downstream of a
+protected characteristic** (here GPA and LSAT). The catch: applied strictly, "drop
+everything downstream of a protected attribute" collapses to essentially
+**demographic parity**, *and* it requires you to (a) declare which pathways are
+"fair" and (b) know the true causal graph — which you never do. So causal fairness
+is, in this view, a compelling *ideal* that's rarely implementable in practice.
+
+## What to actually do
+
+There's no criterion that's simply "correct." Practical advice:
+
+- **Measure several criteria** and report them. You know in advance at most one
+  can hold exactly — the useful information is *which*, and by how much.
+- Every criterion is attackable (its incompatibility with the others is an argument
+  against any single one), and all of them are only as good as the labels and
+  inputs, which may be biased.
+- **Model cards** (Mitchell et al.) are the emerging standard: a short document
+  accompanying a model that states its intended use, and reports performance and
+  the fairness metrics above, broken down by group.
+
+## Summary
+
+- "Fair" has several precise meanings — demographic parity, false-positive parity,
+  accuracy parity, calibration, anti-classification — and they are different
+  quantities.
+- **When base rates differ across groups, you cannot satisfy them all** (a
+  theorem). COMPAS was calibrated *and* had unequal false-positive rates — both
+  true at once.
+- **Dropping the protected attribute doesn't fix it**; proxies carry the signal,
+  and a group-blind score can mistreat a group.
+- The labels are often biased proxies (rearrest ≠ reoffense), there are feedback
+  loops and missing counterfactuals, so even calibration is on shaky ground.
+- **Causal/counterfactual fairness** is the most principled framing but needs a
+  causal graph you don't have, and tends to collapse to demographic parity.
+- Measure multiple criteria, report them (model cards), and be honest about the
+  trade-offs.
+
+## References
+
+- Angwin et al. (2016), ProPublica, "Machine Bias" — the COMPAS story.
+- Kleinberg, Mullainathan & Raghavan (2016); Chouldechova (2017) — the impossibility
+  theorems.
+- Corbett-Davies et al. (2017), "Algorithmic Decision Making and the Cost of
+  Fairness" — the threshold/utility argument for calibration.
+- Kusner et al. (2017), "Counterfactual Fairness" — the causal framing and
+  law-school example.
+- Mitchell et al. (2019), "Model Cards for Model Reporting."
+- Connects to [causal inference](causal_inference.html) (the $\mathrm{do}$-operator)
+  and to [logistic regression](logistic_regression.html) (FPR/FNR/PPV/NPV).

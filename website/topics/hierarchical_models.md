@@ -410,7 +410,7 @@ quantile(y_new, c(0.025, 0.975))
 
 ```
 ##       2.5%      97.5% 
-## -0.2334825  2.6694801
+## -0.1724486  2.7498475
 ```
 
 The 95% predictive interval for log-radon. Exponentiate to get the interval for raw radon.
@@ -439,7 +439,7 @@ quantile(y_new_unknown, c(0.025, 0.975))
 
 ```
 ##       2.5%      97.5% 
-## -0.8764068  2.4250217
+## -0.7871038  2.3904607
 ```
 
 The interval is **wider** than for a known county — and it should be, because for a new county we have to integrate over our uncertainty about where its $\alpha$ and $\beta$ sit.
@@ -473,6 +473,185 @@ glmer(bush ~ income + (income | state), data = polls, family = binomial)
 The fitted $\beta_{s}$'s differ substantially: **in poor states (Mississippi), income strongly predicts voting Republican. In rich states (Connecticut), income barely matters or even reverses.** That state-level heterogeneity is what dissolves the rich-state/rich-voter paradox.
 
 This is a place where you really need a varying-slope hierarchical model — a plain logistic regression with state fixed effects would miss the substantive finding entirely.
+
+## Case study: Shaquille O'Neal's free throws (a binomial multilevel model)
+
+The radon model pooled *continuous* measurements. The same machinery works for
+*counts of successes* — here, a **binomial** multilevel logistic regression.
+
+Shaquille O'Neal was a great basketball player and a famously *bad* free-throw
+shooter (bad enough that "Hack-a-Shaq" — deliberately fouling him — was a real
+strategy). We have his makes and attempts across a set of games. The question:
+is he *uniformly* bad, or does he have good games and bad games — and how much of
+the game-to-game variation is real, versus luck in a handful of attempts?
+
+We'll build a Shaq-like dataset. (This is also the "generate fake data from the
+model" exercise: the DGP below *is* the model we then fit — decide `a` and
+`sigma`, draw a per-game offset `a_g ~ Normal(0, sigma)`, and simulate makes.)
+
+
+``` r
+library(lme4)
+library(dplyr)
+set.seed(1626)
+
+n_games   <- 23
+a_true    <- qlogis(0.45)   # baseline: ~45% on an average game
+sigma_true<- 0.5            # game-to-game spread on the logit scale
+
+shaq <- data.frame(
+  game     = 1:n_games,
+  attempts = sample(4:20, n_games, replace = TRUE)   # opportunities per game (given, not modelled)
+)
+a_g          <- rnorm(n_games, 0, sigma_true)                 # per-game offset
+p_g          <- plogis(a_true + a_g)                          # per-game make probability
+shaq$scored  <- rbinom(n_games, shaq$attempts, p_g)           # makes
+shaq$missed  <- shaq$attempts - shaq$scored
+head(shaq)
+```
+
+```
+##   game attempts scored missed
+## 1    1       12      5      7
+## 2    2       15     10      5
+## 3    3       13      1     12
+## 4    4       14      3     11
+## 5    5       16      4     12
+## 6    6       12      2     10
+```
+
+**Complete pooling** — one number for Shaq, ignoring games:
+
+
+``` r
+sum(shaq$scored) / sum(shaq$attempts)
+```
+
+```
+## [1] 0.3392226
+```
+
+**No pooling** — each game on its own (`scored / attempts` is the MLE per game):
+
+
+``` r
+shaq$p_hat <- shaq$scored / shaq$attempts          # per-game MLE
+head(shaq[, c("game", "scored", "attempts", "p_hat")])
+```
+
+```
+##   game scored attempts      p_hat
+## 1    1      5       12 0.41666667
+## 2    2     10       15 0.66666667
+## 3    3      1       13 0.07692308
+## 4    4      3       14 0.21428571
+## 5    5      4       16 0.25000000
+## 6    6      2       12 0.16666667
+```
+
+Some games look far better or worse than others — but a game with only a handful of
+attempts can read very high or very low off a single make or miss, so those extremes
+are mostly noise. Partial pooling is the fix, exactly as with radon: shrink
+small-sample games toward the overall rate.
+
+The data are **summarised** (makes-out-of-attempts), not one row per shot, so we use
+the `cbind(successes, failures)` response syntax instead of expanding to 0/1 rows:
+
+
+``` r
+m <- glmer(cbind(scored, missed) ~ 1 + (1 | game),
+           data = shaq, family = binomial)
+summary(m)$coefficients            # fixed effect: the baseline intercept a
+```
+
+```
+##               Estimate Std. Error   z value     Pr(>|z|)
+## (Intercept) -0.7737149  0.2206713 -3.506187 0.0004545762
+```
+
+``` r
+as.data.frame(VarCorr(m))          # random-effect SD: sigma (game-to-game spread)
+```
+
+```
+##    grp        var1 var2      vcov     sdcor
+## 1 game (Intercept) <NA> 0.6225979 0.7890487
+```
+
+Read it like the radon output. The **fixed** intercept is $a$ (the average-game
+logit); the **random effect** gives $\hat\sigma$, the spread of the per-game
+offsets $a_g \sim \mathrm{Normal}(0, \sigma)$. Turn that into a plausible range of
+game-level make probabilities — an average game, a good day ($+2\sigma$), a bad day
+($-2\sigma$):
+
+
+``` r
+a_hat     <- fixef(m)[1]
+sigma_hat <- as.data.frame(VarCorr(m))$sdcor[1]
+plogis(a_hat + c(bad_day = -2, average = 0, good_day = 2) * sigma_hat)
+```
+
+```
+##    bad_day    average   good_day 
+## 0.08692182 0.31567604 0.69091116
+```
+
+If $\hat\sigma$ were near zero, the games would be indistinguishable (partial
+pooling collapses to complete pooling — "uniformly bad"). A clearly positive
+$\hat\sigma$ says the good-day/bad-day gap is real, not just small-sample luck.
+Note there's no automatic "are the games different?" hypothesis test here; the
+model instead *quantifies* the spread and lets you read off the plausible range.
+
+A caveat baked into the model: it assumes every attempt *within* a game shares one
+probability. In reality misses may be streaky (miss one, get discouraged, miss the
+next) — a fancier model could relax that.
+
+## Case study: ranking restaurant chains across cities
+
+A consulting problem (for CBC) with the same grouped-data flavour, done with a
+generalized linear model rather than `lmer`. Municipal inspectors visit
+restaurants and record **major** and **minor** violations. CBC wanted a single
+national ranking of restaurant *chains* by food-safety compliance. The obstacle:
+different cities train inspectors to different standards — far fewer violations
+are recorded in Calgary than in Toronto, largely because of what counts as a
+violation there, not because Calgary restaurants are cleaner. Ranking within each
+city is easy (just count); the hard part is a **unified** ranking that adjusts for
+the city standards.
+
+The trick is to define *what you rank by* precisely: **if a Toronto-trained
+inspector walked into a random location of chain $c$, how many major violations
+would they record on average?** Model the count as Poisson with a **multiplicative**
+mean:
+
+$$\mathbb{E}[\text{violations}] = \lambda_0 \cdot (\text{city factor}_{\,\text{city}})
+\cdot (\text{chain factor}_{\,\text{chain}}).$$
+
+Multiplicative (not additive) is the natural choice, and it's exactly what a
+Poisson regression with a log link gives you:
+
+```r
+glm(violations ~ city + chain, family = poisson, data = inspections)
+```
+
+because $\log \mathbb{E}[\text{violations}] = \log\lambda_0 + (\text{city term}) +
+(\text{chain term})$ exponentiates to a product. Multiplicative makes sense: you
+wouldn't say "Toronto always adds one violation," you'd say "what counts as 1.5
+violations in Vancouver is 2 in Toronto" — a *ratio*. Likewise across chains: "for
+every violation at Starbucks, expect two at Second Cup" is more sensible than a
+fixed additive offset.
+
+To rank, fix the city factor at the Toronto standard and read off the chain
+factors. Each chain's estimate comes with a **confidence interval** (few
+inspection visits → a wide interval, like estimating a coin's bias from a handful
+of flips). When two chains' intervals **overlap**, their ranking is not resolved
+— the apparent order could be luck. That uncertainty is the honest output, not a
+single hard-ranked list.
+
+Note this uses *fixed* city and chain effects, not the partial pooling of the rest
+of these notes — but it's the same core move: **model the group (city) you don't
+care about so you can compare the thing (chain) you do.** With many chains seen in
+few cities, layering partial pooling on the chain effects would be the natural next
+step.
 
 ## The Bayesian connection
 
