@@ -184,9 +184,11 @@ what is informative, usable, and worth looking at.
 
 ## References
 
+- Kieran Healy, [*Data Visualization: A Practical Introduction*](https://socviz.co/)
+  — free online, the main source for this lecture. It works in ggplot throughout,
+  so its examples drop straight into your own code.
 - Claus O. Wilke, [*Fundamentals of Data Visualization*](https://clauswilke.com/dataviz/)
-  — free online, the main source for this lecture. Leaf through it for examples
-  near what you're building.
+  — free online. Leaf through it for examples near what you're building.
 - Edward Tufte, *The Visual Display of Quantitative Information* — chart junk, the
   Minard map, data-ink.
 - Follows on from the [tidyverse / ggplot](tidyverse.html) notes.
