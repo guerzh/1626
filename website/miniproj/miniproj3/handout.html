@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="MIE 1626" />
+  <title>Mini-Project 3</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {  background-color: #f8f8f8; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ef2929; } /* Alert */
+    code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #c4a000; } /* Attribute */
+    code span.bn { color: #0000cf; } /* BaseN */
+    code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4e9a06; } /* Char */
+    code span.cn { color: #000000; } /* Constant */
+    code span.co { color: #8f5902; font-style: italic; } /* Comment */
+    code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+    code span.dt { color: #204a87; } /* DataType */
+    code span.dv { color: #0000cf; } /* DecVal */
+    code span.er { color: #a40000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #0000cf; } /* Float */
+    code span.fu { color: #000000; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+    code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+    code span.ot { color: #8f5902; } /* Other */
+    code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+    code span.sc { color: #000000; } /* SpecialChar */
+    code span.ss { color: #4e9a06; } /* SpecialString */
+    code span.st { color: #4e9a06; } /* String */
+    code span.va { color: #000000; } /* Variable */
+    code span.vs { color: #4e9a06; } /* VerbatimString */
+    code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mini-Project 3</h1>
+<p class="author">MIE 1626</p>
+</header>
+<h1 id="submission-instructions">Submission instructions</h1>
+<p>Submit an Rmd notebook as well as the PDF generated from the notebook on Gradescope. Pages on Gradescope should be assigned to questions.</p>
+<h1 id="introduction">Introduction</h1>
+<p>In this part of the project, you will analyze the <strong>COMPAS</strong> recidivism risk scores released by <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing">ProPublica</a>. COMPAS is a commercial tool that assigns each criminal defendant a risk score (a <em>decile score</em> from 1 to 10) that is meant to predict whether the defendant will re-offend. Scores like these are used in the United States to inform decisions about bail, sentencing, and parole.</p>
+<p>The dataset contains records for over 10,000 defendants from Broward County, Florida, including each defendant’s COMPAS score and whether they actually went on to re-offend (“recidivate”) within two years. This lets us ask two intertwined questions:</p>
+<ol type="1">
+<li><strong>How good is the score as a predictor?</strong> (a predictive-modelling question)</li>
+<li><strong>Is the score fair across racial groups?</strong> (a fairness question)</li>
+</ol>
+<p>These two questions cannot be answered in isolation. A central lesson of this part of the project is that there are several reasonable, <em>mutually incompatible</em> definitions of “fair,” and a score can satisfy one while violating another. You will compute the relevant quantities yourself and form your own view.</p>
+<p>The risk-prediction system you analyze here is a real one that has been used to make decisions about real people. Keep that in mind as you interpret your numbers.</p>
+<h1 id="the-data">The data</h1>
+<p>The dataset is hosted by ProPublica. You can read it directly from the web:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>url &lt;-<span class="st"> &quot;https://github.com/propublica/compas-analysis/raw/master/compas-scores-two-years.csv&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>raw &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>Following ProPublica’s analysis, we keep only rows for which the COMPAS screening happened within 30 days of the arrest, for which a recidivism outcome is recorded, and for which the charge degree is a felony or misdemeanour (not an ordinary traffic offence). Apply this filter exactly as below:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>compas &lt;-<span class="st"> </span>raw <span class="op">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">filter</span>(days_b_screening_arrest <span class="op">&lt;=</span><span class="st"> </span><span class="dv">30</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>         days_b_screening_arrest <span class="op">&gt;=</span><span class="st"> </span><span class="dv">-30</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>         is_recid <span class="op">!=</span><span class="st"> </span><span class="dv">-1</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>         c_charge_degree <span class="op">!=</span><span class="st"> &quot;O&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>         score_text <span class="op">!=</span><span class="st"> &quot;N/A&quot;</span>)</span></code></pre></div>
+<p>This leaves <strong>6172 defendants</strong>. The first few rows of the columns you will use look like this:</p>
+<pre><code>   sex age             race priors_count c_charge_degree decile_score score_text two_year_recid
+1 Male  69            Other            0               F            1        Low              0
+2 Male  34 African-American            0               F            3        Low              1
+3 Male  24 African-American            4               F            4        Low              1
+4 Male  44            Other            0               M            1        Low              0
+5 Male  41        Caucasian           14               F            6     Medium              1
+6 Male  43            Other            3               F            4        Low              0</code></pre>
+<p>The columns you will need:</p>
+<ul>
+<li><code>decile_score</code> — the COMPAS risk score, an integer from 1 (lowest risk) to 10 (highest risk).</li>
+<li><code>score_text</code> — COMPAS’s own coarse label: <code>Low</code>, <code>Medium</code>, or <code>High</code>.</li>
+<li><code>two_year_recid</code> — the <strong>ground truth</strong>: 1 if the defendant was arrested for a new offence within two years, 0 otherwise. (Overall, about 45.5% of defendants in the filtered data recidivated.)</li>
+<li><code>race</code> — self-reported race. The two largest groups are <code>African-American</code> (3175 defendants) and <code>Caucasian</code> (2103); the remaining groups (<code>Hispanic</code>, <code>Other</code>, <code>Asian</code>, <code>Native American</code>) are much smaller. For Parts 1–3 you will compare the two largest groups.</li>
+<li><code>age</code>, <code>sex</code>, <code>priors_count</code> (number of prior offences), and <code>c_charge_degree</code> (<code>F</code> = felony, <code>M</code> = misdemeanour) are candidate predictors.</li>
+</ul>
+<p>In this part of the project, we treat a defendant as “predicted to re-offend” when their decile score exceeds a threshold that <strong>you</strong> choose — this is exactly the threshold-on-a-score situation from the ICU project, except the score now comes from COMPAS rather than from a model you fit yourself.</p>
+<h1 id="general-guidelines">General guidelines</h1>
+<p>Your code should be general enough that if the dataset were changed (to one with the same column names), the code would still run. In particular, do not hard-code the number 6172 or the names of the racial groups where a <code>group_by</code> or a computed value would do.</p>
+<p>You will be graded on the correctness of your code as well as on the professionalism of the presentation of your report. The text should be clear; figures should visualize the data well and have appropriate labels and legends. Use <code>ggplot</code> for plots and <code>dplyr</code>/<code>tidyverse</code> for data manipulation.</p>
+<p>When you are asked to compute something, use code (rather than computing things outside of R and typing in the answer), and include the code in the report.</p>
+<h3 id="grading-scheme">Grading scheme</h3>
+<ul>
+<li><strong>10 points</strong> for a professional and well-formatted report. Points will be taken off if the report is difficult to read.</li>
+</ul>
+<h2 id="part-1-score-distributions-by-race-10-pts">Part 1: Score distributions by race (10 pts)</h2>
+<p>Restrict attention to defendants whose <code>race</code> is <code>African-American</code> or <code>Caucasian</code>. For each of these two groups, plot a histogram of <code>decile_score</code> (the scores 1–10). Put the two histograms side by side, or overlay them, so that the shapes can be compared directly.</p>
+<p>Describe in words how the two distributions differ. (You are <em>not</em> asked to explain <em>why</em> they differ here — just to read the plot.)</p>
+<h2 id="part-2-errors-at-a-single-threshold-15-pts">Part 2: Errors at a single threshold (15 pts)</h2>
+<p>We will say a defendant is <strong>classified as high-risk</strong> when their <code>decile_score</code> is greater than 4 (so that <code>Low</code> scores are “low-risk” and <code>Medium</code>/<code>High</code> scores are “high-risk”). Treat <code>two_year_recid</code> as the ground truth.</p>
+<p>Write a function that, given a subset of the data, returns:</p>
+<ul>
+<li>the <strong>False Positive Rate</strong> — the fraction of defendants who did <em>not</em> re-offend but were classified as high-risk;</li>
+<li>the <strong>False Negative Rate</strong> — the fraction of defendants who <em>did</em> re-offend but were classified as low-risk;</li>
+<li>the overall <strong>correct-classification rate</strong> (accuracy).</li>
+</ul>
+<p>Report these three numbers separately for African-American and for Caucasian defendants. Comment on what you find: in which direction does each error rate differ between the groups, and why might that be troubling if the score is used to set bail?</p>
+<h2 id="part-3-errors-across-thresholds-15-pts">Part 3: Errors across thresholds (15 pts)</h2>
+<p>The choice of threshold 4 in Part 2 was arbitrary. Sweep the threshold over the values <code>0.5, 1.5, 2.5, ..., 9.5</code> (i.e. every place a defendant could move from “low-risk” to “high-risk”). For each threshold, compute the False Positive Rate and the True Positive Rate <strong>separately for each of the two groups</strong>.</p>
+<p>Produce a plot of True Positive Rate vs. False Positive Rate (an ROC curve) with one curve per group. Does COMPAS appear to rank defendants equally well within each group? Is the <em>ranking</em> quality (the shape of each ROC curve) the same thing as the <em>fairness</em> you examined in Part 2? Explain in two or three sentences.</p>
+<h2 id="part-4-a-logistic-regression-model-15-pts">Part 4: A logistic-regression model (15 pts)</h2>
+<p>Now build your own score instead of using COMPAS’s. First, split the filtered data into training, validation, and test sets (roughly 60/20/20) by sampling row indices.</p>
+<p>Using the <strong>training set</strong>, fit a logistic regression that predicts <code>two_year_recid</code> from <code>age</code> and <code>priors_count</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">glm</span>(two_year_recid <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>priors_count, <span class="dt">family =</span> binomial, <span class="dt">data =</span> train)</span></code></pre></div>
+<p>Report the fitted coefficients and interpret the sign and rough magnitude of each one in plain language (what does the <code>age</code> coefficient say about who is predicted to re-offend?). Then compare the model’s correct-classification rate on the training set to its rate on the validation set, using a threshold of 0.5 on the predicted probability. Is there evidence of over-fitting?</p>
+<h2 id="part-5-improving-the-model-10-pts">Part 5: Improving the model (10 pts)</h2>
+<p>Try adding <strong>at least four</strong> other variables (individually or in combination) to the model from Part 4 — for example <code>sex</code>, <code>c_charge_degree</code>, or interactions. Use the <strong>validation set</strong> (not the test set) to decide whether each addition helps. Report what you tried and which model you would choose, and justify the choice using the validation results. Explain why it would be a mistake to make this decision using the test set.</p>
+<h2 id="part-6-equalizing-false-positive-rates-15-pts">Part 6: Equalizing false positive rates (15 pts)</h2>
+<p>In Part 2 you (probably) found that a single threshold produces different false positive rates for the two groups. One notion of fairness asks that the false positive rates be <strong>equal</strong> across groups.</p>
+<p>Using your chosen model from Part 5, find <strong>group-specific thresholds</strong> — one for African-American defendants and one for Caucasian defendants — such that the two groups have (approximately) equal false positive rates, while making the overall correct-classification rate as high as you can subject to that constraint. Describe your search procedure and report the thresholds you chose and the resulting error rates. Use the validation set to choose the thresholds, and report the final numbers on the <strong>test set</strong>.</p>
+<p>In two or three sentences, state the cost of this fairness criterion: what do you give up, and for whom, in order to equalize false positive rates?</p>
+<h2 id="part-7-a-relationship-of-your-own-10-pts">Part 7: A relationship of your own (10 pts)</h2>
+<p>Choose two variables in the dataset (other than the pair you were told to use in Part 4) and make a single figure that shows how they relate to each other and to the COMPAS score or to recidivism. Explain what the figure shows and why it is relevant to the fairness questions above.</p>
+<h2 id="part-8-a-neural-network-10-pts">Part 8: A neural network (10 pts)</h2>
+<p>So far your only model has been logistic regression, which is just a neural network with no hidden layer. In this part you will fit a network with <strong>one hidden layer of 10 units</strong> using the <code>nnet</code> package, and output its weights.</p>
+<p>For the neural network, <strong>throw in the kitchen sink</strong>: use <em>every</em> predictor that is known at the time of the COMPAS screening. There is exactly one rule — you must <strong>not</strong> use any column that records a <em>future arrest</em>, because those columns leak the answer. They are recorded <em>after</em> the screening and encode the very outcome you are trying to predict, so a model that uses them would look brilliant in your report and be useless in practice. The future-arrest columns to exclude are the target <code>two_year_recid</code> itself, <code>is_recid</code>, <code>is_violent_recid</code>, <code>violent_recid</code>, every <code>r_*</code> and <code>vr_*</code> column (the new charge), and <code>start</code>, <code>end</code>, <code>event</code>. (It also makes sense to drop COMPAS’s own score columns — <code>decile_score</code>, <code>score_text</code>, the <code>v_*</code> scores — and free-text/identifier/date columns, since the point is to predict the outcome from raw inputs.)</p>
+<p>A reasonable kitchen-sink predictor set is:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>predictors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;age_cat&quot;</span>, <span class="st">&quot;race&quot;</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>                <span class="st">&quot;juv_fel_count&quot;</span>, <span class="st">&quot;juv_misd_count&quot;</span>, <span class="st">&quot;juv_other_count&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>                <span class="st">&quot;priors_count&quot;</span>, <span class="st">&quot;c_charge_degree&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>form &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">&quot;two_year_recid ~&quot;</span>, <span class="kw">paste</span>(predictors, <span class="dt">collapse =</span> <span class="st">&quot; + &quot;</span>)))</span></code></pre></div>
+<p>Fit the network on the <strong>training set</strong>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">library</span>(nnet)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>nn &lt;-<span class="st"> </span><span class="kw">nnet</span>(form, <span class="dt">data =</span> train, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">maxit =</span> <span class="dv">300</span>, <span class="dt">decay =</span> <span class="fl">0.01</span>, <span class="dt">trace =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p><code>size = 10</code> is the number of hidden units; <code>decay</code> is a small amount of weight regularization (which keeps the optimization well-behaved); and because <code>nnet</code> is sensitive to the starting point, you must <code>set.seed</code> so your report is reproducible.</p>
+<p><strong>Output the weights</strong> with</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">summary</span>(nn)     <span class="co"># weights, grouped by their destination unit</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>nn<span class="op">$</span>wts          <span class="co"># the same weights as a single numeric vector</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>nn<span class="op">$</span>coefnames    <span class="co"># which predictor each input i1, i2, ... corresponds to</span></span></code></pre></div>
+<p><code>summary(nn)</code> reports the architecture and every weight. Multi-level factors are expanded into 0/1 dummy columns (so <code>race</code>, with six levels, contributes five inputs, and so on); with this predictor set the predictors expand to <strong>14 inputs</strong>, and with 10 hidden units and 1 output the network is <code>14-10-1</code> and has 161 weights. Your output should begin like this:</p>
+<pre><code>a 14-10-1 network with 161 weights
+options were - decay=0.01
+  b-&gt;h1  i1-&gt;h1  i2-&gt;h1  i3-&gt;h1  i4-&gt;h1  i5-&gt;h1  i6-&gt;h1  i7-&gt;h1  i8-&gt;h1  i9-&gt;h1
+  -1.71    2.22   -0.40   -0.01   -2.03   -0.15    0.40    2.15   -0.01    7.09
+i10-&gt;h1 i11-&gt;h1 i12-&gt;h1 i13-&gt;h1 i14-&gt;h1
+  -0.03    0.59    5.19    0.13    2.68
+  b-&gt;h2  i1-&gt;h2  ...
+   ...
+  b-&gt;o  h1-&gt;o  h2-&gt;o  ...  h10-&gt;o</code></pre>
+<p>Here <code>iN-&gt;hj</code> is the weight from input <code>N</code> to hidden unit <code>j</code>, <code>b-&gt;hj</code> is the bias into hidden unit <code>j</code>, and <code>hj-&gt;o</code> is the weight from hidden unit <code>j</code> to the output. Use <code>nn$coefnames</code> to state in your report which predictor each input number (<code>i1</code>…<code>i14</code>) corresponds to.</p>
+<h2 id="part-9-neural-network-vs.-logistic-regression-10-pts">Part 9: Neural network vs. logistic regression (10 pts)</h2>
+<p>A single train/validation/test split gives a noisy estimate of how good each model is — you might just have gotten a lucky split. To compare the neural network with logistic regression fairly, <strong>resample 10 times</strong>: repeat the whole split-and-fit procedure 10 times with a different random partition each time, and average the results.</p>
+<p>Concretely, write a function that does one resample — it draws a fresh 60/20/20 split, fits <strong>both</strong> the logistic-regression model and the 10-unit neural network on the training set, and returns the correct-classification rate of each model on the validation set and on the test set. To make this a fair, apples-to-apples comparison of the two model <em>families</em>, give both models the <strong>same kitchen-sink predictors</strong> (<code>form</code>) from Part 8. Then call it 10 times and average:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>acc &lt;-<span class="st"> </span><span class="cf">function</span>(prob, truth) <span class="kw">mean</span>((prob <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span>) <span class="op">==</span><span class="st"> </span>(truth <span class="op">==</span><span class="st"> </span><span class="dv">1</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>compare_once &lt;-<span class="st"> </span><span class="cf">function</span>() {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  n   &lt;-<span class="st"> </span><span class="kw">nrow</span>(compas)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  idx &lt;-<span class="st"> </span><span class="kw">sample</span>(n)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  tr  &lt;-<span class="st"> </span>idx[<span class="dv">1</span><span class="op">:</span>(<span class="fl">0.6</span><span class="op">*</span>n)]; va &lt;-<span class="st"> </span>idx[(<span class="fl">0.6</span><span class="op">*</span>n<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>(<span class="fl">0.8</span><span class="op">*</span>n)]; te &lt;-<span class="st"> </span>idx[(<span class="fl">0.8</span><span class="op">*</span>n<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>n]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>  train &lt;-<span class="st"> </span>compas[tr, ]; val &lt;-<span class="st"> </span>compas[va, ]; test &lt;-<span class="st"> </span>compas[te, ]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>  g  &lt;-<span class="st"> </span><span class="kw">glm</span>(form, <span class="dt">family =</span> binomial, <span class="dt">data =</span> train)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>  nn &lt;-<span class="st"> </span><span class="kw">nnet</span>(form, <span class="dt">data =</span> train, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">maxit =</span> <span class="dv">300</span>, <span class="dt">decay =</span> <span class="fl">0.01</span>, <span class="dt">trace =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>  <span class="kw">c</span>(<span class="dt">glm_val  =</span> <span class="kw">acc</span>(<span class="kw">predict</span>(g,  val,  <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>), val<span class="op">$</span>two_year_recid),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    <span class="dt">nn_val   =</span> <span class="kw">acc</span>(<span class="kw">as.vector</span>(<span class="kw">predict</span>(nn, val)),          val<span class="op">$</span>two_year_recid),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    <span class="dt">glm_test =</span> <span class="kw">acc</span>(<span class="kw">predict</span>(g,  test, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>), test<span class="op">$</span>two_year_recid),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>    <span class="dt">nn_test  =</span> <span class="kw">acc</span>(<span class="kw">as.vector</span>(<span class="kw">predict</span>(nn, test)),         test<span class="op">$</span>two_year_recid))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>}</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a>results &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">10</span>, <span class="kw">compare_once</span>())</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a><span class="kw">rowMeans</span>(results)</span></code></pre></div>
+<p>A typical run gives numbers close to</p>
+<pre><code> glm_val   nn_val glm_test  nn_test
+   0.672    0.670    0.675    0.673</code></pre>
+<p>Report your averaged validation and test accuracies for both models. Then answer: is the difference between the neural network and logistic regression <strong>larger or smaller</strong> than the spread across the 10 resamples? (Look at <code>apply(results, 1, sd)</code> — here it is about <code>0.01</code>, several times <em>larger</em> than the gap between the two models.) What does that tell you about whether the extra flexibility of the hidden layer is buying you anything on this dataset?</p>
+<h2 id="part-10-interpreting-the-hidden-units-10-pts">Part 10: Interpreting the hidden units (10 pts)</h2>
+<p>The output of <code>summary(nn)</code> lists, for every hidden unit, the weights coming into it from each input (plus a bias), and the single weight carrying that unit’s activation to the output. This lets you give each unit a rough “job description.”</p>
+<p>For each of the 10 hidden units, read off its incoming weights (use <code>nn$coefnames</code> to translate <code>i1</code>…<code>i14</code> into predictor names) and report which input(s) it responds to most strongly (largest absolute weights) and the sign of its connection to the output (<code>hj-&gt;o</code>). Then, <strong>in one sentence per unit</strong>, interpret what that unit appears to detect. For example, a unit with a large positive weight on <code>priors_count</code> and a positive <code>h-&gt;o</code> weight is acting as a “many-priors ⇒ higher predicted risk” detector, whereas a unit whose weights are all near zero is doing little.</p>
+<p>Finally, comment on the limits of this exercise: hidden units in a network are not guaranteed to be individually meaningful (several can be redundant, or split one concept between them), which is part of why a neural network is harder to <em>explain to a defendant</em> than the logistic regression of Part 4. Tie this back to the fairness discussion: why does interpretability matter when a model is used to make decisions about people?</p>
+<h2 id="part-11-a-decision-tree-10-pts">Part 11: A decision tree (10 pts)</h2>
+<p>Finally, fit a model that is at the opposite end of the interpretability spectrum: a <strong>decision tree</strong>, using the <code>rpart</code> package. As with the neural network, <strong>throw in the kitchen sink</strong> — use the same <code>form</code> (every predictor known at screening, no future-arrest columns). A tree handles many predictors gracefully: it will simply ignore the ones it does not find useful, so you can see which features it chooses to split on. Fit it on the training set and visualize it:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">library</span>(rpart)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>tree &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="kw">update</span>(form, <span class="kw">factor</span>(two_year_recid) <span class="op">~</span><span class="st"> </span>.),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>              <span class="dt">data =</span> train, <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="kw">plot</span>(tree, <span class="dt">margin =</span> <span class="fl">0.1</span>)   <span class="co"># draw the branches</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="kw">text</span>(tree, <span class="dt">use.n =</span> <span class="ot">TRUE</span>)   <span class="co"># label the splits and leaves</span></span></code></pre></div>
+<p>(If you have the <code>rpart.plot</code> package, <code>rpart.plot(tree)</code> produces a nicer figure — either is acceptable.)</p>
+<p>Include the tree in your report and describe it: which variable does the tree split on first, and what does that say about which feature is most predictive of recidivism? Follow one path from the root to a leaf and state, in plain language, the rule it represents (e.g. “a defendant with more than X prior offences and age below Y is predicted to re-offend”).</p>
+<p>Compare the three model families you have now fit — logistic regression, the neural network, and the decision tree — in one paragraph: which is easiest to explain to the person being scored, which performed best in Part 9, and how you would weigh accuracy against explainability if this model were actually used to set bail.</p>
+</body>
+</html>
