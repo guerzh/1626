@@ -23,7 +23,7 @@ The third pillar is just coding. From the survey, some people have extensive cod
 - The mini-projects are not supposed to be onerous. They are probably easy to do with AI if you choose to work with AI, but you have to understand all the code because you are tested on it in the written tests.
 - The tests are focused around what is in the lecture and especially what is in the mini-projects — you submit the project, you are supposed to know what is going on there.
 
-The tentative syllabus is at <https://www.cs.toronto.edu/~guerzhoy/1626s26/mie1626_syllabus.pdf>.
+The syllabus is at <https://www.cs.toronto.edu/~guerzhoy/1626s26/materials/1626s26/mie1626_syllabus.pdf>.
 
 ## Course project
 

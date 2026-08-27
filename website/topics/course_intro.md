@@ -23,7 +23,7 @@ The third pillar is just coding. From the survey, some people have extensive cod
 - The mini-projects are not supposed to be onerous. They are probably easy to do with AI if you choose to work with AI, but you have to understand all the code because you are tested on it in the written tests.
 - The tests are focused around what is in the lecture and especially what is in the mini-projects — you submit the project, you are supposed to know what is going on there.
 
-The tentative syllabus is at <https://www.cs.toronto.edu/~guerzhoy/1626s26/mie1626_syllabus.pdf>.
+The syllabus is at <https://www.cs.toronto.edu/~guerzhoy/1626s26/materials/1626s26/mie1626_syllabus.pdf>.
 
 ## Course project
 
@@ -62,7 +62,7 @@ So we:
 3. Mined who retaliated and who did not retaliate to insults.
 4. Geo-located the users. You cannot geo-locate all of them, but for some of them their usernames are the same usernames as what they use elsewhere on the internet, so you can look up their location.
 
-Our hypothesis was that users located in the US south would be more likely to retaliate to insults than users not geo-located to the US south. Amazingly, it worked: notably, the aggression rate was roughly the same across users in the south and the non-south, but **retaliation** was actually higher for users in the south.
+Our hypothesis was that users located in the US south would be more likely to retaliate to insults than users not geo-located to the US south. Amazingly, it worked: notably, the aggression rate was roughly the same across users in the south and the non-south, but **retaliation** was actually higher for users in the south. The published paper is available [here](https://aclanthology.org/2024.sicon-1.1.pdf).
 
 Obviously there is no expectation that you would necessarily get something publishable. If you do want to work with me on trying to publish something, that would be great as well. By no means is Reddit the only possible data source; you should come up with something that is unique. By default, Reddit has multiple sub-forums, you can come up with any topic of interest to you and there will be a forum about it on Reddit. We will also do a workshop on text mining. For any other dataset, by all means let me know and I will probably be OK with it.
 
