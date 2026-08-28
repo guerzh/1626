@@ -1,0 +1,22 @@
+% Question 2: Gapminder
+\question[8]{}
+
+The \verb|gapminder| data frame contains one row per country per year. Its first rows look like this:
+
+\begin{verbatim}
+      country continent year lifeExp      pop gdpPercap
+1 Afghanistan      Asia 1952  28.801  8425333  779.4453
+2 Afghanistan      Asia 1957  30.332  9240934  820.8530
+3 Afghanistan      Asia 1962  31.997 10267083  853.1007
+4 Afghanistan      Asia 1967  34.020 11537966  836.1971
+5 Afghanistan      Asia 1972  36.088 13079460  739.9811
+6 Afghanistan      Asia 1977  38.438 14880372  786.1134
+\end{verbatim}
+
+The years recorded are \verb|1952, 1957, 1962, 1967, 1972, ...| (five-year steps), and \verb|continent| takes the values \verb|Africa, Americas, Asia, Europe, Oceania|.
+
+Write R code that computes the \strong{continent with the highest median \texttt{lifeExp} in the year 1967}. Your code should return the name of that continent (or a one-row summary that identifies it).
+
+\ifanswerspace
+\vfillstretch
+\fi

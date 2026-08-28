@@ -1,0 +1,169 @@
+%%  Test/exam template at the University of Toronto.
+%%  Original template (c) 2015-2022 Francois Pitt <fpitt@cs.utoronto.ca>, CC BY-SA 4.0.
+%%  Adapted for MIE 1626 Test 1 (Midterm).
+
+\RequirePackage[l2tabu,orthodox]{nag}  % warn about common LaTeX pitfalls
+
+\documentclass[11pt,twoside]{article}
+
+\usepackage{uttest}
+\usepackage{macros-exams}
+\usepackage{esc180} % shared course helpers (headers, blank page, tables)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% MODIFY THIS PART %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\setboolean{restricted}{true}  % uncomment if exam is restricted
+\newcommand*{\faculty}{Faculty of Applied Science and Engineering}
+\renewcommand*\testheadverso{TEST}
+\renewcommand*\testheadrecto{1}
+\renewcommand*\examperiod{MAY 2026}
+\newcommand*{\courseid}{MIE\,1626\,H}
+\newcommand*{\coursetitle}{Data Science Methods and Statistical Learning}
+\newcommand*{\calculator}{None}
+\newcommand*{\examtype}{Open: reference sheet}
+\newcommand*{\examiner}{M.~Guerzhoy}
+\renewcommand*\duration{1 hour 10 minutes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\thispagestyle{plain}
+
+\ifsolutions
+\ifanswerspace
+\heading{Summary of Marking Guidelines:}
+\begin{itemize}
+\item
+    If you are seeing this and not a cover page, you have `solutions' set to
+    true in the exam.tex file.
+\end{itemize}
+
+\vfillstretch
+
+\newpage
+\fi%answerspace
+\else%solutions
+\ifanswerspace
+\begin{center}
+\bfseries\large
+    \uppercase\expandafter{University of Toronto}\\
+    \uppercase\expandafter{\faculty}\\[1.75ex]
+    \uppercase\expandafter{\testhead, \examperiod}\\[1.75ex]
+    \uppercase\expandafter{Duration: \duration}\\[1.75ex]
+    \uppercase\expandafter{\courseid} --- {\coursetitle}\\[1.75ex]
+    Calculator Type: {\calculator}\\
+    Exam Type: {\examtype}\\[1.75ex]
+    Aids allowed: the reference sheet distributed with the test\\
+    Examiner(s): {\examiner}
+\end{center}
+
+\vfillstretch[.5]
+
+\studentinfo
+
+\vfillstretch[.75]
+
+\begin{center}
+\rule[.1875\baselineskip]{\textwidth}{1pt}\\
+\larger[1.5]%
+    \textsl{Do \strong{not} turn this page
+    until you have received the signal to start.} \\
+    In the meantime,
+    please read the instructions below \textsl{carefully}.
+\rule[.1875\baselineskip]{\textwidth}{1pt}\\
+\end{center}
+
+\vfillstretch[.5]
+
+\noindent\parbox{5.25in}{%
+    \qquad
+    This test paper consists of
+    \ref{LastQN} {questions} on
+    \pageref{LastPage} {pages}
+    (including this one), printed on both sides of the paper.
+    \altemph{When you receive the signal to start,
+    please make sure that your copy is complete,
+    and fill in the identification section above.}
+
+    \qquad
+    Answer each question directly on this paper, in the space provided. Use the pages at the end of the test for extra space. If you use extra pages, indicate that you have done so in the space under the question.
+
+    \qquad
+    Write up your solutions carefully! Comments are \emph{not} required to
+    receive full marks. However, they may help us mark your answers, and
+    part marks \emph{might} be given for partial solutions with comments
+    clearly indicating what the missing parts should accomplish.
+
+    \qquad
+    Use the \textbf{R} programming language. You may assume the
+    \texttt{tidyverse} is loaded and that the data frames named in each
+    question are already available. Verb signatures
+    (\texttt{group\_by}, \texttt{summarize}, \texttt{filter},
+    \texttt{lm}, \texttt{glm}, \texttt{sample}, \texttt{replicate},
+    \texttt{plogis}, \dots) are on the reference sheet, so exact syntax need
+    not be memorized and minor syntax slips are not penalized. You are
+    \emph{not} required to write \texttt{ggplot} code.
+
+    \qquad
+    When you are asked to write code,
+    \emph{no} error checking is required:
+    you may assume that all input and argument values are valid,
+    except where explicitly indicated otherwise.
+
+    \qquad
+    You \textbf{must} write your student number on every odd-numbered page of the test (except empty pages). \textbf{Failure to do so will result in a 3-point penalty.}
+}%parbox
+\hfillstretch
+\markstable[\textsc{\larger[.5]Marking Guide}]
+\hfillstretch[.25]
+
+\vfillstretch
+\newpage
+\fi%answerspace
+\fi%solution
+
+
+
+\input{q1_funcs}
+\ifanswerspace\newpage\fi
+
+\input{q2_gapminder}
+\ifanswerspace\newpage\fi
+
+\input{q3_babynames}
+\ifanswerspace\newpage\fi
+
+\input{q4_regression}
+\ifanswerspace\newpage\fi
+
+\input{q5_pvalue}
+\ifanswerspace\newpage\fi
+
+\input{q6_insurance}
+\ifanswerspace\newpage\fi
+
+\input{q7_critique}
+\ifanswerspace\newpage\fi
+
+\input{q8_deskdrawer}
+\ifanswerspace\newpage\fi
+
+
+\newpage
+\vfillstretch
+\newpage
+\vfillstretch
+
+
+\ifanswerspace\ifsolutions\else\newpage\blankpage\blankpage\fi\fi
+
+%% Last Page
+\ifanswerspace\ifsolutions\else
+\cfoot{Total Marks = \ref{TotalMarks}}
+\fi\fi
+\rfoot{\scshape end of test 1}
+
+\end{document}

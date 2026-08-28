@@ -1,0 +1,20 @@
+% Question 3: Baby names
+\question[8]{}
+
+The \verb|babynames| data frame has one row per (\verb|year|, \verb|sex|, \verb|name|) combination, giving the number \verb|n| of US babies of that sex given that name in that year. Its first rows:
+
+\begin{verbatim}
+  year sex      name    n       prop
+1 1880   F      Mary 7065 0.07238359
+2 1880   F      Anna 2604 0.02667896
+3 1880   F      Emma 2003 0.02052149
+4 1880   F Elizabeth 1939 0.01986579
+5 1880   F    Minnie 1746 0.01788843
+6 1880   F  Margaret 1578 0.01616720
+\end{verbatim}
+
+Write R code that computes \strong{the number of babies born corresponding to the most popular baby name in 1982} --- that is, find the name with the largest total count \verb|n| (summed over both sexes) among babies born in 1982, and report that total count.
+
+\ifanswerspace
+\vfillstretch
+\fi

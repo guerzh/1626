@@ -1,0 +1,105 @@
+% Subquestions formatted with a header but with the question text on the same
+% line.
+\newlength\pikstsopnoitseuqbus
+\newcommand*\subquestionnospace[2][]
+   {\setlength\pikstsopnoitseuqbus{\subquestionpostskip}%
+    \setlength\subquestionpostskip{-\subquestionsep}%
+    \subquestion[#1]{#2}\mbox{}%
+    \setlength\subquestionpostskip{\pikstsopnoitseuqbus}\ignorespaces}
+
+%% Booleans used to control conditional formatting of material;
+%% to see solutions and/or marking scheme set them to true.
+\setboolean{solutions}{false}
+\setboolean{markingspace}{false}
+\setboolean{answerspace}{true}
+
+% Other packages -- include only what you use; comment out the rest.
+%\usepackage{array}  % more control over tables/arrays
+\usepackage{array} % for extrarowheight
+\usepackage{enumitem}  % more control over list formatting
+\usepackage{fancyhdr}  % simpler headers and footers
+\usepackage[T1]{fontenc} % use true 8-bit fonts
+%\usepackage{graphicx}  % easy manipulation of graphics and text boxes
+%\usepackage{hyperref}  % embed live links in PDF documents
+\usepackage[ascii]{inputenc}  % input is 7-bit ASCII
+\usepackage{lastpage}  % for last page number
+\usepackage{microtype}  % perform various font optimizations
+\usepackage{multicol}  % multicolumn environment for part of a page
+\usepackage{ragged2e}  % allow hyphenation in raggedright text
+\usepackage[full]{textcomp} % various general-purpose text symbols
+\usepackage[normalem]{ulem}  % smarter underlining
+\usepackage{url}  % verb-like typesetting of URLs
+\usepackage{verbatim}  % for verbatiminput (useful to include code solutions)
+\usetikzlibrary{automata,positioning,arrows.meta}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Page layout.
+\ifsolutions
+  \usepackage[hmargin=.75in,vmargin=.75in]{geometry}
+\else
+  \usepackage[left=.875in,right=.625in,vmargin=.75in,
+    headheight=1.17\headheight]{geometry}
+\fi
+\addtolength\footskip{.25\headheight}
+\flushbottom
+\allowdisplaybreaks
+
+% Common list settings -- for enumitem package.
+\setlist{topsep=\parsep,itemsep=0pt,parsep=0pt}  % reduce vertical space
+
+% Settings for multicol package.
+\setlength\multicolsep{.75\multicolsep}  % less vertical space
+
+% Reset default lengths for ragged2e.
+\setlength\hfuzz{\dimexpr\fboxrule+\fboxsep\relax}  % prevent Overfull \hbox
+\setlength\CenteringLeftskip{0pt plus 4em}  % hyphenate a bit less
+\setlength\RaggedLeftLeftskip{0pt plus 4em}  % hyphenate a bit less
+\setlength\CenteringRightskip{0pt plus 4em}  % hyphenate a bit less
+\setlength\RaggedRightRightskip{0pt plus 4em}  % hyphenate a bit less
+
+% \uline settings -- for ulem package.
+\renewcommand*\ULthickness{1pt}  % a little thicker than default
+\setlength\ULdepth{.2ex}  % a little lower than default
+
+% Common symbols and macros.
+
+% Any macros specific to this test.
+
+% Leave a blank page for scratch work.
+\newcommand*\blankpage
+   {\newpage
+    \begin{center}
+    \slshape
+        Use the space on this ``blank'' page for scratch work,
+        or for any solution that did not fit elsewhere.\\
+        \strong{Clearly label each such solution with
+            the appropriate question and part number.}
+    \end{center}
+    \vfillstretch}
+
+% Custom headers and footers.
+\pagestyle{fancyplain}
+\fancyhead{}\let\headrule=\empty
+\fancyfoot{}\let\footrule=\empty
+\lhead[\courseid]{\fancyplain{}{\examperiod}}
+\chead{\fancyplain{}{\larger[.5]\scshape\testhead
+    \ifmarkingspace\dash Marking Scheme\fi}{}}
+\rhead[\examperiod]{\fancyplain{}{\courseid}}
+\lfoot{\scshape page \thepage\space of \pageref{LastPage}}
+\cfoot[]{\ifsolutions\else\fancyplain{{\slshape\Large Good Luck!}}
+	{{Student \#: }{\footnotesize\studentnumberboxes}}\fi}
+\rfoot[\scshape cont'd\ldots]{\scshape over\ldots}
+
+
+% MAKE TABLES BETTER
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{array}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+}
+\newcolumntype{L}{>{\centering\arraybackslash}m{0.58\textwidth}}
+\newcolumntype{C}{>{\centering\arraybackslash}m{0.37\textwidth}}

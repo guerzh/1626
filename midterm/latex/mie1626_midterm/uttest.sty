@@ -1,0 +1,868 @@
+%%  Test and Exam macros at the University of Toronto.
+%%
+%%  Copyright (c) 2014-2021 Francois Pitt <fpitt@cs.utoronto.ca>
+%%  last updated at 21:08 on Tue 28 Nov 2023
+%%
+%%  CC BY-SA 4.0
+%%  This work (the current file named 'midterm.tex') is licensed under
+%%  the Creative Commons Attribution-ShareAlike 4.0 International License.
+%%  To view a copy of this license, visit
+%%      http://creativecommons.org/licenses/by-sa/4.0/
+%%  or send a letter to: Creative Commons, 444 Castro Street, Suite 900,
+%%  Mountain View, California, 94041, USA.
+%%  This is a human-readable summary of (and not a substitute for) the
+%%  license.
+%%  You are free to:
+%%      Share -- copy and redistribute the material in any medium or format
+%%      Adapt -- remix, transform, and build upon the material for any
+%%          purpose, even commercially.
+%%      The licensor cannot revoke these freedoms as long as you follow the
+%%          license terms.
+%%  Under the following terms:
+%%      Attribution -- You must give appropriate credit, provide a link to
+%%          the license, and indicate if changes were made. You may do so in
+%%          any reasonable manner, but not in any way that suggests the
+%%          licensor endorses you or your use.
+%%      ShareAlike -- If you remix, transform, or build upon the material,
+%%          you must distribute your contributions under the same license as
+%%          the original.
+%%      No additional restrictions -- You may not apply legal terms or
+%%          technological measures that legally restrict others from doing
+%%          anything the license permits.
+%%  Notices:
+%%      You do not have to comply with the license for elements of the
+%%      material in the public domain or where your use is permitted by an
+%%      applicable exception or limitation.
+%%      No warranties are given. The license may not give you all of the
+%%      permissions necessary for your intended use. For example, other
+%%      rights such as publicity, privacy, or moral rights may limit how you
+%%      use the material.
+
+%% USE: \usepackage{uttest} in the preamble (near the beginning of the
+%% test/exam paper, close AFTER \documentclass and BEFORE \begin{document}).
+
+%% Additional conditions for ifthenelse. Used to control conditional
+%% inclusion/exclusion of material.
+\usepackage{ifthenx}
+\newboolean{solutions} % include sample solutions?
+\newboolean{answerspace} % include space for student answers?
+\newboolean{markingspace} % include space for marking comments?
+% Set defaults.
+\setboolean{solutions}{false}
+\setboolean{answerspace}{true}
+\setboolean{markingspace}{false}
+
+%% Load other required packages.
+\usepackage{relsize} % easier font size changes
+\usepackage{tikz} % for student identification boxes
+\usetikzlibrary{calc} % enable complex coordinate calculations
+
+% Indentations for [[sub]sub]question heading:
+%    If negative, absolute value = width of the label (typeset like a
+%    list); else, value = indentation before the label.
+\newlength\questionindent
+\newlength\subquestionindent
+\newlength\subsubquestionindent
+
+% Preskip lengths for [[sub]sub]question heading:
+%    Absolute value = skip to leave above the heading. If negative, then
+%    paragraph indent of text following heading is suppressed.
+\newlength\questionpreskip
+\newlength\subquestionpreskip
+\newlength\subsubquestionpreskip
+
+% Postskip lengths for [[sub]sub]question heading:
+%    If positive, then skip to leave below heading; else negative of
+%    skip to leave to right of run-in heading.
+\newlength\questionpostskip
+\newlength\subquestionpostskip
+\newlength\subsubquestionpostskip
+
+% Space between [[sub]sub]question label, title and marks.
+\newlength\questionsep
+\newlength\subquestionsep
+\newlength\subsubquestionsep
+
+% Counters for [[sub]sub]question numbers.
+\newcounter{question}
+\newcounter{subquestion}[question]
+\newcounter{subsubquestion}[subquestion]
+% Initial values.
+\setcounter{question}{0}
+% [sub]subquestion automatically reset when question changes
+
+% Labels for [[sub]sub]questions.
+\newcommand*\questionlabel{}
+\newcommand*\subquestionlabel{}
+\newcommand*\subsubquestionlabel{}
+\renewcommand*\thesubquestion{\alph{subquestion}}
+\renewcommand*\thesubsubquestion{\roman{subsubquestion}}
+
+% Styles for [[sub]sub]question labels.
+\newcommand*\questionstyle{}
+\newcommand*\subquestionstyle{}
+\newcommand*\subsubquestionstyle{}
+
+% Counters for [[sub]sub]bonus numbers (used for references).
+\newcounter{bonus}
+\newcounter{subbonus}[bonus]
+\newcounter{subsubbonus}[subbonus]
+% Initial values.
+\setcounter{bonus}{0}
+% [sub]subbonus automatically reset when bonus changes
+
+% Labels for [[sub]sub]bonuses.
+\newcommand*\bonuslabel{}
+\newcommand*\subbonuslabel{}
+\newcommand*\subsubbonuslabel{}
+\renewcommand*\thesubbonus{\alph{subbonus}}
+\renewcommand*\thesubsubbonus{\roman{subsubbonus}}
+
+% Styles for [[sub]sub]bonus labels.
+\newcommand*\bonusstyle{}
+\newcommand*\subbonusstyle{}
+\newcommand*\subsubbonusstyle{}
+
+%% Specify layout and formatting for [[sub]sub]question labels.
+
+\newcommand*\labelinmargin % question labels in margin
+  {\setlength\questionsep{.75em plus .75em minus .5em}
+   \setlength\questionindent{-2.5em}
+   \setlength\questionpreskip{-1.5ex plus -1.5ex minus -1ex}
+   \setlength\questionpostskip{-\questionsep}
+   \renewcommand*\questionstyle{\bfseries}
+   \renewcommand*\questionlabel{\thequestion.}
+   \renewcommand*\bonusstyle{\scshape\smaller}
+   \renewcommand*\bonuslabel{bonus.}}
+
+\newcommand*\labelnotinmargin % question labels in body
+  {\setlength\questionsep{.75em plus .75em minus .5em}
+   \setlength\questionindent{0em}
+   \setlength\questionpreskip{-1.5ex plus -1.5ex minus -1ex}
+   \setlength\questionpostskip{1ex plus 1ex minus .75ex}
+   \renewcommand*\questionstyle{\bfseries\larger}
+   \renewcommand*\questionlabel{Question \thequestion.}
+   \renewcommand*\bonusstyle{\questionstyle}
+   \renewcommand*\bonuslabel{Bonus.}}
+
+\newcommand*\sublabelinmargin % subquestion labels in margin
+  {\setlength\subquestionsep{.75em plus .75em minus .5em}
+   \setlength\subquestionindent{-2.5em}
+   \setlength\subquestionpreskip{-1ex plus -1ex minus -.75ex}
+   \setlength\subquestionpostskip{-\subquestionsep}
+   \renewcommand*\subquestionstyle{\bfseries}
+   \renewcommand*\subquestionlabel{(\thesubquestion)}
+   \renewcommand*\subbonusstyle{\scshape\smaller}
+   \renewcommand*\subbonuslabel{(bonus)}}
+
+\newcommand*\sublabelnotinmargin % subquestion labels in body
+  {\setlength\subquestionsep{.75em plus .75em minus .5em}
+   \setlength\subquestionindent{0em}
+   \setlength\subquestionpreskip{-1ex plus -1ex minus -.75ex}
+   \setlength\subquestionpostskip{.75ex plus .75ex minus .5ex}
+   \renewcommand*\subquestionstyle{\bfseries\larger[.5]}
+   \renewcommand*\subquestionlabel{Part (\thesubquestion)}
+   \renewcommand*\subbonusstyle{\subquestionstyle}
+   \renewcommand*\subbonuslabel{(Bonus)}}
+
+\newcommand*\subsublabelinmargin % subsubquestion labels in margin
+  {\setlength\subsubquestionsep{.75em plus .75em minus .5em}
+   \setlength\subsubquestionindent{-2.5em}
+   \setlength\subsubquestionpreskip{-.75ex plus -.75ex minus -.5ex}
+   \setlength\subsubquestionpostskip{-\subsubquestionsep}
+   \renewcommand*\subsubquestionstyle{\bfseries}
+   \renewcommand*\subsubquestionlabel{\thesubsubquestion--}
+   \renewcommand*\subsubbonusstyle{\scshape\smaller}
+   \renewcommand*\subsubbonuslabel{bonus--}}
+
+\newcommand*\subsublabelnotinmargin % subsubquestion labels in body
+  {\setlength\subsubquestionsep{.75em plus .75em minus .5em}
+   \setlength\subsubquestionindent{0em}
+   \setlength\subsubquestionpreskip{-.75ex plus -.75ex minus -.5ex}
+   \setlength\subsubquestionpostskip{.5ex plus .5ex minus .25ex}
+   \renewcommand*\subsubquestionstyle{\bfseries}
+   \renewcommand*\subsubquestionlabel{Item \thesubsubquestion--}
+   \renewcommand*\subsubbonusstyle{\subsubquestionstyle}
+   \renewcommand*\subsubbonuslabel{Bonus--}}
+
+% Defaults.
+\labelnotinmargin
+\sublabelnotinmargin
+\subsublabelinmargin
+
+%% Header and information on first page of the paper, redefined by options.
+\newcommand*\utexamtitlepage{\thispagestyle{plain}}
+
+% Macros for page headers and footers, and title page.
+\newboolean{restricted} % is the exam paper restricted?
+\setboolean{restricted}{false}
+\newcommand*\testheadverso{Final}
+\newcommand*\testheadrecto{Examination}
+\newcommand*\testhead{\testheadverso\space\testheadrecto}
+\newcommand*\examperiod{}
+\newcommand*\duration{}
+\newcommand*\examaids{}
+\newcommand*\studentinfo
+  {\begin{center}\larger[.5]%
+   \begin{tabular}{rl}
+    \strong{Student Number:} & \studentnumberboxes \\[2ex]
+	\strong{UTORid:}         & \urule{4.25in} \\[2ex]
+	\strong{UofT email:}	 & \urule{3in}@mail.utoronto.ca \\[2ex]
+    \strong{Family Name(s):} & \urule{4.25in} \\[2ex]
+     \strong{Given Name(s):} & \urule{4.25in}
+
+   \end{tabular}
+   \end{center}}
+\newcommand*\studentinfoboxes[1][21.75pt]
+  {\begingroup
+   \tikzset{x=#1,y=#1}\pgfmathtruncatemacro{\numnameboxes}{\textwidth/#1}%
+   \pgfmathsetmacro{\baselinestretch}{#1/10+1.2}\selectfont\noindent
+   \begin{tikzpicture}
+      \draw[step=1] (0,-1) grid (\numnameboxes,0);
+      \node[anchor=south west,inner xsep=0pt] (0,0)
+         {\textbf{Given Name(s):}};
+   \end{tikzpicture}\\
+   \begin{tikzpicture}
+      \draw[step=1] (0,-1) grid (\numnameboxes,0);
+      \node[anchor=south west,inner xsep=0pt] (0,0)
+         {\textbf{Family Name(s):}};
+   \end{tikzpicture}\\
+   \begin{tikzpicture}
+      \draw[step=1] (0,-1) grid (10,0);
+      \node[anchor=south west,inner xsep=0pt] (0,0)
+         {\textbf{Student Number (9 or 10 digits):}};
+   \end{tikzpicture}\hfill\allowbreak
+   \begin{tikzpicture}
+      \draw[step=1] (0,-1) grid (8,0);
+      \node[anchor=south west,inner xsep=0pt] (0,0)
+         {\textbf{UTORid (e.g., \texttt{pitfra12}):}};
+   \end{tikzpicture}\par
+   \endgroup}
+
+%% Specify the heading at the top of the cover page.
+
+\newcommand*\artsciformat % Faculty of Arts and Science
+  {\renewcommand*\utexamtitlepage
+     {\thispagestyle{plain}
+      \begin{center}
+      \bfseries\larger[.5]%
+         \ifthenelse{\NOT\boolean{answerspace}}{}
+           {\mbox{}\rlap{\smash{\raisebox{2.5ex}{\rotatebox{-40}
+               {\sffamily\bfseries\larger PLEASE HAND IN}}}}\hfill}%
+         \uppercase{University of Toronto}%
+         \ifthenelse{\NOT\boolean{answerspace}}{}
+           {\hfill\llap{\smash{\raisebox{2.5ex}{\rotatebox[origin=br]{40}
+               {\sffamily\bfseries\larger PLEASE HAND IN}}}}}\\
+         Faculty of Arts and Science\\[2ex plus 1.5ex minus 1.5ex]
+         \uppercase\expandafter{\examperiod\space Examinations}%
+      \\[2ex plus 1.5ex minus 1.5ex]
+         \mbox{\uppercase\expandafter{\courseid}\ifthenelse
+                  {\boolean{restricted}}{\dash RESTRICTED}{}}%
+         \ifthenelse{\equal{}{\instructor}}{}
+           {\\Instructor(s): \instructor}\\[2ex plus 1.5ex minus 1.5ex]
+         Duration: \duration\\[2ex plus 1.5ex minus 1.5ex]
+         Aids Allowed: \ifthenelse{\equal{}{\examaids}}{None}{\examaids}
+      \end{center}}}
+
+\newcommand*\apscformat % Faculty of Applied Science and Engineering
+  {\renewcommand*\utexamtitlepage{\thispagestyle{plain}}}
+
+\newcommand*\utscformat % U of T Scarborough
+  {\renewcommand*\utexamtitlepage
+     {\thispagestyle{plain}
+      \begin{center}
+      \bfseries\larger[.5]%
+         \ifthenelse{\NOT\boolean{answerspace}}{}
+           {\mbox{}\rlap{\smash{\rotatebox{-40}
+              {\sffamily\bfseries\larger[1.5]PLEASE HAND IN}}}\hfill}%
+         \uppercase{University of Toronto Scarborough}%
+         \ifthenelse{\NOT\boolean{answerspace}}{}
+           {\hfill\llap{\smash{\rotatebox[origin=br]{40}
+              {\sffamily\bfseries\larger[1.5]PLEASE HAND IN}}}}%
+      \\[2ex plus 1.5ex minus 1.5ex]
+         \uppercase\expandafter{\examperiod\space Examinations}%
+      \\[2ex plus 1.5ex minus 1.5ex]
+         \mbox{\uppercase\expandafter{\courseid}}\\
+         Instructor(s): \instructor\\[2ex plus 1.5ex minus 1.5ex]
+         Duration\dash\duration\\[2ex plus 1.5ex minus 1.5ex]
+         \ifthenelse{\equal{}{\examaids}}
+           {No Aids Allowed}
+           {Examination Aids: \examaids}
+      \end{center}}}
+
+\newcommand*\utmformat % U of T Mississauga
+  {\renewcommand*\studentinfo
+     {\noindent
+      \textbf{Name (Print):} \hrulefill\\
+      \hphantom{\textbf{Name (Print):} }
+        {\smaller Last\slash Surname\hfill
+         First\slash Given name\hfill\mbox{}}\\[2ex]
+      \textbf{Student \numero:}
+         {\smaller\studentnumberboxes}\quad
+         \textbf{Signature:} \hrulefill}
+   \renewcommand*\utexamtitlepage
+     {\thispagestyle{plain}
+      \ifthenelse{\NOT\boolean{answerspace}}{}{\studentinfo\bigskip}
+      \begin{center}
+      \bfseries\larger[.5]%
+         \ifthenelse{\NOT\boolean{answerspace}}{}
+           {\mbox{}\rlap{\smash{\rotatebox{-40}
+              {\sffamily\bfseries\larger[1.5]PLEASE HAND IN}}}\hfill}%
+         \uppercase{University of Toronto Mississauga}%
+         \ifthenelse{\NOT\boolean{answerspace}}{}
+           {\hfill\llap{\smash{\rotatebox[origin=br]{40}
+              {\sffamily\bfseries\larger[1.5]PLEASE HAND IN}}}}%
+      \\[2ex plus 1.5ex minus 1.5ex]
+         \uppercase\expandafter{\examperiod\space Final Examination}%
+      \\[2ex plus 1.5ex minus 1.5ex]
+         \mbox{\uppercase\expandafter{\courseid}}\\
+         \mbox{\coursetitle}\\
+         \mbox{\instructor}\\[2ex plus 1.5ex minus 1.5ex]
+         Duration\dash\duration\\[2ex plus 1.5ex minus 1.5ex]
+         Aids: \ifthenelse{\equal{}{\examaids}}{None}
+           {\examaids}
+      \end{center}
+      \bigskip\noindent
+      \begin{minipage}{\textwidth}\setlength\parindent{1.5em}\noindent
+      \slshape
+         The University of Toronto Mississauga and you, as a student,
+         share a commitment to academic integrity. You are reminded that
+         you may be charged with an academic offence for possessing any
+         unauthorized aids during the writing of an exam. Clear,
+         sealable, plastic bags have been provided for all electronic
+         devices with storage, including but not limited to: cell
+         phones, tablets, laptops, calculators, and MP3 players. Please
+         turn off all devices, seal them in the bag provided, and place
+         the bag under your desk for the duration of the examination.
+         You will not be able to touch the bag or its contents until the
+         exam is over.\par
+            If, during an exam, any of these items are found on your
+         person or in the area of your desk other than in the clear,
+         sealable, plastic bag, you may be charged with an academic
+         offence. A typical penalty for an academic offence may cause
+         you to fail the course.\par
+            Please note, you \textbf{CANNOT} petition to
+         \textbf{re-write} an examination once the exam has begun.
+      \end{minipage}}}
+
+% Create a label (named #2) for a counter (#1).
+\providecommand*\labelcounter[2]
+   {\addtocounter{#1}{-1}\refstepcounter{#1}\label{#2}}
+
+% Numero sign ("No.")
+\providecommand*\numero{Q}
+
+% Counters and macros to produce a list of question numbers and marks.
+\newcounter{utexam@qno}
+\newcommand*\utexam@recmarkstable
+  {\ifthenelse{\theutexam@qno>\ref{LastQN}}{}
+     {\rule{0pt}{3.5ex}%
+      \numero\theutexam@qno & \ref{Q\theutexam@qno Marks}\\
+      \stepcounter{utexam@qno}\utexam@recmarkstable}}
+\newcommand*\markstable[1][]
+  {\begin{tabular}{r@{:\space\urule{.5in}/}r}
+      \ifx\empty#1\empty\else\multicolumn{2}{c}{#1}\\[2ex]\fi
+      \ifthenelse{\isinteger{\ref{LastQN}}\AND\ref{LastQN}>0}
+        {\ifthenelse{\isinteger{\ref{Q0Marks}}\AND\ref{Q0Marks}>0}
+           {\setcounter{utexam@qno}{0}}
+           {\setcounter{utexam@qno}{1}}%
+         \utexam@recmarkstable}{}%
+      \ifthenelse{\isinteger{\ref{BonusMarks}}\AND\ref{BonusMarks}>0}
+        {\rule{0pt}{5ex}\textsc{Bonus} & \ref{BonusMarks}\\}{}%
+      \rule{0pt}{5ex}TOTAL & \ref{TotalMarks}
+   \end{tabular}}
+
+%% Questions, subquestions, subsubquestions.
+%%  - [[sub]sub]question headings consist of label, title and marks.
+
+% Flags.
+\newboolean{utexam@inquestion} % within a question's scope
+\setboolean{utexam@inquestion}{false}
+\newboolean{utexam@insubquestion} % within a subquestion's scope
+\setboolean{utexam@insubquestion}{false}
+\newboolean{utexam@insubsubquestion} % within a subsubquestion's scope
+\setboolean{utexam@insubsubquestion}{false}
+\newboolean{utexam@qmarkset} % question marks given as argument
+\setboolean{utexam@qmarkset}{false}
+\newboolean{utexam@subqmarkset} % subquestion marks given as argument
+\setboolean{utexam@subqmarkset}{false}
+\newboolean{utexam@qmarkadd} % question marks added from subqs
+\setboolean{utexam@qmarkadd}{false}
+\newboolean{utexam@subqmarkadd} % subquestion marks added from subsubqs
+\setboolean{utexam@subqmarkadd}{false}
+
+% Counters for marks.
+\newcounter{utexam@totalmarks} % total regular marks for the paper
+\setcounter{utexam@totalmarks}{0}
+\newcounter{utexam@qmarktotal} % temporary total for one question
+\setcounter{utexam@qmarktotal}{0}
+\newcounter{utexam@subqmarktotal} % temporary total for one subquestion
+\setcounter{utexam@subqmarktotal}{0}
+
+% Typeset [[sub]sub]question headings.
+% #1 - #5: corresponding argument for \@startsection
+% #6: length of horizontal separator
+% #7: label
+% #8: marks (if any)
+% #9: title (if any)
+\newcommand*\utexam@startunit[9]
+  {\ifthenelse{\lengthtest{#3<0pt}}
+     {% Typeset heading like a list item, increasing left margin.
+      \addtolength\leftskip{-#3}%
+      \addtolength\leftskip{#6}%
+      \@startsection{#1}{#2}{0em}{#4}{#5}{\normalfont\normalsize}*
+        {\llap{#7\rule{#6}{0pt}}%
+         \ifthenelse{\equal{}{#9}}{}{{#9}\hspace*{#6}}%
+         \ifthenelse{\NOT\isinteger{#8}}{}
+           {\textsc{[{#8} \ifthenelse{1<#8}{marks}{mark}]}%
+            \hspace*{#6}}}%
+      \ifthenelse{\NOT\lengthtest{#5<0pt}}{}{\hspace{#5}}}
+     {% Typeset like a [[sub]sub]section heading, on its own line.
+      \@startsection{#1}{#2}{#3}{#4}{#5}{\normalfont\normalsize}*
+        {{#7}%
+         \ifthenelse{\equal{}{#9}}{}{\hspace{#6}{#9}}%
+         \ifthenelse{\NOT\isinteger{#8}}{}{\hspace{#6}%
+            \textsc{[{#8} \ifthenelse{1<#8}{marks}{mark}]}}}}}
+
+% Typeset question/bonus heading.
+% #1: counter; #2: label; #3: marks (if any); #4: title (if any)
+\newcommand*\utexam@startquestionbonus[4]
+  {\utexam@startunit{#1}{7}{\questionindent}
+     {\questionpreskip}{\questionpostskip}
+     {\questionsep}{#2}{#3}{#4}}
+
+% Typeset sub-question/bonus heading.
+% #1: counter; #2: label; #3: marks (if any); #4: title (if any)
+\newcommand*\utexam@startsubquestionbonus[4]
+  {\utexam@startunit{#1}{8}{\subquestionindent}
+     {\subquestionpreskip}{\subquestionpostskip}
+     {\subquestionsep}{#2}{#3}{#4}}
+
+% Typeset subsub-question/bonus heading.
+% #1: counter; #2: label; #3: marks (if any); #4: title (if any)
+\newcommand*\utexam@startsubsubquestionbonus[4]
+  {\utexam@startunit{#1}{9}{\subsubquestionindent}
+     {\subsubquestionpreskip}{\subsubquestionpostskip}
+     {\subsubquestionsep}{#2}{#3}{#4}}
+
+% Tally up a question's marks, reset flags and counters, and ensure
+% the question ends with \par, after closing any subquestion/bonus.
+\newcommand*\utexam@closequestion
+  {\utexam@closesubquestion
+   \ifthenelse{\NOT\boolean{utexam@inquestion}}{}
+     {\ifthenelse{\boolean{utexam@qmarkset}\OR\boolean{utexam@qmarkadd}}
+        {\addtocounter{utexam@totalmarks}{\value{utexam@qmarktotal}}%
+         \labelcounter{utexam@qmarktotal}{Q\thequestion Marks}}
+        {\PackageWarning{uttest}{No marks specified for
+            \protect\question\space\thequestion,}}%
+      \par\ifthenelse{\NOT\lengthtest{\questionindent<0pt}}{}
+        {\addtolength\leftskip{-\questionsep}%
+         \addtolength\leftskip{\questionindent}}%
+      \setcounter{utexam@qmarktotal}{0}%
+      \setboolean{utexam@qmarkadd}{false}%
+      \setboolean{utexam@qmarkset}{false}%
+      \setboolean{utexam@inquestion}{false}}}
+
+% Start a new question.
+% #1 = marks; #2 = title
+\newcommand*\question[2][]
+  {% Close the previous [[sub]sub]question/bonus, if any.
+   \utexam@closebonus\utexam@closequestion
+   \setboolean{utexam@inquestion}{true}%
+   % Handle optional number of marks.
+   \ifthenelse{\NOT\isinteger{#1}}{}
+     {\setboolean{utexam@qmarkset}{true}%
+      \setcounter{utexam@qmarktotal}{#1}}%
+   % Typeset question label.
+   \refstepcounter{question}%
+   \utexam@startquestionbonus{question}
+     {\questionstyle\questionlabel}
+     {\ref{Q\thequestion Marks}}{#2}%
+   \ignorespaces}
+
+% Typeset question label with the title "(continued)", no marks.
+\newcommand*\continuequestion
+  {\par
+   % Temporarily remove subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionsep}%
+      \addtolength\leftskip{\subsubquestionindent}}%
+   % Temporarily remove subquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubquestion}\OR
+         \NOT\lengthtest{\subquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subquestionsep}%
+      \addtolength\leftskip{\subquestionindent}}%
+   \utexam@startquestionbonus{question}
+     {\questionstyle\questionlabel}
+     {}{\textsc{(continued)}}%
+   % Re-apply subquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubquestion}\OR
+         \NOT\lengthtest{\subquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subquestionindent}%
+      \addtolength\leftskip{\subquestionsep}}%
+   % Re-apply subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionindent}%
+      \addtolength\leftskip{\subsubquestionsep}}%
+   \ignorespaces}
+
+% Tally up marks, reset flags and counters, and ensure the subquestion
+% ends with \par, after closing any subsubquestion/bonus.
+\newcommand*\utexam@closesubquestion
+  {\utexam@closesubsubquestion
+   \ifthenelse{\NOT\boolean{utexam@insubquestion}}{}
+     {\ifthenelse{\boolean{utexam@subqmarkset}\OR
+                  \boolean{utexam@subqmarkadd}}
+        {\ifthenelse{\NOT\boolean{utexam@qmarkset}}{}
+           {\PackageWarning{uttest}{Total marks will be incorrect for
+               \protect\question\space\thequestion:\MessageBreak
+               both the \protect\question\space and its
+               \protect\subquestion\space\thesubquestion\MessageBreak
+               specify marks,}}%
+         \setboolean{utexam@qmarkadd}{true}%
+         \addtocounter{utexam@qmarktotal}{\value{utexam@subqmarktotal}}%
+         \labelcounter{utexam@subqmarktotal}
+           {Q\thequestion S\thesubquestion Marks}}
+        {\ifthenelse{\boolean{utexam@qmarkset}}{}
+           {\PackageWarning{uttest}{No marks specified for
+               \protect\subquestion\space\thesubquestion\MessageBreak
+               of \protect\question\space\thequestion,}}}%
+      \par\ifthenelse{\NOT\lengthtest{\subquestionindent<0pt}}{}
+        {\addtolength\leftskip{-\subquestionsep}%
+         \addtolength\leftskip{\subquestionindent}}%
+      \setcounter{utexam@subqmarktotal}{0}%
+      \setboolean{utexam@subqmarkadd}{false}%
+      \setboolean{utexam@subqmarkset}{false}%
+      \setboolean{utexam@insubquestion}{false}}}
+
+% Start a new subquestion; can only be used within a \question.
+% #1 = marks; #2 = title
+\newcommand*\subquestion[2][]
+  {% Ensure we are within a question -- error otherwise.
+   \ifthenelse{\boolean{utexam@inquestion}}{}
+     {\PackageError{uttest}
+        {\protect\subquestion\space without \protect\question}
+        {\protect\subquestion\space must be used within the scope of
+         a \protect\question}}%
+   % Close the previous [sub]subquestion/bonus, if any.
+   \utexam@closesubbonus\utexam@closesubquestion
+   \setboolean{utexam@insubquestion}{true}%
+   % Handle optional number of marks.
+   \ifthenelse{\NOT\isinteger{#1}}{}
+     {\setboolean{utexam@subqmarkset}{true}%
+      \setcounter{utexam@subqmarktotal}{#1}}%
+   % Typeset subquestion label.
+   \refstepcounter{subquestion}%
+   \utexam@startsubquestionbonus{subquestion}
+     {\subquestionstyle\subquestionlabel}
+     {\ref{Q\thequestion S\thesubquestion Marks}}{#2}%
+   \ignorespaces}
+
+% Typeset subquestion label with the title "(continued)", no marks.
+\newcommand*\continuesubquestion
+  {\par
+   % Temporarily remove subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionsep}%
+      \addtolength\leftskip{\subsubquestionindent}}%
+   \utexam@startsubquestionbonus{subquestion}
+    {\subquestionstyle\subquestionlabel}
+    {}{\textsc{(continued)}}%
+   % Re-apply subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionindent}%
+      \addtolength\leftskip{\subsubquestionsep}}%
+    \ignorespaces}
+
+% Reset flags, and ensure the subsubquestion ends with \par.
+\newcommand*\utexam@closesubsubquestion
+  {\ifthenelse{\NOT\boolean{utexam@insubsubquestion}}{}
+     {\par\ifthenelse{\NOT\lengthtest{\subsubquestionindent<0pt}}{}
+        {\addtolength\leftskip{-\subsubquestionsep}%
+         \addtolength\leftskip{\subsubquestionindent}}%
+      \setboolean{utexam@insubsubquestion}{false}}}
+
+% Start a new subsubquestion; can only be used within a \subquestion.
+% #1 = marks; #2 = title
+\newcommand*\subsubquestion[2][]
+  {% Ensure we are within a subquestion -- error otherwise.
+   \ifthenelse{\boolean{utexam@insubquestion}}{}
+     {\PackageError{uttest}
+        {\protect\subsubquestion\space without \protect\subquestion}
+        {\protect\subsubquestion\space must be used within the scope of
+         a \protect\subquestion}}%
+   % Close the previous subsubquestion, if any.
+   \utexam@closesubsubbonus\utexam@closesubsubquestion
+   \setboolean{utexam@insubsubquestion}{true}%
+   % Handle optional number of marks.
+   \refstepcounter{subsubquestion}%
+   \ifthenelse{\isinteger{#1}}
+     {\setboolean{utexam@subqmarkadd}{true}%
+      \addtocounter{utexam@subqmarktotal}{#1}%
+      \ifthenelse{\NOT\boolean{utexam@subqmarkset}}{}
+        {\PackageWarning{uttest}{Total marks will be incorrect for
+            \protect\subquestion\space\thesubquestion\MessageBreak
+            of \protect\question\space\thequestion:
+            both the \protect\subquestion\space and its\MessageBreak
+            \protect\subsubquestion\space\thesubsubquestion\space
+            specify marks,}}}
+     {\ifthenelse{\boolean{utexam@subqmarkset}}{}
+        {\PackageWarning{uttest}{No marks specified for
+            \protect\subsubquestion\space\thesubsubquestion\space
+            of\MessageBreak
+            \protect\subquestion\space\thesubquestion\space
+            of \protect\question\space\thequestion,}}}%
+   % Typeset subsubquestion label.
+   \utexam@startsubsubquestionbonus{subsubquestion}
+     {\subsubquestionstyle\subsubquestionlabel}{#1}{#2}%
+   \ignorespaces}
+
+% Typeset subsubquestion label with the title "(continued)", no marks.
+\newcommand*\continuesubsubquestion
+  {\utexam@startsubsubquestionbonus{subsubquestion}
+    {\subsubquestionstyle\subsubquestionlabel}
+    {}{\textsc{(continued)}}\ignorespaces}
+
+% Flags.
+\newboolean{utexam@inbonus} % within a bonus's scope
+\setboolean{utexam@inbonus}{false}
+\newboolean{utexam@insubbonus} % within a subbonus's scope
+\setboolean{utexam@insubbonus}{false}
+\newboolean{utexam@insubsubbonus} % within a subsubbonus's scope
+\setboolean{utexam@insubsubbonus}{false}
+\newboolean{utexam@bmarkset} % bonus marks given as argument
+\setboolean{utexam@bmarkset}{false}
+\newboolean{utexam@subbmarkset} % subbonus marks given as argument
+\setboolean{utexam@subbmarkset}{false}
+\newboolean{utexam@bmarkadd} % bonus marks added from subqs
+\setboolean{utexam@bmarkadd}{false}
+\newboolean{utexam@subbmarkadd} % subbonus marks added from subsubqs
+\setboolean{utexam@subbmarkadd}{false}
+
+% Counters for marks.
+\newcounter{utexam@bonusmarks} % total bonus marks for the entire paper
+\setcounter{utexam@bonusmarks}{0}
+\newcounter{utexam@bmarktotal} % temporary total for one bonus
+\setcounter{utexam@bmarktotal}{0}
+\newcounter{utexam@subbmarktotal} % temporary total for one subbonus
+\setcounter{utexam@subbmarktotal}{0}
+
+% Tally up a bonus's marks, reset flags and counters, and ensure
+% the bonus ends with \par, after closing any subbonus.
+\newcommand*\utexam@closebonus
+  {\utexam@closesubbonus
+   \ifthenelse{\NOT\boolean{utexam@inbonus}}{}
+     {\ifthenelse{\boolean{utexam@bmarkset}\OR\boolean{utexam@bmarkadd}}
+        {\addtocounter{utexam@bonusmarks}{\value{utexam@bmarktotal}}%
+         \labelcounter{utexam@bmarktotal}{B\thebonus Marks}}
+        {\PackageWarning{uttest}{No marks specified for
+            \protect\bonus\space\thebonus,}}%
+      \par\ifthenelse{\NOT\lengthtest{\questionindent<0pt}}{}
+        {\addtolength\leftskip{-\questionsep}%
+         \addtolength\leftskip{\questionindent}}%
+      \setcounter{utexam@bmarktotal}{0}%
+      \setboolean{utexam@bmarkadd}{false}%
+      \setboolean{utexam@bmarkset}{false}%
+      \setboolean{utexam@inbonus}{false}}}
+
+% Start a new bonus (an unnumbered question whose marks
+% do not get added to the total for the exam).
+% #1 = marks; #2 = title
+\newcommand*\bonus[2][]
+  {% Close the previous [[sub]sub]question/bonus, if any.
+   \utexam@closequestion\utexam@closebonus
+   \setboolean{utexam@inbonus}{true}%
+   % Handle marks.
+   \ifthenelse{\NOT\isinteger{#1}}{}
+     {\setboolean{utexam@bmarkset}{true}%
+      \setcounter{utexam@bmarktotal}{#1}}%
+   % Typeset bonus label.
+   \refstepcounter{bonus}%
+   \utexam@startquestionbonus{bonus}
+     {\bonusstyle\bonuslabel}
+     {\ref{B\thebonus Marks}}{#2}%
+   \ignorespaces}
+
+% Typeset bonus label with the title "(continued)" (and no marks).
+\newcommand*\continuebonus
+  {\par
+   % Temporarily remove subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionsep}%
+      \addtolength\leftskip{\subsubquestionindent}}%
+   % Temporarily remove subquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubquestion}\OR
+         \NOT\lengthtest{\subquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subquestionsep}%
+      \addtolength\leftskip{\subquestionindent}}%
+   \utexam@startquestionbonus{bonus}
+     {\bonusstyle\bonuslabel}
+     {}{\textsc{(continued)}}%
+   % Re-apply subquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubquestion}\OR
+         \NOT\lengthtest{\subquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subquestionindent}%
+      \addtolength\leftskip{\subquestionsep}}%
+   % Re-apply subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionindent}%
+      \addtolength\leftskip{\subsubquestionsep}}%
+   \ignorespaces}
+
+% Tally up a subbonus's marks, reset flags and counters, and ensure
+% the subbonus ends with \par, after closing any subsubbonus.
+\newcommand*\utexam@closesubbonus
+  {\utexam@closesubsubbonus
+   \ifthenelse{\NOT\boolean{utexam@insubbonus}}{}
+     {\ifthenelse{\boolean{utexam@subbmarkset}\OR
+                  \boolean{utexam@subbmarkadd}}
+        {\ifthenelse{\NOT\boolean{utexam@bmarkset}}{}
+           {\PackageWarning{uttest}{Total marks will be incorrect
+               for \protect\bonus\space\thebonus:\MessageBreak
+               both the \protect\bonus\space and its
+               \protect\subbonus\space\thesubbonus\MessageBreak
+               specify marks,}}%
+         \ifthenelse{\boolean{utexam@inbonus}}
+           {\setboolean{utexam@bmarkadd}{true}%
+            \addtocounter{utexam@bmarktotal}
+              {\value{utexam@subbmarktotal}}%
+            \labelcounter{utexam@subbmarktotal}
+              {B\thebonus S\thesubbonus Marks}}
+           {\addtocounter{utexam@bonusmarks}
+              {\value{utexam@subbmarktotal}}%
+            \labelcounter{utexam@subbmarktotal}
+              {Q\thequestion B\thesubbonus Marks}}}
+        {\ifthenelse{\boolean{utexam@bmarkset}}{}
+           {\PackageWarning{uttest}{No marks specified for
+               \protect\subbonus\space\thesubbonus\MessageBreak
+               of \ifutexam@inbonus\protect\bonus\space\thebonus
+               \else\protect\question\space\thequestion\fi,}}}%
+      \par\ifthenelse{\NOT\lengthtest{\subquestionindent<0pt}}{}
+        {\addtolength\leftskip{-\subquestionsep}%
+         \addtolength\leftskip{\subquestionindent}}%
+      \setcounter{utexam@subbmarktotal}{0}%
+      \setboolean{utexam@subbmarkadd}{false}%
+      \setboolean{utexam@subbmarkset}{false}%
+      \setboolean{utexam@insubbonus}{false}}}
+
+% Start a new subbonus (an unnumbered subquestion whose marks
+% do not get added to the total for the current question).
+% Can only be used within a \question or \bonus.
+% #1 = marks; #2 = title
+\newcommand*\subbonus[2][]
+  {% Ensure we are within a question/bonus -- error otherwise.
+   \ifthenelse{\boolean{utexam@inbonus}\OR\boolean{utexam@inquestion}}{}
+     {\PackageError{uttest}
+        {\protect\subbonus\space without \protect\question\space
+         or \protect\bonus}
+        {\protect\subbonus\space must be used within the scope of
+         a \protect\question\space or \protect\bonus}}%
+   % Close the previous [sub]subquestion/bonus, if any.
+   \utexam@closesubquestion\utexam@closesubbonus
+   \setboolean{utexam@insubbonus}{true}%
+   % Handle marks.
+   \ifthenelse{\NOT\isinteger{#1}}{}
+     {\setboolean{utexam@subbmarkset}{true}%
+      \setcounter{utexam@subbmarktotal}{#1}}%
+   % Typeset subbonus label.
+   \refstepcounter{subbonus}%
+   \ifthenelse{\boolean{utexam@inbonus}}
+     {\utexam@startsubquestionbonus{subbonus}
+        {\subbonusstyle\subbonuslabel}
+        {\ref{B\thebonus S\thesubbonus Marks}}{#2}}
+     {\utexam@startsubquestionbonus{subbonus}
+        {\subbonusstyle\subbonuslabel}
+        {\ref{Q\thequestion B\thesubbonus Marks}}{#2}}%
+   \ignorespaces}
+
+% Typeset subbonus label with the title "(continued)" (and no marks).
+\newcommand*\continuesubbonus
+  {\par
+   % Temporarily remove subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionsep}%
+      \addtolength\leftskip{\subsubquestionindent}}%
+   \utexam@startsubquestionbonus{subbonus}
+     {\subbonusstyle\subbonuslabel}
+     {}{\textsc{(continued)}}%
+   % Re-apply subsubquestion indentation.
+   \ifthenelse{\NOT\boolean{utexam@insubsubquestion}\OR
+         \NOT\lengthtest{\subsubquestionindent<0pt}}{}
+     {\addtolength\leftskip{-\subsubquestionindent}%
+      \addtolength\leftskip{\subsubquestionsep}}%
+   \ignorespaces}
+
+% Reset flags, and ensure the subsubbonus ends with \par.
+\newcommand*\utexam@closesubsubbonus
+  {\ifthenelse{\NOT\boolean{utexam@insubsubbonus}}{}
+     {\par\ifthenelse{\NOT\lengthtest{\subsubquestionindent<0pt}}{}
+        {\addtolength\leftskip{-\subsubquestionsep}%
+         \addtolength\leftskip{\subsubquestionindent}}%
+      \setboolean{utexam@insubsubbonus}{false}}}
+
+% Start a new subsubbonus (an unnumbered subsubquestion whose marks
+% do not get added to the total for the current subquestion).
+% Can only be used within a \subquestion or \subbonus.
+% #1 = marks; #2 = title
+\newcommand*\subsubbonus[2][]
+  {% Ensure we are within a subquestion/bonus -- error otherwise.
+   \ifthenelse{\boolean{utexam@insubbonus}\OR
+               \boolean{utexam@insubquestion}}{}
+     {\PackageError{uttest}
+        {\protect\subsubbonus\space without \protect\subquestion\space
+         or \protect\subbonus}
+        {\protect\subsubbonus\space must be used within the scope of
+         a \protect\subquestion\space or \protect\subbonus}}%
+   % Close the previous subsubquestion/bonus, if any.
+   \utexam@closesubsubbonus\utexam@closesubsubquestion
+   \setboolean{utexam@insubsubbonus}{true}%
+   % Handle marks.
+   \refstepcounter{subsubbonus}%
+   \ifthenelse{\isinteger{#1}}
+     {\ifthenelse{\boolean{utexam@insubbonus}}
+        {\setboolean{utexam@subbmarkadd}{true}%
+         \addtocounter{utexam@subbmarktotal}{#1}%
+         \ifthenelse{\NOT\boolean{utexam@subqmarkset}}{}
+           {\PackageWarning{uttest}{Total marks will be incorrect for
+               \protect\subbonus\space\thesubbonus\MessageBreak
+               of \protect\bonus\space\thebonus:
+               both the \protect\subbonus\space and its\MessageBreak
+               \protect\subsubbonus\space\thesubsubbonus\space
+               specify marks,}}}
+        {\addtocounter{utexam@bonusmarks}{#1}}}
+     {\ifthenelse{\boolean{utexam@subbmarkset}}{}
+        {\PackageWarning{uttest}{No marks specified for
+            \protect\subsubbonus\space\thesubsubbonus\space
+            of\MessageBreak\ifutexam@insubbonus
+               \protect\subbonus\space\thesubbonus\space
+            \else\protect\subquestion\space\thesubquestion\space\fi
+            of \ifutexam@inbonus\protect\bonus\space\thebonus
+            \else\protect\question\space\thequestion\fi,}}}%
+   % Typeset subsubbonus label.
+   \utexam@startsubsubquestionbonus{subsubbonus}
+     {\subsubbonusstyle\subsubbonuslabel}{#1}{#2}%
+   \ignorespaces}
+
+% Typeset subsubbonus label with the title "(continued)" (and no marks).
+\newcommand*\continuesubsubbonus
+  {\utexam@startsubsubquestionbonus{subsubbonus}
+     {\subsubbonusstyle\subsubbonuslabel}
+     {}{\textsc{(continued)}}\ignorespaces}
+
+% Close the last [[sub]sub]question/bonus, and tally totals.
+\AtEndDocument
+  {% Small TeX hack to ensure references are written to .aux file.
+   \let\utexam@write\write
+   \def\write{\immediate\utexam@write}%
+   \utexam@closebonus\utexam@closequestion
+   \labelcounter{utexam@totalmarks}{TotalMarks}%
+   \labelcounter{utexam@bonusmarks}{BonusMarks}%
+   \labelcounter{question}{LastQN}%
+   \let\write\utexam@write}

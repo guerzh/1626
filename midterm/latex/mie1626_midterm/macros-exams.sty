@@ -1,0 +1,211 @@
+%%  Common macros for the course CSC373H1 at the University of Toronto.
+%%
+%%  Copyright (c) 2014 Francois Pitt <fpitt@cs.utoronto.ca>
+%%  last updated at 17:28 on Wed 16 Mar 2022
+%%
+%%  CC BY-SA 4.0
+%%  This work (the current file named 'macros-373.tex') is licensed under
+%%  the Creative Commons Attribution-ShareAlike 4.0 International License.
+%%  To view a copy of this license, visit
+%%      http://creativecommons.org/licenses/by-sa/4.0/
+%%  or send a letter to: Creative Commons, 444 Castro Street, Suite 900,
+%%  Mountain View, California, 94041, USA.
+%%  This is a human-readable summary of (and not a substitute for) the
+%%  license.
+%%  You are free to:
+%%      Share -- copy and redistribute the material in any medium or format
+%%      Adapt -- remix, transform, and build upon the material for any
+%%          purpose, even commercially.
+%%      The licensor cannot revoke these freedoms as long as you follow the
+%%          license terms.
+%%  Under the following terms:
+%%      Attribution -- You must give appropriate credit, provide a link to
+%%          the license, and indicate if changes were made. You may do so in
+%%          any reasonable manner, but not in any way that suggests the
+%%          licensor endorses you or your use.
+%%      ShareAlike -- If you remix, transform, or build upon the material,
+%%          you must distribute your contributions under the same license as
+%%          the original.
+%%      No additional restrictions -- You may not apply legal terms or
+%%          technological measures that legally restrict others from doing
+%%          anything the license permits.
+%%  Notices:
+%%      You do not have to comply with the license for elements of the
+%%      material in the public domain or where your use is permitted by an
+%%      applicable exception or limitation.
+%%      No warranties are given. The license may not give you all of the
+%%      permissions necessary for your intended use. For example, other
+%%      rights such as publicity, privacy, or moral rights may limit how you
+%%      use the material.
+
+% TeX trick so that math symbols are bold when text is.
+\let\seiresfb\bfseries\def\bfseries{\boldmath\seiresfb}
+\let\seiresdm\mdseries\def\mdseries{\unboldmath\seiresdm}
+
+% Centered version of \llap and \rlap.
+\providecommand*\clap[1]{\hbox to 0pt{\hss#1\hss}}
+
+% Spacing macros with default argument.
+\providecommand*\vfillstretch[1][1]{\vspace*{\stretch{#1}}}
+\providecommand*\hfillstretch[1][1]{\hspace*{\stretch{#1}}}
+
+% General fonts and characters.
+\let\altemph\textsl  % alternate way to emphasize
+\let\strong\textbf  % strong emphasis
+\let\code\texttt  % code fragments
+\let\var\textsl  % multi-letter variables
+\let\pred\mathbf  % predicates
+\newcommand*{\onehalf}{\ensuremath{{}^1\!\!/\!_2}}
+\newcommand*\bbmath[1]{\ensuremath{\mathbb{#1}}}  % requires amssymb
+\providecommand*\N{\bbmath{N}}  % requires amssymb
+\providecommand*\Z{\bbmath{Z}}  % requires amssymb
+\providecommand*\Q{\bbmath{Q}}  % requires amssymb
+\providecommand*\R{\bbmath{R}}  % requires amssymb
+\providecommand*\bigOh{\mathcal{O}}
+\providecommand*\halfthinspace{\kern.083333em}
+\providecommand*\dash{\allowbreak\halfthinspace---\halfthinspace\allowbreak}
+\let\per\slash  % for convenience
+
+% For defined terms -- requires package ulem.
+\newcommand*\defn[1]{\uline{\textit{#1}}}
+
+% Underlined box with optional width argument.
+\newcommand*{\ubox}[2][\width]
+ {{\setlength{\ULdepth}{2pt}\uline{\makebox[#1][l]{#2}}}}
+
+% Underlined box with optional width argument and a label.
+\newcommand*{\lbox}[3][\width]
+ {\rlap{\makebox[#1][c]{\raisebox{-.9\baselineskip}{\smaller[.5]#2}}}%
+  \ubox[#1]{#3}}
+
+% General math macros.
+\newcommand*\hiderel[1]{\mathrel{\hphantom{#1}}}
+\providecommand*\comp[1]{\overline{#1}}  % set complement
+\providecommand*\emptystr{\varepsilon}  % empty string
+\providecommand*\lxor{\mathbin\oplus}  % exclusive or
+\providecommand*\cat{\cdot}  % string concatenation
+% Floors and ceilings, with optional size-changing command, e.g.,
+% \floor[\Big]{x/2} becomes '\Big\lfloor{x/2}\Big\rfloor'.
+\providecommand*\floor[2][]{{#1\lfloor}{#2}{#1\rfloor}}
+\providecommand*\ceil[2][]{{#1\lceil}{#2}{#1\rceil}}
+\providecommand*\lcm{\operatorname{lcm}}  % requires amsmath
+\providecommand*\size{\operatorname{size}}  % requires amsmath
+\providecommand*\len{\operatorname{len}}  % requires amsmath
+\providecommand*\divides{\mathrel{|}}
+
+% Redefined symbols from amssymb.
+\renewcommand*\emptyset{\varnothing}  % rounder than default
+\let\bigiff\iff
+\renewcommand*\iff{\mathrel{\Leftrightarrow}}  % smaller than default
+\let\bigimplies\implies
+%\renewcommand*\implies{\mathrel{\Rightarrow}}  % smaller than default
+\renewcommand*\ge{\geqslant}  % with slanted line under the > sign
+\renewcommand*\le{\leqslant}  % with slanted line under the < sign
+
+% For algorithms, using either CLRS-style or Python-style pseudocode.
+\let\ADT\textsc  % ADT names
+\let\proc\textsc  % function names
+\let\const\textsc  % constants (True, False, etc.)
+\let\kw\textbf  % keywords (if, while, etc.)
+\providecommand*\comm[1]{\textsl{\#\space#1}}  % comments
+\providecommand*\opgets[1]{\mathrel{#1=}}
+\providecommand*\eq{\mathrel{==}}
+\providecommand*\True{\const{True}}
+\providecommand*\False{\const{False}}
+\providecommand*\None{\const{None}}
+\providecommand*\cmod{\mathbin{\%}}
+\providecommand*\nil{\const{nil}}
+
+% Checkboxes and checklists.
+% \checkmark already defined in amssymb
+\makeatletter
+\@ifpackageloaded{kpfonts}
+   {\newcommand*\exmark{$\times$}}
+   {\newcommand*\exmark{{\boldmath$\times$}}}
+\makeatother
+\newlength\exmarksize
+\newlength\exmarkdepth
+\newcommand*\checkbox[1][]
+   {\settoheight\exmarksize{\exmark}% Set these values here so that
+    \settodepth\exmarkdepth{\exmark}% they automatically adapt to
+    \addtolength\exmarksize{-\exmarkdepth}% current font settings.
+    {\setlength\fboxrule{.1ex}\setlength\fboxsep{.1ex}%
+    \fbox{\rule{0pt}{1.5\exmarksize}\makebox[1.5\exmarksize]{\smash{#1}}}}}
+\newcommand*\checkedbox
+   {\checkbox[\raisebox{.1ex}{\larger[1.5]\kern.1em$\checkmark$}]}
+\newcommand*\exedbox
+   {\checkbox[\raisebox{.2ex}{\larger[1.5]\exmark}]}
+\newenvironment*{checklist}{\begin{list}{\checkbox}{}}{\end{list}}
+\newcommand*\checkeditem{\item[\checkedbox]}
+\newcommand*\exeditem{\item[\exedbox]}
+\newcommand*\boxeditem[1][]{\item[{\checkbox[#1]}]}
+
+% Environment for transition diagrams (requires tikz package).
+\newenvironment*{transitiondiagram}[1][]
+   {\begin{tikzpicture}[initial text=,>=latex,
+        every state/.style={inner sep=1pt,minimum size=1.75em},
+        state accepting/.style={inner sep=0pt},
+        loop right/.style={right,out=340,in=20,loop},
+        loop above/.style={above,out=70,in=110,loop},
+        loop left/.style={left,out=160,in=200,loop},
+        loop below/.style={below,out=250,in=290,loop}]%
+    \tikzset{#1}\relax}
+   {\end{tikzpicture}}
+
+% 373-specific.
+\let\symb\mathord  % for symbols
+\let\lang\textsc  % for languages
+\let\class\textsl  % for complexity classes
+\providecommand*\polyred{\mathrel{\le_p}}  % polytime reducibility
+\providecommand*\co{\class{co}}
+\renewcommand*\P{\class{P}}
+\providecommand*\NP{\class{NP}}
+\providecommand*\CNF{\lang{CNF-}}
+\providecommand*\SAT{\lang{SAT}}
+
+% Macros for drawing "underline" rules and half-boxes.
+\providecommand*\urule[2][.5pt]{\rule[-.4ex]{#2}{#1}} % "underline" rule
+% Underlined text box (with optional positioning argument).
+\providecommand*\ubox[3][c]{\rlap{\urule{#2}}\makebox[#2][#1]{#3}}
+% Underlined text box with caption (and optional caption positioning).
+\providecommand*\capbox[5][c]{\ifx\empty#2\empty
+    \else\rlap{\raisebox{-\baselineskip}{\makebox[#3][#1]{#2}}}\fi
+    \ubox[#4]{#3}{#5}}
+
+% For student numbers.
+\providecommand*\hb{\urule{1.2em}}      % horizontal bar
+\providecommand*\vb{\urule[1ex]{.5pt}}  % vertical bar
+\providecommand*\studentnumberboxes     % 10-digits long
+   {\vb\hb\vb\hb\vb\hb\vb\hb\vb\hb\vb\hb\vb\hb\vb\hb\vb\hb\vb\hb\vb}
+\newlength\numberboxwidth
+\settowidth\numberboxwidth{\studentnumberboxes}
+
+% Marking-related macros.
+\providecommand*\markitem[2][]
+   {\item{\bfseries#2}\ifx\empty#1\empty\else
+    \space[$#1$ mark\ifnum#1>1 s\fi]\fi:\quad\ignorespaces}
+\providecommand*\errorcode[2][]
+   {\item{\bfseries error code #2}\ifx\empty#1\empty\else
+    \space[#1]\fi:\quad\ignorespaces}
+\providecommand*\commonerror[1][]
+   {\item{\bfseries common error}\ifx\empty#1\empty\else
+    \space[#1]\fi:\quad\ignorespaces}
+\makeatletter
+\providecommand*\heading[1]%
+   {\@startsection{heading}{9}{0pt}{-.75ex plus -1.5ex minus -.5ex}
+    {-.5em plus -.5em minus -.25em}{\normalfont}*{\textsc{#1}}\mbox{}}
+\makeatother
+
+% Formatting for sample solutions -- use Sans Serif font to distinguish
+% from question text or marking instructions.
+\newcommand*\samplesolutionformat{\mathversion{sf}\sffamily\larger[.5]}
+
+% Command to format sample solutions.
+\newcommand\samplesolution[1]
+   {\ifsolutions\begin{quote}\samplesolutionformat{#1}\end{quote}\fi}
+
+% Macro for making nice answer boxes.
+\newcommand*\answerbox[1]
+   {\par\vspace{\baselineskip}\noindent
+    \fbox{\begin{minipage}{\dimexpr\textwidth-2\fboxrule-2\fboxsep\relax}%
+    \rule{0pt}{#1}\end{minipage}}}

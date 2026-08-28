@@ -1,0 +1,30 @@
+% Question 6: Insurance on the Titanic
+\question{}
+
+You have the \verb|titanic| (training) data frame --- one row per passenger --- and you are tasked with selling drowning insurance to passengers as they board. The first rows of the relevant columns are:
+
+\begin{verbatim}
+  Survived Pclass    Sex Age SibSp Parch    Fare
+1        0      3   male  22     1     0  7.2500
+2        1      1 female  38     1     0 71.2833
+3        1      3 female  26     0     0  7.9250
+4        1      1 female  35     1     0 53.1000
+5        0      3   male  35     0     0  8.0500
+6        0      3   male  NA     0     0  8.4583
+\end{verbatim}
+
+Here \verb|Survived| is 1 if the passenger survived and 0 otherwise; the data frame has 891 rows. You set the insurance \strong{premium} per passenger. The \strong{payout} in case of drowning is always \$100. If the passenger survives, they do \strong{not} get the premium back, and they do \strong{not} get the payout.
+
+\subquestion[8]{}
+Propose a reasonable formula representing a single passenger's \strong{decision} of whether to buy the insurance, given the premium you offer them. State your assumptions about how a passenger values the \$100 payout and the premium, and write the condition under which they buy.
+
+\ifanswerspace
+\vfillstretch
+\fi
+
+\subquestion[8]{}
+Suppose you are allowed to use only \verb|Pclass| and \verb|Age| to price each passenger. State how you would produce a formula for the \strong{smallest premium that does not lead to an expected loss} for you, and state precisely how you would use that formula to set a price for a new passenger of given \verb|Pclass| and \verb|Age|. \emph{(Hint: relate the break-even premium to an estimated probability of drowning.)}
+
+\ifanswerspace
+\vfillstretch
+\fi

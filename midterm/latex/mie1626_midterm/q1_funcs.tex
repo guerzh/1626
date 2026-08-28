@@ -1,0 +1,30 @@
+% Question 1: Functions in R
+\question{}
+
+\subquestion[6]{}
+Suppose you are given three one-argument functions \verb|f|, \verb|g|, and \verb|h| (already defined). Write R code that defines a function \verb|chained(x)| that returns \verb|f(g(h(x)))|, and show one example call.
+
+For concreteness you may \emph{make up} simple definitions of \verb|f|, \verb|g|, and \verb|h| (for example doubling, adding one, squaring) so that your example produces a concrete number.
+
+\ifanswerspace
+\vfillstretch
+\fi
+
+\subquestion[6]{}
+Consider the function
+
+\begin{verbatim}
+SpecialSquare <- function(num){
+  if(num == 42){
+    return(0)
+  }else{
+    return(num**2)
+  }
+}
+\end{verbatim}
+
+Write R code that computes \verb|SpecialSquare| of \strong{each} of the integers \verb|seq(1, 50)|, returning a vector of length 50. (There is more than one acceptable way to do this in R.)
+
+\ifanswerspace
+\vfillstretch
+\fi

@@ -1,0 +1,95 @@
+% Question 4: Estimating a slope three ways
+\question{}
+
+Data were generated from a relationship of the form
+\[
+  y = a\,x + \varepsilon, \qquad \varepsilon \sim \mathcal{N}(0, \sigma^2),
+\]
+and stored in a data frame \verb|d| with columns \verb|x| and \verb|y| (60 rows). The first rows are:
+
+\begin{verbatim}
+      x      y
+1 0.675  1.234
+2 0.254 -9.641
+3 6.305 21.037
+4 9.141  9.622
+5 6.671 11.372
+6 8.744 22.385
+\end{verbatim}
+
+Running \verb|summary(lm(y ~ x, data = d))| produces:
+
+\begin{verbatim}
+Call:
+lm(formula = y ~ x, data = d)
+
+Residuals:
+   Min     1Q Median     3Q    Max
+-9.300 -2.912 -0.212  2.360 10.367
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)   -2.080      1.151  -1.806   0.0761 .
+x              2.202      0.211  10.435 6.24e-15 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.472 on 58 degrees of freedom
+Multiple R-squared:  0.6525,    Adjusted R-squared:  0.6465
+F-statistic: 108.9 on 1 and 58 DF,  p-value: 6.245e-15
+\end{verbatim}
+
+\ifanswerspace\newpage\continuequestion\fi
+
+\subquestion[6]{}
+Using \strong{only the summary above}, give a point estimate of $a$ together with an approximate 95\% confidence interval. Show the arithmetic.
+
+\ifanswerspace
+\begin{verbatim}
+
+
+
+
+\end{verbatim}
+\vfillstretch
+\newpage
+\fi
+
+\subquestion[6]{}
+Describe how you would estimate $a$ by \strong{directly minimizing the appropriate linear-regression loss function}, without calling \verb|lm|. Write down the loss as a function of the candidate slope (and intercept), and \strong{write R code} that finds the minimizing value. \emph{(We have not covered how to quantify uncertainty in this case, so a point estimate is all that is required here.)}
+
+\ifanswerspace
+\begin{verbatim}
+
+
+
+
+
+
+
+
+
+
+\end{verbatim}
+\vfillstretch
+\newpage
+\fi
+
+\subquestion[6]{}
+Describe how you would estimate $a$ \strong{and its uncertainty using a Bayesian approach}, so that your answer corresponds to a region that contains the true value of $a$ with 95\% probability. State your prior, what the posterior is over, and how you would extract the 95\% region from posterior samples. \emph{(This was not covered directly --- some creative thinking is expected.)}
+
+\ifanswerspace
+\begin{verbatim}
+
+
+
+
+
+
+
+
+
+
+\end{verbatim}
+\vfillstretch
+\fi

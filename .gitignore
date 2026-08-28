@@ -27,3 +27,6 @@ __pycache__/
 # match anywhere in the tree
 **/.claude/settings.local.json
 settings.local.json
+*.fls
+*.fdb_latexmk
+*.synctex.gz
